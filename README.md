@@ -1,5 +1,4 @@
 Training: computer-database    
-===========================  
 
 # Content
 This training material holds a sequence of steps and features to implement in a Computer Database webapp.  
@@ -303,3 +302,6 @@ A live-demonstration. Be careful, the audience may interrupt your demo and ask y
 A technical review: you will reassure your client on what he paid for. Give him the necessary technical data and metrics which will allow him to think "they are competent and they did the job, and I am confident that it is maintainable and well coded".
 
 **Warning**: this presentation is not a restitution of what you have done. It is a **simulation** of the presentation of a project you would deliver to your customer.
+=======
+# training-java
+Training: computer-database 
