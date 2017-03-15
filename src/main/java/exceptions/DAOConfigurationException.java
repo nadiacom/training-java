@@ -6,7 +6,7 @@ package main.java.exceptions;
 public class DAOConfigurationException extends RuntimeException {
 
     /*
-     * Constructeurs
+     * Constructors
      */
     public DAOConfigurationException( String message ) {
         super( message );

@@ -5,6 +5,7 @@ import main.java.models.Computer;
 import main.java.services.DAOFactory;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static main.java.daos.DAOUtilitaire.fermeturesSilencieuses;
@@ -18,7 +19,7 @@ public class ComputerDaoImpl implements ComputerDao {
 
     private static final String SQL_INSERT = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
     private static final String SQL_SELECT_BY_ID = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE id = ?";
-    private static final String SQL_UPDATE_NAME = "UPDATE computer SET name = ? WHERE id = ?";
+    private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id =? WHERE id = ?";
     private static final String SQL_DELETE = "DELETE FROM computer WHERE id = ?";
     private static final String SQL_SELECT_ALL = "SELECT * FROM computer";
 
@@ -33,29 +34,29 @@ public class ComputerDaoImpl implements ComputerDao {
         PreparedStatement preparedStatement = null;
         ResultSet valeursAutoGenerees = null;
         Long id = null;
-
+        System.out.println(computer);
         try {
-        /* Récupération d'une connexion depuis la Factory */
+        /* Get connexion back from Factory */
             connexion = daoFactory.getConnection();
             preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, computer.getName(), computer.getIntroduced(),computer.getDiscontinued(), computer.getCompany_id() );
             int status = preparedStatement.executeUpdate();
-        /* Analyse du status retourné par la requête d'insertion */
-            if ( status == 0 ) {
+        /* Analyze status returned from insert request */
+            if (status == 0) {
                 throw new DAOException( "Échec de la création de la company, aucune ligne ajoutée dans la table." );
             }
-        /* Récupération de l'id auto-généré par la requête d'insertion */
+        /* Get auto-generated id from insert request */
             valeursAutoGenerees = preparedStatement.getGeneratedKeys();
             if ( valeursAutoGenerees.next() ) {
-            /* Puis initialisation de la propriété id du bean Utilisateur avec sa valeur */
+            /* Initialize id property of computer bean */
                 computer.setId( valeursAutoGenerees.getLong(1));
                 id = valeursAutoGenerees.getLong(1);
             } else {
-                throw new DAOException( "Échec de la création de la company en base, aucun ID auto-généré retourné." );
+                throw new DAOException("Échec de la création de la company en base, aucun ID auto-généré retourné.");
             }
-        } catch ( SQLException e ) {
-            throw new DAOException( e );
+        } catch (SQLException e) {
+            throw new DAOException(e);
         } finally {
-            fermeturesSilencieuses( valeursAutoGenerees, preparedStatement, connexion );
+            fermeturesSilencieuses(valeursAutoGenerees, preparedStatement, connexion);
             return id;
         }
     }
@@ -66,12 +67,13 @@ public class ComputerDaoImpl implements ComputerDao {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         Computer computer = null;
+        System.out.println("id: "+id);
         try {
-        /* Récupération d'une connexion depuis la Factory */
+         /* Get connexion back from Factory */
             connexion = daoFactory.getConnection();
             preparedStatement = initialisationRequetePreparee(connexion, SQL_SELECT_BY_ID, false, id);
             resultSet = preparedStatement.executeQuery();
-        /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
+         /* Iterate over returned ResultSet */
             if (resultSet.next()) {
                 computer = map(resultSet);
             }
@@ -84,18 +86,18 @@ public class ComputerDaoImpl implements ComputerDao {
     }
 
     @Override
-    public Long updateName(Computer computer) throws DAOException{
+    public Long update(Computer computer) throws DAOException{
         Connection connexion = null;
         PreparedStatement preparedStatement = null;
         ResultSet valeursAutoGenerees = null;
         Long id = null;
 
         try {
-        /* Récupération d'une connexion depuis la Factory */
+         /* Get connexion back from Factory */
             connexion = daoFactory.getConnection();
-            preparedStatement = initialisationRequetePreparee( connexion, SQL_UPDATE_NAME, false, computer.getName(), computer.getId() );
+            preparedStatement = initialisationRequetePreparee( connexion, SQL_UPDATE, false, computer.getName(), computer.getIntroduced(), computer.getDiscontinued(), computer.getCompany_id(), computer.getId() );
             int status = preparedStatement.executeUpdate();
-            /* Analyse du status retourné par la requête update */
+            /* Analyze status returned from update request */
             if ( status == 0 ) {
                 throw new DAOException("Échec de la modification du computer, aucune ligne modifiée dans la table.");
             }else{
@@ -117,11 +119,11 @@ public class ComputerDaoImpl implements ComputerDao {
         Long id = null;
 
         try {
-        /* Récupération d'une connexion depuis la Factory */
+         /* Get connexion back from Factory */
             connexion = daoFactory.getConnection();
             preparedStatement = initialisationRequetePreparee( connexion, SQL_DELETE, false, computer.getId() );
             int status = preparedStatement.executeUpdate();
-            /* Analyse du status retourné par la requête update */
+           /* Analyze status returned from insert request */
             if ( status == 0 ) {
                 throw new DAOException("Échec de la suppression du computer, aucune ligne modifiée dans la table.");
             }else{
@@ -141,33 +143,28 @@ public class ComputerDaoImpl implements ComputerDao {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         Computer computer = null;
+        List<Computer> list_computer = new ArrayList<Computer>();
         try {
-        /* Récupération d'une connexion depuis la Factory */
+         /* Get connexion back from Factory */
             connexion = daoFactory.getConnection();
             preparedStatement = initialisationRequetePreparee(connexion, SQL_SELECT_ALL, false);
             resultSet = preparedStatement.executeQuery();
-        /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
-            if (resultSet.next()) {
-                long id = resultSet.getLong("id");
-                String name = resultSet.getString("name");
-                Timestamp introduced = resultSet.getTimestamp("introduced");
-                Timestamp discontinued = resultSet.getTimestamp("discontinued");
-                long company_id = resultSet.getLong("company_id");
+         /* Iterate over returned ResultSet */
+            while (resultSet.next()) {
                 computer = map(resultSet);
+                list_computer.add(computer);
             }
         } catch ( SQLException e ) {
             throw new DAOException( e );
         } finally {
             fermeturesSilencieuses(resultSet, preparedStatement, connexion);
         }
-        return (List<Computer>) resultSet;
+        return list_computer;
     }
 
     /*
-   * Simple méthode utilitaire permettant de faire la correspondance (le
-   * mapping) entre une ligne issue de la table des computer (un
-   * ResultSet) et un bean computer.
-   */
+     * Utilitary method to map one row returned from database and computer bean
+     */
     private static Computer map( ResultSet resultSet ) throws SQLException {
         Computer computer = new Computer();
         computer.setId( resultSet.getLong( "id" ) );

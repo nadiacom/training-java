@@ -11,10 +11,10 @@ import java.util.List;
  */
 public interface ComputerDao {
 
-    Long create( Computer computer ) throws DAOException;
-    Computer findById(Long id ) throws DAOException;
-    Long updateName(Computer computer ) throws DAOException;
-    Long Remove(Computer computer ) throws DAOException;
+    Long create(Computer computer) throws DAOException;
+    Computer findById(Long id) throws DAOException;
+    Long update(Computer computer) throws DAOException;
+    Long Remove(Computer computer) throws DAOException;
     List<Computer> GetAll() throws DAOException;
 
 }
