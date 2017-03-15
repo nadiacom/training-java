@@ -62,6 +62,7 @@ public class DAOUtilitaire {
         for ( int i = 0; i < objets.length; i++ ) {
             preparedStatement.setObject( i + 1, objets[i] );
         }
+        System.out.println(preparedStatement);
         return preparedStatement;
     }
 }

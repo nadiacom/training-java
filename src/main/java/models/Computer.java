@@ -55,6 +55,19 @@ public class Computer {
         this.discontinued = discontinued;
     }
 
+
+
+    @Override
+    public String toString() {
+        return "Computer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", introduced=" + introduced +
+                ", discontinued=" + discontinued +
+                ", computer_id=" + company_id +
+                '}';
+    }
+
     public Long getCompany_id() {
         return company_id;
     }
