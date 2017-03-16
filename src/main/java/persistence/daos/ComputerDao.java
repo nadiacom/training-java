@@ -1,9 +1,8 @@
-package main.java.daos;
+package main.java.persistence.daos;
 
 import main.java.exceptions.DAOException;
 import main.java.models.Computer;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -16,5 +15,6 @@ public interface ComputerDao {
     Long update(Computer computer) throws DAOException;
     Long Remove(Computer computer) throws DAOException;
     List<Computer> GetAll() throws DAOException;
+    List<Computer> getPageList(int page) throws DAOException;
 
 }

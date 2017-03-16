@@ -1,4 +1,4 @@
-package main.java.services;
+package main.java.services.cli;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,7 +15,6 @@ public class InputCLIService {
 
     public static boolean isTimeStampValid(String inputString)
     {
-        String str = "1986-04-08 12:30";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime dateTime;
         try {
@@ -24,5 +23,16 @@ public class InputCLIService {
             return false;
         }
         return true;
+    }
+
+    public static LocalDateTime GetLocalDateTime(String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime dateTime;
+        try {
+            dateTime = LocalDateTime.parse(date, formatter);
+        } catch (DateTimeParseException e){
+            return null;
+        }
+        return dateTime;
     }
 }

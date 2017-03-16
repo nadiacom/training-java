@@ -1,12 +1,11 @@
-package main.java.services;
+package main.java.persistence;
 
-import main.java.daos.CompanyDao;
-import main.java.daos.CompanyDaoImpl;
-import main.java.daos.ComputerDao;
-import main.java.daos.ComputerDaoImpl;
+import main.java.persistence.daos.CompanyDao;
+import main.java.persistence.daos.CompanyDaoImpl;
+import main.java.persistence.daos.ComputerDao;
+import main.java.persistence.daos.ComputerDaoImpl;
 import main.java.exceptions.DAOConfigurationException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -76,13 +75,5 @@ public class DAOFactory {
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(url, username, password);
     }
-
-    /*
-     * Get DAOS implementation back methods
-     */
-    public CompanyDao getCompanyDao() {
-        return new CompanyDaoImpl(this);
-    }
-    public ComputerDao getComputerDao() { return new ComputerDaoImpl(this); }
 
 }

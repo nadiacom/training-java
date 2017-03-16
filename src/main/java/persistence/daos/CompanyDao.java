@@ -1,9 +1,8 @@
-package main.java.daos;
+package main.java.persistence.daos;
 
 import main.java.exceptions.DAOException;
 import main.java.models.Company;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -13,4 +12,5 @@ public interface CompanyDao {
 
     Company findById(Long id ) throws DAOException;
     List<Company> GetAll() throws DAOException;
+    List<Company> getPageList(int page) throws DAOException;
 }

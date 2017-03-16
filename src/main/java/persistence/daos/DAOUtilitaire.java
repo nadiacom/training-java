@@ -1,4 +1,4 @@
-package main.java.daos;
+package main.java.persistence.daos;
 
 import java.sql.*;
 

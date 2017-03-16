@@ -1,34 +1,23 @@
 package main.java.models;
 
+import org.omg.CORBA.TIMEOUT;
+
 import  java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * Created by ebiz on 14/03/17.
  */
 public class Computer {
 
-    public Long id;
-    public String name;
-    public Timestamp introduced;
-    public Timestamp discontinued;
-    public Long company_id;
+    private Long id;
+    private String name;
+    private LocalDateTime introduced;
+    private LocalDateTime discontinued;
+    private Company company;
 
-    public Computer() {
-    }
+    private Computer(){
 
-    public Computer(String name, Timestamp introduced, Timestamp discontinued, Long company_id) {
-        this.name = name;
-        this.introduced = introduced;
-        this.discontinued = discontinued;
-        this.company_id = company_id;
-    }
-
-    public Computer(Long id, String name, Timestamp introduced, Timestamp discontinued, Long company_id) {
-        this.id = id;
-        this.name = name;
-        this.introduced = introduced;
-        this.discontinued = discontinued;
-        this.company_id = company_id;
     }
 
     public Long getId() {
@@ -47,23 +36,21 @@ public class Computer {
         this.name = name;
     }
 
-    public Timestamp getIntroduced() {
+    public LocalDateTime getIntroduced() {
         return introduced;
     }
 
-    public void setIntroduced(Timestamp introduced) {
+    public void setIntroduced(LocalDateTime introduced) {
         this.introduced = introduced;
     }
 
-    public Timestamp getDiscontinued() {
+    public LocalDateTime getDiscontinued() {
         return discontinued;
     }
 
-    public void setDiscontinued(Timestamp discontinued) {
+    public void setDiscontinued(LocalDateTime discontinued) {
         this.discontinued = discontinued;
     }
-
-
 
     @Override
     public String toString() {
@@ -72,15 +59,49 @@ public class Computer {
                 ", name='" + name + '\'' +
                 ", introduced=" + introduced +
                 ", discontinued=" + discontinued +
-                ", computer_id=" + company_id +
+                ", company=" + company +
                 '}';
     }
 
-    public Long getCompany_id() {
-        return company_id;
+    public Company getCompany() {
+        return company;
     }
 
-    public void setCompany_id(Long company_id) {
-        this.company_id = company_id;
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public static class ComputerBuilder {
+        private Computer c;
+
+        public ComputerBuilder(){
+            c = new Computer();
+        }
+
+        public ComputerBuilder id(Long id){
+            c.setId(id);
+            return this;
+        }
+        public ComputerBuilder name(String name){
+            c.setName(name);
+            return this;
+        }
+        public ComputerBuilder introduced(LocalDateTime introduced){
+            if(introduced!=null){ c.setIntroduced(introduced); }
+            else { c.setIntroduced(null); }
+            return this;
+        }
+        public ComputerBuilder discontinued(LocalDateTime discontinued){
+            if(discontinued!=null){ c.setDiscontinued(discontinued); }
+            else {c.setDiscontinued(null);}
+            return this;
+        }
+        public ComputerBuilder company(Company company){
+            c.setCompany(company);
+            return this;
+        }
+        public Computer build() {
+            return c;
+        }
     }
 }
