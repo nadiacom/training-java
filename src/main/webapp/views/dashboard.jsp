@@ -36,9 +36,9 @@
             <div class="pull-left">
                 <form id="searchForm" action="#" method="GET" class="form-inline">
 
-                    <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name"/>
+                    <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" onkeyup="filterComputer()"/>
                     <input type="submit" id="searchsubmit" value="Filter by name"
-                           class="btn btn-primary"/>
+                           class="btn btn-primary" />
                 </form>
             </div>
             <div class="pull-right">
@@ -120,6 +120,28 @@
 
     </div>
 </footer>
+<script>
+    "use strict";
+    function filterComputer() {
+        console.log("search input triggered");
+        // Declare variables
+        var input, filter, tbody, tr, td, a, i;
+        input = document.getElementById('searchbox');
+        filter = input.value.toUpperCase();
+        tbody = document.getElementById("results");
+        tr = tbody.getElementsByTagName('tr');
+        // Loop through all list items, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            a = tr[i].getElementsByTagName("a")[0];
+            console.log(filter);
+            if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+</script>
 </body>
 <jsp:include page="partials/scripts.jsp"></jsp:include>
 </html>
