@@ -36,9 +36,10 @@
             <div class="pull-left">
                 <form id="searchForm" action="#" method="GET" class="form-inline">
 
-                    <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" onkeyup="filterComputer()"/>
+                    <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name"
+                           onkeyup="filterComputer()"/>
                     <input type="submit" id="searchsubmit" value="Filter by name"
-                           class="btn btn-primary" />
+                           class="btn btn-primary"/>
                 </form>
             </div>
             <div class="pull-right">
@@ -48,7 +49,7 @@
         </div>
     </div>
 
-    <form id="deleteForm" action="#" method="POST">
+    <form id="deleteForm" action="/dashboard" method="POST">
         <input type="hidden" name="selection" value="">
     </form>
 
@@ -89,7 +90,7 @@
             <c:forEach var="computer" items="${listComputer1}">
                 <tr>
                     <td class="editMode">
-                        <input type="checkbox" name="cb" class="cb" value="0">
+                        <input type="checkbox" name="cb" class="cb" value="${computer.id}">
                     </td>
                     <td>
                         <a href="edit?computer=${computer.id}" onclick="">${computer.name}</a>

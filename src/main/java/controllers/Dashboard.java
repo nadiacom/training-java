@@ -59,4 +59,23 @@ public class Dashboard extends javax.servlet.http.HttpServlet {
         RequestDispatcher rd = request.getRequestDispatcher("views/dashboard.jsp");
         rd.include(request, response);
     }
+
+    /**
+     * @param request
+     * @param response
+     * @throws javax.servlet.ServletException
+     * @throws IOException
+     */
+    protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+        if (request.getParameter("selection") != null) {
+            //Get computer selected
+            String[] selected = request.getParameter("selection").split(",");
+            for (int i = 0; i < selected.length; i++) {
+                //And delete computer from id
+                Long computerId = ComputerService.getInstance().deleteComputer(Integer.valueOf(selected[i]));
+                doGet(request, response);
+            }
+
+        }
+    }
 }
