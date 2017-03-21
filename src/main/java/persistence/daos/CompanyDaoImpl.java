@@ -1,21 +1,22 @@
-package main.java.persistence.daos;
+package persistence.daos;
 
-import main.java.exceptions.DAOException;
-import main.java.models.Company;
-import main.java.models.Computer;
-import main.java.persistence.DAOFactory;
+import exceptions.DAOException;
+import models.Company;
 
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static main.java.persistence.daos.DAOUtilitaire.fermeturesSilencieuses;
-import static main.java.persistence.daos.DAOUtilitaire.initialisationRequetePreparee;
+import static persistence.daos.DAOUtilitaire.close;
+import static persistence.daos.DAOUtilitaire.initialisationRequetePreparee;
 
 /**
  * Created by ebiz on 14/03/17.
  */
 public class CompanyDaoImpl extends Dao implements CompanyDao {
+
+
 
     private static final String SQL_SELECT_BY_ID = "SELECT id, name FROM company WHERE id = ?";
     private static final String SQL_SELECT_BY_NAME = "SELECT id, name FROM company WHERE name = ?";
@@ -28,15 +29,32 @@ public class CompanyDaoImpl extends Dao implements CompanyDao {
     private Company company = null;
     private List<Company> list_companies;
 
-    public CompanyDaoImpl() {
+    /**
+     * Default constructor.
+     */
+    private CompanyDaoImpl() {
     }
 
-    private static class SingletonHelper{
+    private static class SingletonHelper {
         private static final CompanyDao INSTANCE = new CompanyDaoImpl();
     }
 
-    public static CompanyDao getInstance(){
+    public static CompanyDao getInstance() {
         return SingletonHelper.INSTANCE;
+    }
+
+    /**
+     * Utilitary method to map one row returned from database and company bean.
+     *
+     * @param resultSet (required) ResultSet from database request.
+     * @throws SQLException SQL exception.
+     * @return mapped company.
+     */
+    public static Company map(ResultSet resultSet) throws SQLException {
+        Company company = new Company();
+        company.setId(resultSet.getLong("id"));
+        company.setName(resultSet.getString("name"));
+        return company;
     }
 
     @Override
@@ -50,16 +68,16 @@ public class CompanyDaoImpl extends Dao implements CompanyDao {
             if (resultSet.next()) {
                 company = map(resultSet);
             }
-        } catch ( SQLException e ) {
-            throw new DAOException( e );
+        } catch (SQLException e) {
+            throw new DAOException(e);
         } finally {
-            fermeturesSilencieuses(resultSet, preparedStatement, connexion);
+            close(resultSet, preparedStatement, connexion);
         }
         return company;
     }
 
     @Override
-    public List<Company> GetAll() throws DAOException {
+    public List<Company> getAll() throws DAOException {
         list_companies = new ArrayList<Company>();
         try {
         /* Get connexion back from Factory */
@@ -72,17 +90,17 @@ public class CompanyDaoImpl extends Dao implements CompanyDao {
                 company = map(resultSet);
                 list_companies.add(company);
             }
-        } catch ( SQLException e ) {
-            throw new DAOException( e );
+        } catch (SQLException e) {
+            throw new DAOException(e);
         } finally {
-            fermeturesSilencieuses(resultSet, preparedStatement, connexion);
+            close(resultSet, preparedStatement, connexion);
         }
         return list_companies;
     }
 
     @Override
     public List<Company> getPageList(int page) throws DAOException {
-       list_companies = new ArrayList<Company>();
+        list_companies = new ArrayList<Company>();
         try {
          /* Get connexion back from Factory */
             connexion = daoFactory.getConnection();
@@ -93,21 +111,13 @@ public class CompanyDaoImpl extends Dao implements CompanyDao {
                 company = map(resultSet);
                 list_companies.add(company);
             }
-        } catch ( SQLException e ) {
-            throw new DAOException( e );
+        } catch (SQLException e) {
+            throw new DAOException(e);
         } finally {
-            fermeturesSilencieuses(resultSet, preparedStatement, connexion);
+            close(resultSet, preparedStatement, connexion);
         }
         return list_companies;
     }
 
-    /*
-     * Utilitary method to map one row returned from database and company bean
-     */
-        public static Company map(ResultSet resultSet) throws SQLException {
-        Company company = new Company();
-        company.setId( resultSet.getLong( "id" ) );
-        company.setName( resultSet.getString( "name" ) );
-        return company;
-    }
+
 }

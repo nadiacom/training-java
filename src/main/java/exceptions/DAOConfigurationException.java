@@ -1,21 +1,36 @@
-package main.java.exceptions;
+package exceptions;
 
 /**
  * Created by ebiz on 14/03/17.
  */
 public class DAOConfigurationException extends RuntimeException {
 
-    /*
-     * Constructors
+    /**
+     * Constructor.
+     *
+     * @param message (required) exception message.
      */
-    public DAOConfigurationException( String message ) {
-        super( message );
+    public DAOConfigurationException(String message) {
+        super(message);
     }
-    public DAOConfigurationException( String message, Throwable cause ) {
-        super( message, cause );
+
+    /**
+     * Constructor.
+     *
+     * @param message (required) exception message.
+     * @param cause   (required) exception cause.
+     */
+    public DAOConfigurationException(String message, Throwable cause) {
+        super(message, cause);
     }
-    public DAOConfigurationException( Throwable cause ) {
-        super( cause );
+
+    /**
+     * Constructor.
+     *
+     * @param cause (required) exception cause.
+     */
+    public DAOConfigurationException(Throwable cause) {
+        super(cause);
     }
 
 }

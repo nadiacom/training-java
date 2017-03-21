@@ -1,4 +1,4 @@
-package main.java.exceptions;
+package exceptions;
 
 /**
  * Created by ebiz on 14/03/17.
@@ -6,17 +6,32 @@ package main.java.exceptions;
 
 public class DAOException extends RuntimeException {
 
-    /*
-     * Constructors
+    /**
+     * Constructor.
+     *
+     * @param message (required) exception message.
      */
-    public DAOException( String message ) {
-        super( message );
+    public DAOException(String message) {
+        super(message);
     }
-    public DAOException( String message, Throwable cause ) {
-        super( message, cause );
+
+    /**
+     * Constructor.
+     *
+     * @param message (required) exception message.
+     * @param cause   (required) exception cause.
+     */
+    public DAOException(String message, Throwable cause) {
+        super(message, cause);
     }
-    public DAOException( Throwable cause ) {
-        super( cause );
+
+    /**
+     * Constructor.
+     *
+     * @param cause (required) exception cause.
+     */
+    public DAOException(Throwable cause) {
+        super(cause);
     }
 
 }

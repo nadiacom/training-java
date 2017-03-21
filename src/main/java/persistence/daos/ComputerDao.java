@@ -1,8 +1,9 @@
-package main.java.persistence.daos;
+package persistence.daos;
 
-import main.java.exceptions.DAOException;
-import main.java.models.Computer;
+import exceptions.DAOException;
+import models.Computer;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -10,11 +11,66 @@ import java.util.List;
  */
 public interface ComputerDao {
 
+    /**
+     * Create computer.
+     *
+     * @param computer (required) computer.
+     * @throws DAOException exception dao
+     * @return computer ids.
+     */
     Long create(Computer computer) throws DAOException;
+
+    /**
+     * Find computer by id.
+     *
+     * @param id (required) computer id.
+     * @throws DAOException exception dao.
+     * @return computer.
+     */
     Computer findById(Long id) throws DAOException;
+
+    /**
+     * Update computer.
+     *
+     * @param computer (required) computer.
+     * @throws DAOException exception dao.
+     * @return computer id.
+     */
     Long update(Computer computer) throws DAOException;
-    Long Remove(Computer computer) throws DAOException;
-    List<Computer> GetAll() throws DAOException;
+
+    /**
+     * Delete computer.
+     *
+     * @param computer (required) computer.
+     * @throws DAOException exception dao.
+     * @return previous computer id.
+     */
+    Long remove(Computer computer) throws DAOException;
+
+    /**
+     * Get all computers.
+     *
+     * @throws DAOException exception dao.
+     * @return list of all computers.
+     */
+    List<Computer> getAll() throws DAOException;
+
+    /**
+     * Get all computers by page.
+     *
+     * @param page (required) page number.
+     * @throws DAOException exception dao.
+     * @return list of computers by page.
+     */
     List<Computer> getPageList(int page) throws DAOException;
+
+    /**
+     * Get number of computers.
+     *
+     * @throws DAOException exception dao.
+     * @throws SQLException SQL exception.
+     * @return number of computers.
+     */
+    int getNumberComputers() throws DAOException, SQLException;
 
 }

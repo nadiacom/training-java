@@ -1,8 +1,8 @@
-package main.java.controllers;
+package controllers;
 
-import main.java.services.cli.CompanyService;
-import main.java.services.cli.ComputerService;
-import main.java.services.cli.InputCLIService;
+import cli.CompanyCli;
+import cli.ComputerCli;
+import services.validators.Input;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,21 +15,26 @@ import java.util.Scanner;
  */
 public class Main {
 
-    private static CompanyService companyService;
-    private static ComputerService computerService;
-    private static InputCLIService inputCliService;
-
-    static Scanner input = new Scanner(System.in);
-    static int ItemNum;
-
     public static Logger logger = LoggerFactory.getLogger(Main.class);
+    static Scanner input = new Scanner(System.in);
+    static int itemNum;
+    private static CompanyCli companyService;
+    private static ComputerCli computerService;
+    private static Input inputCli;
 
-    public static void main(String [ ] args) throws SQLException {
+    /**
+     * Command-line interface.
+     *
+     * @param args CLI input.
+     * @throws SQLException SQL exception.
+     */
+    public static void main(String[] args) throws SQLException {
 
-        companyService = new CompanyService();
-        computerService = new ComputerService();
+        companyService = new CompanyCli();
+        computerService = new ComputerCli();
+        inputCli = new Input();
 
-        do{
+        do {
             System.out.println("What do you want to do ?");
             System.out.println("1: List computers");
             System.out.println("2: List companies");
@@ -39,85 +44,91 @@ public class Main {
             System.out.println("6: Delete a computer");
             System.out.println("7: exit");
 
-            ItemNum = input.nextInt();
+            itemNum = input.nextInt();
             input.nextLine();
-            switch(ItemNum){
+            switch (itemNum) {
                 case 1: //computerService.printAllComputers();
-                        boolean quit = false;
-                        int currentPage = 0;
-                        do{
-                            computerService.printComputersByPage(currentPage);
-                            System.out.print( "Show more computers (y|n) ? " );
-                            if(input.nextLine().equals("y")) {
-                                currentPage ++;
-                            } else {
-                                quit = true;
-                            }
-                        }while (!quit);
-                        break;
+                    boolean quit = false;
+                    int currentPage = 0;
+                    do {
+                        computerService.printComputersByPage(currentPage);
+                        System.out.print("Show more computers (y|n) ? ");
+                        if (input.nextLine().equals("y")) {
+                            currentPage++;
+                        } else {
+                            quit = true;
+                        }
+                    } while (!quit);
+                    break;
                 case 2: //companyService.printAllCompanies();
-                        quit = false;
-                        currentPage = 0;
-                        do{
-                            companyService.printCompaniesByPage(currentPage);
-                            System.out.print( "Show more companies (y|n) ? " );
-                            if(input.nextLine().equals("y")) {
-                                currentPage ++;
-                            } else {
-                                quit = true;
-                            }
-                        }while (!quit);
-                        break;
-                case 3: System.out.print("Enter the id of the computer you want to display:");
-                        ItemNum = input.nextInt();
-                        input.nextLine();
-                        computerService.showComputerDetail(ItemNum);
-                        break;
-                case 4: System.out.println("You choose to create a computer:");
-                        System.out.print("Please enter a name:");
-                        String name = input.nextLine();
-                        System.out.print("Please enter the date where computer was introduced with the following format : YYYY-MM-DD hh:mm:ss:");
-                        String introduced;
-                        while(!inputCliService.isTimeStampValid(introduced = input.nextLine())){
-                            System.out.print("Please enter a date with the following format : YYYY-MM-DD hh:mm:ss:");
+                    quit = false;
+                    currentPage = 0;
+                    do {
+                        companyService.printCompaniesByPage(currentPage);
+                        System.out.print("Show more companies (y|n) ? ");
+                        if (input.nextLine().equals("y")) {
+                            currentPage++;
+                        } else {
+                            quit = true;
                         }
-                        System.out.print("Please enter the date where computer was discontinued with the following format : YYYY-MM-DD hh:mm:ss:");
-                        String discontinued;
-                        while(!inputCliService.isTimeStampValid(discontinued = input.nextLine())){
-                            System.out.print("Please enter a date with the following format : YYYY-MM-DD hh:mm:ss:");
-                        }
+                    } while (!quit);
+                    break;
+                case 3:
+                    System.out.print("Enter the id of the computer you want to display:");
+                    itemNum = input.nextInt();
+                    input.nextLine();
+                    computerService.showComputerDetails(itemNum);
+                    break;
+                case 4:
+                    System.out.println("You choose to create a computer:");
+                    System.out.print("Please enter a name:");
+                    String name = input.nextLine();
+                    System.out.print("Please enter the date where computer was introduced with the following format : YYYY-MM-DD:");
+                    String introduced;
+                    while (!inputCli.isTimeStampValid(introduced = input.nextLine())) {
+                        System.out.print("Please enter a date with the following format : YYYY-MM-DD:");
+                    }
+                    System.out.print("Please enter the date where computer was discontinued with the following format : YYYY-MM-DD:");
+                    String discontinued;
+                    while (!inputCli.isTimeStampValid(discontinued = input.nextLine())) {
+                        System.out.print("Please enter a date with the following format : YYYY-MM-DD:");
+                    }
 
-                        System.out.print("Please enter the id of the company:");
-                        int company_id = input.nextInt();
-                        input.nextLine();
-                        computerService.createComputer(name, inputCliService.GetLocalDateTime(introduced), inputCliService.GetLocalDateTime(discontinued), company_id);
-                        break;
-                case 5: System.out.println("You choose to update a computer:");
-                        System.out.print("Please enter the id of the computer:");
-                        int id = input.nextInt();
-                        System.out.print("Please enter the new name of the computer:");
-                        name = input.nextLine();
-                        System.out.print("Please enter the date where computer was introduced with the following format : YYYY-MM-DD hh:mm:ss:");
-                        while(!inputCliService.isTimeStampValid(introduced = input.nextLine())){
-                            System.out.print("Please enter a date with the following format : YYYY-MM-DD hh:mm:ss:");
-                        }
-                        System.out.print("Please enter the date where computer was discontinued with the following format : YYYY-MM-DD hh:mm:ss:");
-                        while(!inputCliService.isTimeStampValid(discontinued = input.nextLine())){
-                            System.out.print("Please enter a date with the following format : YYYY-MM-DD hh:mm:ss:");
-                        }
-                        System.out.print("Please enter the id of the company:");
-                        company_id = input.nextInt();
-                        computerService.updateNameComputer(id, name, inputCliService.GetLocalDateTime(introduced), inputCliService.GetLocalDateTime(discontinued), company_id);
-                        break;
-                case 6: System.out.println("You choose to delete a computer:");
-                        System.out.print("Please enter the id of the computer:");
-                        id = input.nextInt();
-                        input.nextLine();
-                        computerService.deleteComputer(id);
-                        break;
-                default: break;
+                    System.out.print("Please enter the id of the company:");
+                    int companyId = input.nextInt();
+                    input.nextLine();
+                    computerService.createComputer(name, inputCli.getLocalDate(introduced), inputCli.getLocalDate(discontinued), companyId);
+                    break;
+                case 5:
+                    System.out.println("You choose to update a computer:");
+                    System.out.print("Please enter the id of the computer:");
+                    int id = input.nextInt();
+                    input.nextLine();
+                    System.out.print("Please enter the new name of the computer:");
+                    name = input.nextLine();
+                    System.out.print("Please enter the date where computer was introduced with the following format : YYYY-MM-DD:");
+                    while (!inputCli.isTimeStampValid(introduced = input.nextLine())) {
+                        System.out.print("Please enter a date with the following format : YYYY-MM-DD:");
+                    }
+                    System.out.print("Please enter the date where computer was discontinued with the following format : YYYY-MM-DD:");
+                    while (!inputCli.isTimeStampValid(discontinued = input.nextLine())) {
+                        System.out.print("Please enter a date with the following format : YYYY-MM-DD:");
+                    }
+                    System.out.print("Please enter the id of the company:");
+                    companyId = input.nextInt();
+                    computerService.updateComputer(id, name, inputCli.getLocalDate(introduced), inputCli.getLocalDate(discontinued), companyId);
+                    break;
+                case 6:
+                    System.out.println("You choose to delete a computer:");
+                    System.out.print("Please enter the id of the computer:");
+                    id = input.nextInt();
+                    input.nextLine();
+                    computerService.deleteComputer(id);
+                    break;
+                default:
+                    break;
             }
-        }while (!(input.nextLine().equals("7")));
+        } while (!(input.nextLine().equals("7")));
         input.close();
     }
 }
