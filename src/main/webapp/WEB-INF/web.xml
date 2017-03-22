@@ -6,7 +6,7 @@
 
     <servlet>
         <servlet-name>Dashboard</servlet-name>
-        <servlet-class>controllers.Dashboard</servlet-class>
+        <servlet-class>controllers.webservices.Dashboard</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Dashboard</servlet-name>
@@ -15,7 +15,7 @@
 
     <servlet>
         <servlet-name>ComputerEdit</servlet-name>
-        <servlet-class>controllers.ComputerEdit</servlet-class>
+        <servlet-class>controllers.webservices.ComputerEdit</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ComputerEdit</servlet-name>
@@ -24,11 +24,11 @@
 
     <servlet>
         <servlet-name>ComputerAdd</servlet-name>
-        <servlet-class>controllers.ComputerAdd</servlet-class>
+        <servlet-class>controllers.webservices.ComputerAdd</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ComputerDelete</servlet-name>
-        <servlet-class>controllers.ComputerDelete</servlet-class>
+        <servlet-class>controllers.webservices.ComputerDelete</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ComputerAdd</servlet-name>

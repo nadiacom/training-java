@@ -1,8 +1,10 @@
 package persistence.daos;
 
-import exceptions.DAOException;
+import exceptions.daos.DAOException;
+import models.Company;
 import models.Computer;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -71,6 +73,6 @@ public interface ComputerDao {
      * @throws SQLException SQL exception.
      * @return number of computers.
      */
-    int getNumberComputers() throws DAOException, SQLException;
+    int getNumberComputers() throws DAOException;
 
 }

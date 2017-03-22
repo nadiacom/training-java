@@ -31,6 +31,11 @@
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2 box">
                 <h1>Add Computer</h1>
+                <c:if test="${not empty errorMsg}">
+                    <div class="alert alert-warning">
+                        <strong>Error : </strong>${errorMsg}
+                    </div>
+                </c:if>
                 <form action="/add" method="POST">
                     <fieldset>
                         <div class="form-group">
@@ -48,6 +53,7 @@
                         <div class="form-group">
                             <label for="companyId">Company</label>
                             <select class="form-control" name="companyId" id="companyId">
+                                <option value="null">- None -</option>
                                 <c:forEach var="company" items="${companies}">
                                     <option value="${company.id}"  ${company.id == computer.company.id ? 'selected="selected"' : ''}>${company.id} - ${company.name}</option>
                                 </c:forEach>

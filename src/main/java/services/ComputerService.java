@@ -72,7 +72,6 @@ public class ComputerService {
          /* Get and set company from input company_id */
         c1.setCompany(companyDao.findById(Long.valueOf(companyId)));
         /* Update and return computer id */
-        System.out.println("UPDATED : computer = "+c1);
         return computerDao.update(c1);
     }
 
@@ -133,6 +132,5 @@ public class ComputerService {
     public int getNumberComputers() throws SQLException {
         return computerDao.getNumberComputers();
     }
-
 
 }

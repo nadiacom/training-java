@@ -1,4 +1,4 @@
-package controllers;
+package controllers.cli;
 
 import cli.CompanyCli;
 import cli.ComputerCli;
@@ -85,12 +85,12 @@ public class Main {
                     String name = input.nextLine();
                     System.out.print("Please enter the date where computer was introduced with the following format : YYYY-MM-DD:");
                     String introduced;
-                    while (!inputCli.isTimeStampValid(introduced = input.nextLine())) {
+                    while (!inputCli.isDatePatternValid(introduced = input.nextLine())) {
                         System.out.print("Please enter a date with the following format : YYYY-MM-DD:");
                     }
                     System.out.print("Please enter the date where computer was discontinued with the following format : YYYY-MM-DD:");
                     String discontinued;
-                    while (!inputCli.isTimeStampValid(discontinued = input.nextLine())) {
+                    while (!inputCli.isDatePatternValid(discontinued = input.nextLine())) {
                         System.out.print("Please enter a date with the following format : YYYY-MM-DD:");
                     }
 
@@ -107,11 +107,11 @@ public class Main {
                     System.out.print("Please enter the new name of the computer:");
                     name = input.nextLine();
                     System.out.print("Please enter the date where computer was introduced with the following format : YYYY-MM-DD:");
-                    while (!inputCli.isTimeStampValid(introduced = input.nextLine())) {
+                    while (!inputCli.isDatePatternValid(introduced = input.nextLine())) {
                         System.out.print("Please enter a date with the following format : YYYY-MM-DD:");
                     }
                     System.out.print("Please enter the date where computer was discontinued with the following format : YYYY-MM-DD:");
-                    while (!inputCli.isTimeStampValid(discontinued = input.nextLine())) {
+                    while (!inputCli.isDatePatternValid(discontinued = input.nextLine())) {
                         System.out.print("Please enter a date with the following format : YYYY-MM-DD:");
                     }
                     System.out.print("Please enter the id of the company:");

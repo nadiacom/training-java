@@ -34,6 +34,12 @@
                 </div>
                 <h1>Edit Computer</h1>
 
+                <c:if test="${not empty errorMsg}">
+                    <div class="alert alert-warning">
+                        <strong>Error : </strong>${errorMsg}
+                    </div>
+                </c:if>
+
                 <form action="/edit?computer=${computer.id}" method="POST">
                     <input type="hidden" value="${computer.id}" name="id" id="id"/> <!-- TODO: Change this value with the computer id -->
                     <fieldset>
@@ -52,8 +58,9 @@
                         <div class="form-group">
                             <label for="companyId">Company</label>
                             <select class="form-control" name="companyId" id="companyId">
+                                <option value="null">- None -</option>
                                 <c:forEach var="company" items="${companies}">
-                                    <option value="${company.id}"  ${company.id == computer.company.id ? 'selected="selected"' : ''}>${company.id} - ${company.name}</option>
+                                    <option value="${company.id}"  ${company.id == computer.companyDTO.id ? 'selected="selected"' : ''}>${company.id} - ${company.name}</option>
                                 </c:forEach>
                             </select>
                         </div>

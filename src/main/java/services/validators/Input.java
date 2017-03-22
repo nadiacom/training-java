@@ -15,7 +15,7 @@ public class Input {
      * @param inputString (required) input string.
      * @return true if input string pattern is valid, false otherwise.
      */
-    public static boolean isTimeStampValid(String inputString) {
+    public static boolean isDatePatternValid(String inputString) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date;
         try {

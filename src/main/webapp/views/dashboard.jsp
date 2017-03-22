@@ -97,7 +97,7 @@
                     </td>
                     <td>${computer.introduced}</td>
                     <td>${computer.discontinued}</td>
-                    <td>${computer.company.name}</td>
+                    <td>${computer.companyDTO.name}</td>
                 </tr>
             </c:forEach>
             </tbody>

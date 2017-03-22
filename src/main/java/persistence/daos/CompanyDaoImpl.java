@@ -1,6 +1,6 @@
 package persistence.daos;
 
-import exceptions.DAOException;
+import exceptions.daos.DAOException;
 import models.Company;
 
 import java.sql.ResultSet;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static persistence.daos.DAOUtilitaire.close;
-import static persistence.daos.DAOUtilitaire.initialisationRequetePreparee;
+import static persistence.daos.DAOUtilitaire.initPreparedStatement;
 
 /**
  * Created by ebiz on 14/03/17.
@@ -62,7 +62,7 @@ public class CompanyDaoImpl extends Dao implements CompanyDao {
         try {
         /* Get connexion back from Factory */
             connexion = daoFactory.getConnection();
-            preparedStatement = initialisationRequetePreparee(connexion, SQL_SELECT_BY_ID, false, id);
+            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_ID, false, id);
             resultSet = preparedStatement.executeQuery();
         /* Iterate over returned ResultSet */
             if (resultSet.next()) {
@@ -82,7 +82,7 @@ public class CompanyDaoImpl extends Dao implements CompanyDao {
         try {
         /* Get connexion back from Factory */
             connexion = daoFactory.getConnection();
-            preparedStatement = initialisationRequetePreparee(connexion, SQL_SELECT_ALL, false);
+            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_ALL, false);
 
             resultSet = preparedStatement.executeQuery();
         /* Iterate over returned ResultSet */
@@ -104,7 +104,7 @@ public class CompanyDaoImpl extends Dao implements CompanyDao {
         try {
          /* Get connexion back from Factory */
             connexion = daoFactory.getConnection();
-            preparedStatement = initialisationRequetePreparee(connexion, SQL_SELECT_BETWEEN, false, page, page + PAGE_SIZE);
+            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BETWEEN, false, page, page + PAGE_SIZE);
             resultSet = preparedStatement.executeQuery();
          /* Iterate over returned ResultSet */
             while (resultSet.next()) {

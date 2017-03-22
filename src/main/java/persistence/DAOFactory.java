@@ -1,6 +1,6 @@
 package persistence;
 
-import exceptions.DAOConfigurationException;
+import exceptions.daos.DAOConfigurationException;
 
 import java.io.IOException;
 import java.io.InputStream;

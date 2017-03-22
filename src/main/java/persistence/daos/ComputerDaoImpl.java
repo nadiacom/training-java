@@ -1,7 +1,7 @@
 package persistence.daos;
 
 import cli.CompanyCli;
-import exceptions.DAOException;
+import exceptions.daos.DAOException;
 import models.Company;
 import models.Computer;
 
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static persistence.daos.DAOUtilitaire.close;
-import static persistence.daos.DAOUtilitaire.initialisationRequetePreparee;
+import static persistence.daos.DAOUtilitaire.initPreparedStatement;
 
 /**
  * Created by ebiz on 14/03/17.
@@ -69,7 +69,7 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
         try {
         /* Get connexion back from Factory */
             connexion = daoFactory.getConnection();
-            preparedStatement = initialisationRequetePreparee(connexion, SQL_INSERT, true, computer.getName(), computer.getIntroduced(), computer.getDiscontinued(), computer.getCompany().getId());
+            preparedStatement = initPreparedStatement(connexion, SQL_INSERT, true, computer.getName(), computer.getIntroduced().toString(), computer.getDiscontinued().toString(), computer.getCompany().getId());
             int status = preparedStatement.executeUpdate();
         /* Analyze status returned from insert request */
             if (status == 0) {
@@ -97,7 +97,7 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
         try {
          /* Get connexion back from Factory */
             connexion = daoFactory.getConnection();
-            preparedStatement = initialisationRequetePreparee(connexion, SQL_SELECT_BY_ID, false, id);
+            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_ID, false, id);
             resultSet = preparedStatement.executeQuery();
          /* Iterate over returned ResultSet */
             if (resultSet.next()) {
@@ -116,7 +116,7 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
         try {
          /* Get connexion back from Factory */
             connexion = daoFactory.getConnection();
-            preparedStatement = initialisationRequetePreparee(connexion, SQL_UPDATE, false, computer.getName(), computer.getIntroduced().toString(), computer.getDiscontinued().toString(), computer.getCompany().getId(), computer.getId());
+            preparedStatement = initPreparedStatement(connexion, SQL_UPDATE, false, computer.getName(), computer.getIntroduced().toString(), computer.getDiscontinued().toString(), computer.getCompany().getId(), computer.getId());
             int status = preparedStatement.executeUpdate();
             /* Analyze status returned from update request */
             if (status == 0) {
@@ -137,7 +137,7 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
         try {
          /* Get connexion back from Factory */
             connexion = daoFactory.getConnection();
-            preparedStatement = initialisationRequetePreparee(connexion, SQL_DELETE, false, computer.getId());
+            preparedStatement = initPreparedStatement(connexion, SQL_DELETE, false, computer.getId());
             int status = preparedStatement.executeUpdate();
            /* Analyze status returned from insert request */
             if (status == 0) {
@@ -159,7 +159,7 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
         try {
          /* Get connexion back from Factory */
             connexion = daoFactory.getConnection();
-            preparedStatement = initialisationRequetePreparee(connexion, SQL_SELECT_ALL, false);
+            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_ALL, false);
             resultSet = preparedStatement.executeQuery();
          /* Iterate over returned ResultSet */
             while (resultSet.next()) {
@@ -180,7 +180,7 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
         try {
          /* Get connexion back from Factory */
             connexion = daoFactory.getConnection();
-            preparedStatement = initialisationRequetePreparee(connexion, SQL_SELECT_PAGE, false, PAGE_SIZE, (page-1) * PAGE_SIZE );
+            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_PAGE, false, PAGE_SIZE, (page - 1) * PAGE_SIZE);
             resultSet = preparedStatement.executeQuery();
          /* Iterate over returned ResultSet */
             while (resultSet.next()) {
@@ -196,17 +196,16 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
     }
 
     @Override
-    public int getNumberComputers() throws DAOException, SQLException {
+    public int getNumberComputers() throws DAOException {
         int nb = 1;
         try {
          /* Get connexion back from Factory */
             connexion = daoFactory.getConnection();
-            preparedStatement = initialisationRequetePreparee(connexion, SQL_COUNT, false);
+            preparedStatement = initPreparedStatement(connexion, SQL_COUNT, false);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 nb = resultSet.getInt("total");
             }
-
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {

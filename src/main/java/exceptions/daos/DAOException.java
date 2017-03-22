@@ -1,16 +1,17 @@
-package exceptions;
+package exceptions.daos;
 
 /**
  * Created by ebiz on 14/03/17.
  */
-public class DAOConfigurationException extends RuntimeException {
+
+public class DAOException extends RuntimeException {
 
     /**
      * Constructor.
      *
      * @param message (required) exception message.
      */
-    public DAOConfigurationException(String message) {
+    public DAOException(String message) {
         super(message);
     }
 
@@ -20,7 +21,7 @@ public class DAOConfigurationException extends RuntimeException {
      * @param message (required) exception message.
      * @param cause   (required) exception cause.
      */
-    public DAOConfigurationException(String message, Throwable cause) {
+    public DAOException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -29,7 +30,7 @@ public class DAOConfigurationException extends RuntimeException {
      *
      * @param cause (required) exception cause.
      */
-    public DAOConfigurationException(Throwable cause) {
+    public DAOException(Throwable cause) {
         super(cause);
     }
 

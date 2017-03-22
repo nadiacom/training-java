@@ -1,8 +1,10 @@
 package persistence.daos;
 
-import exceptions.DAOException;
+import exceptions.daos.DAOException;
 import models.Company;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -35,4 +37,5 @@ public interface CompanyDao {
      * @return list of companies by page.
      */
     List<Company> getPageList(int page) throws DAOException;
+
 }
