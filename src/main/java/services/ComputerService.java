@@ -45,11 +45,12 @@ public class ComputerService {
     /**
      * Get all computers by page.
      *
-     * @param page (required) page number.
+     * @param page             (required) page number.
+     * @param nbComputerByPage number of computers displayed by page.
      * @return computer list by page.
      */
-    public List<Computer> getComputersByPage(int page) {
-        return computerDao.getPageList(page);
+    public List<Computer> getComputersByPage(int page, int nbComputerByPage) {
+        return computerDao.getPageList(page, nbComputerByPage);
     }
 
     /**
@@ -126,8 +127,8 @@ public class ComputerService {
     /**
      * Get number of computers.
      *
-     * @throws SQLException SQL exception.
      * @return number of computers.
+     * @throws SQLException SQL exception.
      */
     public int getNumberComputers() throws SQLException {
         return computerDao.getNumberComputers();

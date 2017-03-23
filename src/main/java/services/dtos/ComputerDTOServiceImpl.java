@@ -45,9 +45,9 @@ public class ComputerDTOServiceImpl implements ComputerDTOService {
     }
 
     @Override
-    public List<ComputerDTO> getPageList(int page) {
+    public List<ComputerDTO> getPageList(int page, int nbComputerByPage) {
         //Get all companies (from DAO)
-        List<Computer> computers = ComputerDaoImpl.getInstance().getPageList(page);
+        List<Computer> computers = ComputerDaoImpl.getInstance().getPageList(page, nbComputerByPage);
         List<ComputerDTO> companiesDTO = new ArrayList<>();
         for (int i = 0; i < computers.size(); i++) {
             //Map each Computer to ComputerDTO model

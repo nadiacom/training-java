@@ -1,5 +1,6 @@
 <%@ taglib prefix="for" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 <%--
   Created by IntelliJ IDEA.
   User: ebiz
@@ -102,21 +103,44 @@
             </c:forEach>
             </tbody>
         </table>
+
     </div>
 </section>
 
 <footer class="navbar-fixed-bottom">
     <div class="container text-center">
         <ul class="pagination">
-            <c:forEach var="i" begin="1" end="${pagination}" step="1">
-                <li><a href="<%=request.getContextPath()%>/dashboard?page=${i}">${i}</a></li>
+            <c:if test="${currentPage > 1}">
+                <li>
+                    <a href="/dashboard?currentPage=${currentPage-1}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            </c:if>
+            <c:forEach var="i" begin="${pgStart}" end="${pgEnd-1}">
+                <c:choose>
+                    <c:when test="${i == currentPage}">
+                        <li class="active"><a href="/dashboard?currentPage=${i}">${i}</a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li><a href="/dashboard?currentPage=${i}">${i}</a></li>
+                    </c:otherwise>
+                </c:choose>
             </c:forEach>
+
+            <c:if test="${not lastPage}">
+                <li>
+                    <a href="/dashboard?currentPage=${currentPage+1}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </c:if>
         </ul>
 
         <div class="btn-group btn-group-sm pull-right" role="group">
-            <button type="button" class="btn btn-default">10</button>
-            <button type="button" class="btn btn-default">50</button>
-            <button type="button" class="btn btn-default">100</button>
+            <a href="<%=request.getContextPath()%>/dashboard?limit=0" class="btn btn-default ${sessionScope.paginateLimit == 10 ? 'active' : ''}">10</a>
+            <a href="<%=request.getContextPath()%>/dashboard?limit=1" class="btn btn-default ${sessionScope.paginateLimit == 50 ? 'active' : ''}">50</a>
+            <a href="<%=request.getContextPath()%>/dashboard?limit=2" class="btn btn-default ${sessionScope.paginateLimit == 100 ? 'active' : ''}">100</a>
         </div>
 
     </div>
@@ -143,6 +167,8 @@
         }
     }
 </script>
-</body>
 <jsp:include page="partials/scripts.jsp"></jsp:include>
+<script src="/js/dashboard.js"></script>
+</body>
+
 </html>

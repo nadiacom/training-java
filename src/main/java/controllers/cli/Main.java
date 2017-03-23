@@ -51,7 +51,7 @@ public class Main {
                     boolean quit = false;
                     int currentPage = 0;
                     do {
-                        computerService.printComputersByPage(currentPage);
+                        computerService.printComputersByPage(currentPage, 10);
                         System.out.print("Show more computers (y|n) ? ");
                         if (input.nextLine().equals("y")) {
                             currentPage++;

@@ -27,13 +27,3 @@ input[type='checkbox'] {
     border-radius: 5px;
     white-space: nowrap;
 }
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-    padding : 0px;
-    margin-left: 0px;
-    display: inline;
-    border: 0px;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    border: 0px;
-}

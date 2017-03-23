@@ -61,10 +61,11 @@ public interface ComputerDao {
      * Get all computers by page.
      *
      * @param page (required) page number.
+     * @param nbComputerByPage number of computers displayed by page.
      * @throws DAOException exception dao.
      * @return list of computers by page.
      */
-    List<Computer> getPageList(int page) throws DAOException;
+    List<Computer> getPageList(int page, int nbComputerByPage) throws DAOException;
 
     /**
      * Get number of computers.

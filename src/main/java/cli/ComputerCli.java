@@ -30,9 +30,9 @@ public class ComputerCli {
      *
      * @param page (required) page number.
      */
-    public void printComputersByPage(int page) {
+    public void printComputersByPage(int page, int nbComputerByPage) {
         System.out.println("Here is the list of the registered computers :");
-        List<Computer> listComputers = computerService.getComputersByPage(page);
+        List<Computer> listComputers = computerService.getComputersByPage(page, nbComputerByPage);
         for (int i = 0; i < listComputers.size(); i++) {
             System.out.println(listComputers.get(i));
         }

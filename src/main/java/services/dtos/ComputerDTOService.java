@@ -30,9 +30,10 @@ public interface ComputerDTOService {
      * Get all ComputerDTO by page.
      *
      * @param page (required) page number.
+     * @param nbComputerByPage number of computers displayed by page.
      * @return list of ComputerDTO by page.
      */
-    List<ComputerDTO> getPageList(int page);
+    List<ComputerDTO> getPageList(int page, int nbComputerByPage);
 
     /**
      * Get number of ComputerDTO.

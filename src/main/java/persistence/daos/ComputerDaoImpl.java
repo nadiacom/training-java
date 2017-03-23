@@ -24,9 +24,7 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
     private static final String SQL_DELETE = "DELETE FROM computer WHERE id = ?";
     private static final String SQL_SELECT_ALL = "SELECT * FROM computer";
     private static final String SQL_COUNT = "SELECT COUNT(*) as total FROM computer";
-    private static final String SQL_SELECT_BETWEEN = "SELECT * FROM computer WHERE id >= ? AND id < ?";
     private static final String SQL_SELECT_PAGE = "SELECT * FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.id LIMIT ? OFFSET ?";
-    private static final int PAGE_SIZE = 50;
     private static CompanyCli companyService = new CompanyCli();
     Computer computer = null;
 
@@ -175,12 +173,12 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
     }
 
     @Override
-    public List<Computer> getPageList(int page) throws DAOException {
+    public List<Computer> getPageList(int page, int nbComputerByPage) throws DAOException {
         List<Computer> listComputer = new ArrayList<Computer>();
         try {
          /* Get connexion back from Factory */
             connexion = daoFactory.getConnection();
-            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_PAGE, false, PAGE_SIZE, (page - 1) * PAGE_SIZE);
+            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_PAGE, false, nbComputerByPage, (page - 1) * nbComputerByPage);
             resultSet = preparedStatement.executeQuery();
          /* Iterate over returned ResultSet */
             while (resultSet.next()) {
