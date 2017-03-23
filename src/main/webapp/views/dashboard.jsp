@@ -1,6 +1,6 @@
-<%@ taglib prefix="for" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="my_tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: ebiz
@@ -8,7 +8,6 @@
   Time: 13:54
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -109,39 +108,8 @@
 
 <footer class="navbar-fixed-bottom">
     <div class="container text-center">
-        <ul class="pagination">
-            <c:if test="${currentPage > 1}">
-                <li>
-                    <a href="/dashboard?currentPage=${currentPage-1}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-            </c:if>
-            <c:forEach var="i" begin="${pgStart}" end="${pgEnd-1}">
-                <c:choose>
-                    <c:when test="${i == currentPage}">
-                        <li class="active"><a href="/dashboard?currentPage=${i}">${i}</a></li>
-                    </c:when>
-                    <c:otherwise>
-                        <li><a href="/dashboard?currentPage=${i}">${i}</a></li>
-                    </c:otherwise>
-                </c:choose>
-            </c:forEach>
 
-            <c:if test="${not lastPage}">
-                <li>
-                    <a href="/dashboard?currentPage=${currentPage+1}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </c:if>
-        </ul>
-
-        <div class="btn-group btn-group-sm pull-right" role="group">
-            <a href="<%=request.getContextPath()%>/dashboard?limit=0" class="btn btn-default ${sessionScope.paginateLimit == 10 ? 'active' : ''}">10</a>
-            <a href="<%=request.getContextPath()%>/dashboard?limit=1" class="btn btn-default ${sessionScope.paginateLimit == 50 ? 'active' : ''}">50</a>
-            <a href="<%=request.getContextPath()%>/dashboard?limit=2" class="btn btn-default ${sessionScope.paginateLimit == 100 ? 'active' : ''}">100</a>
-        </div>
+    <my_tags:paginator currentPage="${currentPage}" pgEnd="${pgEnd}" lastPage="${lastPage}" pgStart="${pgStart}" url="/dashboard"/>
 
     </div>
 </footer>

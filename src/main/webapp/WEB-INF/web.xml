@@ -26,13 +26,17 @@
         <servlet-name>ComputerAdd</servlet-name>
         <servlet-class>controllers.webservices.ComputerAdd</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>ComputerAdd</servlet-name>
+        <url-pattern>/add</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>ComputerDelete</servlet-name>
         <servlet-class>controllers.webservices.ComputerDelete</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ComputerAdd</servlet-name>
-        <url-pattern>/add</url-pattern>
+        <servlet-name>ComputerDelete</servlet-name>
+        <url-pattern>/delete</url-pattern>
     </servlet-mapping>
 
 </web-app>
