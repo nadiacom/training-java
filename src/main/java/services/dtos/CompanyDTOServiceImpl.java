@@ -4,9 +4,8 @@ import mappers.CompanyMapper;
 import models.Company;
 import models.dtos.CompanyDTO;
 import persistence.daos.CompanyDaoImpl;
-import services.validators.Input;
+import services.validators.inputs.Input;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 

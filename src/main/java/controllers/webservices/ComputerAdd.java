@@ -1,15 +1,16 @@
 package controllers.webservices;
 
 import exceptions.validators.ValidatorException;
-import exceptions.validators.computer.ComputerDiscontinuedValidatorException;
-import exceptions.validators.computer.ComputerIntroducedValidatorException;
-import exceptions.validators.computer.ComputerNameValidatorException;
+import exceptions.validators.models.computer.ComputerCompanyValidatorException;
+import exceptions.validators.models.computer.ComputerDiscontinuedValidatorException;
+import exceptions.validators.models.computer.ComputerIntroducedValidatorException;
+import exceptions.validators.models.computer.ComputerNameValidatorException;
 import models.Company;
 import models.Computer;
 import services.CompanyService;
 import services.ComputerService;
-import services.validators.ComputerValidator;
-import services.validators.Input;
+import services.validators.inputs.ComputerValidator;
+import services.validators.inputs.Input;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,10 +28,10 @@ public class ComputerAdd extends HttpServlet {
     private static Input inputValidator = new Input();
 
     /**
-     * @param request request.
+     * @param request  request.
      * @param response response.
      * @throws ServletException ServletException.
-     * @throws IOException IOException.
+     * @throws IOException      IOException.
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -45,10 +46,10 @@ public class ComputerAdd extends HttpServlet {
     }
 
     /**
-     * @param request request.
+     * @param request  request.
      * @param response response.
      * @throws ServletException ServletException.
-     * @throws IOException IOException.
+     * @throws IOException      IOException.
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String error = "";
@@ -62,12 +63,14 @@ public class ComputerAdd extends HttpServlet {
             error = e.getMessage();
         } catch (ComputerDiscontinuedValidatorException e) {
             error = e.getMessage();
+        } catch (ComputerCompanyValidatorException e){
+            error = e.getMessage();
         } catch (ValidatorException e) {
             //Ignore company id exceptions for now.
         } finally {
             if (error.isEmpty()) {
                 //Create computer
-                Computer computer = ComputerService.getInstance().createComputer(request.getParameter("name"), inputValidator.getLocalDate(request.getParameter("introduced")), inputValidator.getLocalDate(request.getParameter("discontinued")), Integer.valueOf(request.getParameter("companyId")));
+                Computer computer = ComputerService.getInstance().createComputer(request.getParameter("name"), inputValidator.getLocalDate(request.getParameter("introduced")), inputValidator.getLocalDate(request.getParameter("discontinued")), computerValidator.getValidCompanyId(request.getParameter("companyId")));
                 //Redirect to dashboard
                 response.sendRedirect("/dashboard");
             } else {

@@ -98,7 +98,7 @@ public class ComputerService {
      * @param companyId    (required) company id of the computer.
      * @return computer id.
      */
-    public Computer createComputer(String name, LocalDate introduced, LocalDate discontinued, int companyId) {
+    public Computer createComputer(String name, LocalDate introduced, LocalDate discontinued, Integer companyId) {
         /* Build a new computer from model builder */
         Computer computer = new
                 Computer.ComputerBuilder()
@@ -106,7 +106,7 @@ public class ComputerService {
                 .introduced(introduced)
                 .discontinued(discontinued)
                 /* Get and set company from input company_id */
-                .company(companyDao.findById(Long.valueOf(companyId)))
+                .company(companyId != null ? companyDao.findById(Long.valueOf(companyId)) : null)
                 .build();
         /* Create computer */
         Long id = computerDao.create(computer);

@@ -1,20 +1,18 @@
 package controllers.webservices;
 
 import exceptions.validators.ValidatorException;
-import exceptions.validators.computer.ComputerDiscontinuedValidatorException;
-import exceptions.validators.computer.ComputerIntroducedValidatorException;
-import exceptions.validators.computer.ComputerNameValidatorException;
-import models.dtos.CompanyDTO;
-import models.dtos.ComputerDTO;
+import exceptions.validators.models.computer.ComputerCompanyValidatorException;
+import exceptions.validators.models.computer.ComputerDiscontinuedValidatorException;
+import exceptions.validators.models.computer.ComputerIntroducedValidatorException;
+import exceptions.validators.models.computer.ComputerNameValidatorException;
+import exceptions.validators.urls.ComputerEditUrlValidatorException;
 import services.ComputerService;
-import services.dtos.CompanyDTOServiceImpl;
-import services.dtos.ComputerDTOServiceImpl;
-import services.validators.ComputerValidator;
-import services.validators.Input;
+import services.validators.inputs.ComputerValidator;
+import services.validators.inputs.Input;
+import services.validators.urls.ComputerEditUrlValidator;
 
 import javax.servlet.RequestDispatcher;
 import java.io.IOException;
-import java.util.List;
 
 
 /**
@@ -22,7 +20,6 @@ import java.util.List;
  */
 public class ComputerEdit extends javax.servlet.http.HttpServlet {
 
-    private int NB_COMPUTER_PAGE = 50;
     private static Input inputValidator = new Input();
 
     /**
@@ -35,20 +32,24 @@ public class ComputerEdit extends javax.servlet.http.HttpServlet {
      */
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
 
-        if (request.getParameter("computer") != null) {
-            //Get computer id
-            int id = Integer.valueOf(request.getParameter("computer"));
-            //Get computer from id
-            ComputerDTO c = ComputerDTOServiceImpl.getInstance().findById(id);
-            //Get companies ids and names
-            List<CompanyDTO> companies = CompanyDTOServiceImpl.getInstance().getAll();
-            //Set view parameters
-            request.setAttribute("computer", c);
-            request.setAttribute("companies", companies);
+        ComputerEditUrlValidator computerEditUrlValidator = new ComputerEditUrlValidator();
+        String error = "";
+        try {
+            computerEditUrlValidator.isUrlValid(request.getParameter("computer"));
+        } catch (ComputerEditUrlValidatorException e) {
+            error = e.getMessage();
+        } finally {
+            if (error.isEmpty()) {
+                //Dispatch view
+                RequestDispatcher rd = request.getRequestDispatcher("views/editComputer.jsp");
+                rd.include(request, response);
+            } else {
+                request.setAttribute("errorMsg", error);
+                //Dispatch view
+                RequestDispatcher rd = request.getRequestDispatcher("/dashboard");
+                rd.include(request, response);
+            }
         }
-        //Dispatch view
-        RequestDispatcher rd = request.getRequestDispatcher("views/editComputer.jsp");
-        rd.include(request, response);
     }
 
     /**
@@ -72,12 +73,13 @@ public class ComputerEdit extends javax.servlet.http.HttpServlet {
                 error = e.getMessage();
             } catch (ComputerDiscontinuedValidatorException e) {
                 error = e.getMessage();
+            } catch (ComputerCompanyValidatorException e) {
+                error = e.getMessage();
             } catch (ValidatorException e) {
-                //Ignore company id exceptions for now.
             } finally {
                 if (error.isEmpty()) {
                     //Update computer
-                    ComputerService.getInstance().updateComputer(Integer.valueOf(request.getParameter("id")), request.getParameter("name"), inputValidator.getLocalDate(request.getParameter("introduced")), inputValidator.getLocalDate(request.getParameter("discontinued")), Integer.valueOf(request.getParameter("companyId")));
+                    ComputerService.getInstance().updateComputer(Integer.valueOf(request.getParameter("id")), request.getParameter("name"), inputValidator.getLocalDate(request.getParameter("introduced")), inputValidator.getLocalDate(request.getParameter("discontinued")), computerValidator.getValidCompanyId(request.getParameter("companyId")));
                     //Redirect to dashboard
                     response.sendRedirect("/dashboard");
                 } else {

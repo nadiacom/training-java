@@ -1,4 +1,4 @@
-package services.validators;
+package services.validators.inputs;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

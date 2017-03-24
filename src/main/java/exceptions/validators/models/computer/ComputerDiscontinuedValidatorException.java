@@ -1,4 +1,4 @@
-package exceptions.validators.computer;
+package exceptions.validators.models.computer;
 
 import exceptions.validators.ValidatorException;
 

@@ -2,7 +2,7 @@ package mappers;
 
 import models.Computer;
 import models.dtos.ComputerDTO;
-import services.validators.Input;
+import services.validators.inputs.Input;
 
 /**
  * Created by ebiz on 22/03/17.

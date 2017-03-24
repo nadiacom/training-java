@@ -2,7 +2,7 @@ import models.Company;
 import models.Computer;
 import persistence.daos.ComputerDaoImpl;
 import cli.ComputerCli;
-import services.validators.Input;
+import services.validators.inputs.Input;
 
 import java.time.LocalDate;
 

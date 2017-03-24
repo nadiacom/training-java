@@ -29,9 +29,15 @@
 
 <section id="main">
     <div class="container">
+        <c:if test="${not empty errorMsg}">
+            <div class="alert alert-warning">
+                <strong>Error : </strong>${errorMsg}
+            </div>
+        </c:if>
         <h1 id="homeTitle">
             ${nbComputer} Computer(s) found
         </h1>
+
         <div id="actions" class="form-horizontal">
             <div class="pull-left">
                 <form id="searchForm" action="#" method="GET" class="form-inline">

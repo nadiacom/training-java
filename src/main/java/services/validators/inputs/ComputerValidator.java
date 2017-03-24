@@ -1,10 +1,11 @@
-package services.validators;
+package services.validators.inputs;
 
 import exceptions.validators.FormException;
-import exceptions.validators.computer.ComputerCompanyValidatorException;
-import exceptions.validators.computer.ComputerDiscontinuedValidatorException;
-import exceptions.validators.computer.ComputerIntroducedValidatorException;
-import exceptions.validators.computer.ComputerNameValidatorException;
+import exceptions.validators.models.computer.ComputerCompanyValidatorException;
+import exceptions.validators.models.computer.ComputerDiscontinuedValidatorException;
+import exceptions.validators.models.computer.ComputerIntroducedValidatorException;
+import exceptions.validators.models.computer.ComputerNameValidatorException;
+import persistence.daos.CompanyDaoImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
@@ -55,14 +56,17 @@ public class ComputerValidator {
                 if (!isValidDiscontinued(request.getParameter("discontinued"))) {
                     throw new ComputerDiscontinuedValidatorException("Computer discontinued date is not valid, expected pattern : YYYY-MM-dd");
                 }
-                if (!isValidIntervalDate(request.getParameter("introduced"), request.getParameter("discontinued"))){
+                if (!isValidIntervalDate(request.getParameter("introduced"), request.getParameter("discontinued"))) {
                     throw new ComputerDiscontinuedValidatorException("Please select a valid date interval. Discontinued date should be after introduced date.");
                 }
             }
             //If computer company id is filled
             if (!empty(request.getParameter("companyId"))) {
                 //Return if discontinued date pattern is valid or not
+                System.out.println("company id valid ?:" + isValidCompanyId(request.getParameter("companyId")));
+
                 if (!isValidCompanyId(request.getParameter("companyId"))) {
+                    System.out.println("company id is not valid.");
                     throw new ComputerCompanyValidatorException("Company id is not valid.");
                 }
             }
@@ -108,19 +112,48 @@ public class ComputerValidator {
      * @return booean : company id valid or not.
      */
     public boolean isValidCompanyId(String companyId) {
-        return true;
+        boolean valid;
+        //Valid if no company filled
+        if (getValidCompanyId(companyId) == null) {
+            valid = true;
+            //Invalid if companyId parameter is not an Integer
+        } else if (getValidCompanyId(companyId) == -1) {
+            valid = false;
+        } else {
+            //Check if company exists in database
+            valid = CompanyDaoImpl.getInstance().findById(Long.valueOf(getValidCompanyId(companyId))).getId() == Long.valueOf(getValidCompanyId(companyId)) ? true : false;
+        }
+        return valid;
     }
 
     /**
-     *
-     * @param introduced introduced date.
+     * @param introduced   introduced date.
      * @param discontinued discontinued date.
      * @return boolean : interval valid or not.
      */
-    public boolean isValidIntervalDate(String introduced, String discontinued){
+    public boolean isValidIntervalDate(String introduced, String discontinued) {
         LocalDate intro = input.getLocalDate(introduced);
         LocalDate discon = input.getLocalDate(discontinued);
         return discon.isAfter(intro);
+    }
+
+    /**
+     * Set valid company id from request.
+     *
+     * @param company company id.
+     * @return company id.
+     */
+    public Integer getValidCompanyId(String company) {
+        System.out.println("company: " + company);
+        Integer companyId = null;
+        if (!company.equals("null")) {
+            try {
+                companyId = Integer.valueOf(company);
+            } catch (NumberFormatException e) {
+                companyId = -1;
+            }
+        }
+        return companyId;
     }
 
     /**
@@ -133,4 +166,6 @@ public class ComputerValidator {
         // Null-safe, short-circuit evaluation.
         return s == null || s.trim().isEmpty();
     }
+
+
 }

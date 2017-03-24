@@ -2,7 +2,7 @@ package controllers.cli;
 
 import cli.CompanyCli;
 import cli.ComputerCli;
-import services.validators.Input;
+import services.validators.inputs.Input;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
