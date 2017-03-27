@@ -1,8 +1,6 @@
-package main.java.models;
+package models;
 
-import org.omg.CORBA.TIMEOUT;
-
-import  java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -12,11 +10,14 @@ public class Computer {
 
     private Long id;
     private String name;
-    private LocalDateTime introduced;
-    private LocalDateTime discontinued;
+    private LocalDate introduced;
+    private LocalDate discontinued;
     private Company company;
 
-    private Computer(){
+    /**
+     * Default constructor.
+     */
+    private Computer() {
 
     }
 
@@ -36,19 +37,19 @@ public class Computer {
         this.name = name;
     }
 
-    public LocalDateTime getIntroduced() {
+    public LocalDate getIntroduced() {
         return introduced;
     }
 
-    public void setIntroduced(LocalDateTime introduced) {
+    public void setIntroduced(LocalDate introduced) {
         this.introduced = introduced;
     }
 
-    public LocalDateTime getDiscontinued() {
+    public LocalDate getDiscontinued() {
         return discontinued;
     }
 
-    public void setDiscontinued(LocalDateTime discontinued) {
+    public void setDiscontinued(LocalDate discontinued) {
         this.discontinued = discontinued;
     }
 
@@ -71,35 +72,87 @@ public class Computer {
         this.company = company;
     }
 
+    /**
+     * Nested class ComputerBuilder.
+     */
     public static class ComputerBuilder {
         private Computer c;
 
-        public ComputerBuilder(){
+        /**
+         * Constructor.
+         */
+        public ComputerBuilder() {
             c = new Computer();
         }
 
-        public ComputerBuilder id(Long id){
+        /**
+         * Set computer id to builder.
+         *
+         * @param id (required) computer id.
+         * @return computer builder.
+         */
+        public ComputerBuilder id(Long id) {
             c.setId(id);
             return this;
         }
-        public ComputerBuilder name(String name){
+
+        /**
+         * Set computer name to builder.
+         *
+         * @param name (required) computer name.
+         * @return computer builder.
+         */
+        public ComputerBuilder name(String name) {
             c.setName(name);
             return this;
         }
-        public ComputerBuilder introduced(LocalDateTime introduced){
-            if(introduced!=null){ c.setIntroduced(introduced); }
-            else { c.setIntroduced(null); }
+
+        /**
+         * Set computer introduced date to builder.
+         *
+         * @param introduced (required) date when computer was introduced.
+         * @return computer builder.
+         */
+        public ComputerBuilder introduced(LocalDate introduced) {
+            if (introduced != null) {
+                c.setIntroduced(introduced);
+            } else {
+                c.setIntroduced(null);
+            }
             return this;
         }
-        public ComputerBuilder discontinued(LocalDateTime discontinued){
-            if(discontinued!=null){ c.setDiscontinued(discontinued); }
-            else {c.setDiscontinued(null);}
+
+        /**
+         * Set computer discontinued date to builder.
+         *
+         * @param discontinued (required) date when computer was discontinued.
+         * @return computer builder.
+         */
+        public ComputerBuilder discontinued(LocalDate discontinued) {
+            if (discontinued != null) {
+                c.setDiscontinued(discontinued);
+            } else {
+                c.setDiscontinued(null);
+            }
             return this;
         }
-        public ComputerBuilder company(Company company){
+
+        /**
+         * Set computer company to builder.
+         *
+         * @param company (required) company computer belongs to.
+         * @return computer builder.
+         */
+        public ComputerBuilder company(Company company) {
             c.setCompany(company);
             return this;
         }
+
+        /**
+         * Build computer.
+         *
+         * @return computer.
+         */
         public Computer build() {
             return c;
         }

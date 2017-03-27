@@ -1,4 +1,4 @@
-package main.java.models;
+package models;
 
 /**
  * Created by ebiz on 14/03/17.
@@ -9,14 +9,28 @@ public class Company {
     public Long id;
     public String name;
 
+    /**
+     * Default constructor.
+     */
     public Company() {
 
     }
 
+    /**
+     * Overloaded constructor.
+     *
+     * @param name (required) company name.
+     */
     public Company(String name) {
         this.name = name;
     }
 
+    /**
+     * Overloaded constructor.
+     *
+     * @param id (required) company id.
+     * @param name (required) company name.
+     */
     public Company(Long id, String name) {
         this.id = id;
         this.name = name;
