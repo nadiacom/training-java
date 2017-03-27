@@ -1,10 +1,7 @@
 package services.dtos;
 
-import exceptions.daos.DAOException;
-import models.Computer;
 import models.dtos.ComputerDTO;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -40,7 +37,7 @@ public interface ComputerDTOService {
     /**
      * Get all ComputerDTO by page.
      *
-     * @param page (required) page number.
+     * @param page             (required) page number.
      * @param nbComputerByPage number of computers displayed by page.
      * @return list of ComputerDTO by page.
      */

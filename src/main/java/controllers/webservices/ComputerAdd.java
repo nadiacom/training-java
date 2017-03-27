@@ -63,7 +63,7 @@ public class ComputerAdd extends HttpServlet {
             error = e.getMessage();
         } catch (ComputerDiscontinuedValidatorException e) {
             error = e.getMessage();
-        } catch (ComputerCompanyValidatorException e){
+        } catch (ComputerCompanyValidatorException e) {
             error = e.getMessage();
         } catch (ValidatorException e) {
             //Ignore company id exceptions for now.

@@ -1,7 +1,5 @@
 package services.dtos;
 
-import exceptions.daos.DAOException;
-import models.Company;
 import models.dtos.CompanyDTO;
 
 import java.util.List;

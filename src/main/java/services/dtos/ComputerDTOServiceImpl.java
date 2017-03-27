@@ -1,12 +1,10 @@
 package services.dtos;
 
-import exceptions.daos.DAOException;
 import mappers.ComputerMapper;
 import models.Computer;
 import models.dtos.ComputerDTO;
 import persistence.daos.ComputerDaoImpl;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -3,8 +3,6 @@ package mappers;
 import models.Company;
 import models.dtos.CompanyDTO;
 
-import java.sql.SQLException;
-
 /**
  * Created by ebiz on 22/03/17.
  */

@@ -3,8 +3,6 @@ package persistence.daos;
 import exceptions.daos.DAOException;
 import models.Company;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -16,8 +14,8 @@ public interface CompanyDao {
      * Find company by id.
      *
      * @param id (required) company id.
-     * @throws DAOException exception dao.
      * @return company.
+     * @throws DAOException exception dao.
      */
     Company findById(Long id) throws DAOException;
 
@@ -35,8 +33,8 @@ public interface CompanyDao {
     /**
      * Get all companies.
      *
-     * @throws DAOException exception dao.
      * @return list of all companies.
+     * @throws DAOException exception dao.
      */
     List<Company> getAll() throws DAOException;
 
@@ -44,8 +42,8 @@ public interface CompanyDao {
      * Get companies by page.
      *
      * @param page (required) page number.
-     * @throws DAOException exception dao.
      * @return list of companies by page.
+     * @throws DAOException exception dao.
      */
     List<Company> getPageList(int page) throws DAOException;
 
@@ -53,8 +51,8 @@ public interface CompanyDao {
      * Delete company by id.
      *
      * @param company (required) company.
-     * @throws DAOException exception dao.
      * @return deleted comany id.
+     * @throws DAOException exception dao.
      */
     Long delete(Company company) throws DAOException;
 

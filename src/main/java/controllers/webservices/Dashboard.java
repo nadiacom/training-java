@@ -18,8 +18,6 @@ import java.util.List;
  */
 public class Dashboard extends javax.servlet.http.HttpServlet {
 
-    private static final int NB_PAGINATION = 10;
-
     /**
      * @param request  request
      * @param response response

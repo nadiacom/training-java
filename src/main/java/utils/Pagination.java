@@ -48,6 +48,7 @@ public class Pagination {
      *
      * @param nbComputerByPage number of computers displayed by pagination.
      * @param currentPage      curent page number.
+     * @param nbComputer total number of computers.
      * @return array : total number of pagination, pgStart and pgEnd for current pagination.
      */
     public static int[] getPagination(int nbComputerByPage, int currentPage, int nbComputer) {

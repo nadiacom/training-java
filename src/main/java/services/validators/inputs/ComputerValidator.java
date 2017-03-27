@@ -21,7 +21,6 @@ public class ComputerValidator {
      * Check if computer input fields are valid or not and throw specified exceptions.
      *
      * @param request request with parameters.
-     * @return boolean : computer valid or not.
      * @throws ComputerNameValidatorException         ComputerNameValidatorException.
      * @throws ComputerIntroducedValidatorException   ComputerIntroducedValidatorException.
      * @throws ComputerDiscontinuedValidatorException ComputerDiscontinuedValidatorException.
