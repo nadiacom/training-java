@@ -39,7 +39,7 @@
                     </div>
                 </c:if>
 
-                <form action="/edit?computer=${computer.id}" method="POST">
+                <form name="computer_edit" action="/edit?computer=${computer.id}" method="POST">
                     <input type="hidden" value="${computer.id}" name="id" id="id"/> <!-- TODO: Change this value with the computer id -->
                     <fieldset>
                         <div class="form-group">
@@ -74,6 +74,9 @@
         </div>
     </div>
 </section>
+<jsp:include page="partials/scripts.jsp"></jsp:include>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+<script src="../js/form-validation.js"></script>
 <script>
     window.onload = function() {
         $('#introduced').datepicker({
@@ -88,6 +91,5 @@
         });
     }
 </script>
-<jsp:include page="partials/scripts.jsp"></jsp:include>
 </body>
 </html>

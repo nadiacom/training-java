@@ -9,4 +9,3 @@
 <script src="../../js/jquery.min.js"></script>
 <script src="../../js//jquery-ui.min.js"></script>
 <script src="../../js/bootstrap.min.js"></script>
-<script type="text/javascript" language="javascript" src="../../js/jquery.dataTables.js"></script>

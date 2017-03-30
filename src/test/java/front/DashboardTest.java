@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 
 public class DashboardTest {
+
     private WebDriver driver;
     private String baseUrl = "http://127.0.0.1:8080/dashboard";
 

@@ -6,13 +6,18 @@ import exceptions.validators.models.computer.ComputerDiscontinuedValidatorExcept
 import exceptions.validators.models.computer.ComputerIntroducedValidatorException;
 import exceptions.validators.models.computer.ComputerNameValidatorException;
 import exceptions.validators.urls.ComputerEditUrlValidatorException;
+import models.dtos.CompanyDTO;
+import models.dtos.ComputerDTO;
 import services.ComputerService;
+import services.dtos.CompanyDTOServiceImpl;
+import services.dtos.ComputerDTOServiceImpl;
 import services.validators.inputs.ComputerValidator;
 import services.validators.inputs.Input;
 import services.validators.urls.ComputerEditUrlValidator;
 
 import javax.servlet.RequestDispatcher;
 import java.io.IOException;
+import java.util.List;
 
 
 /**
@@ -40,6 +45,15 @@ public class ComputerEdit extends javax.servlet.http.HttpServlet {
             error = e.getMessage();
         } finally {
             if (error.isEmpty()) {
+                //Get computer id
+                int id = Integer.valueOf(request.getParameter("computer"));
+                //Get computer from id
+                ComputerDTO c = ComputerDTOServiceImpl.getInstance().findById(id);
+                //Get companies ids and names
+                List<CompanyDTO> companies = CompanyDTOServiceImpl.getInstance().getAll();
+                //Set view parameters
+                request.setAttribute("computer", c);
+                request.setAttribute("companies", companies);
                 //Dispatch view
                 RequestDispatcher rd = request.getRequestDispatcher("views/editComputer.jsp");
                 rd.include(request, response);

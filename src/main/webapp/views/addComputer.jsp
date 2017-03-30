@@ -32,11 +32,11 @@
             <div class="col-xs-8 col-xs-offset-2 box">
                 <h1>Add Computer</h1>
                 <c:if test="${not empty errorMsg}">
-                    <div class="alert alert-warning">
+                        <div class="alert alert-warning">
                         <strong>Error : </strong>${errorMsg}
                     </div>
                 </c:if>
-                <form action="/add" method="POST">
+                <form name="computer_add" id="computer_edit_add" action="/add" method="POST">
                     <fieldset>
                         <div class="form-group">
                             <label for="computerName">Computer name</label>
@@ -70,8 +70,11 @@
         </div>
     </div>
 </section>
+<jsp:include page="partials/scripts.jsp"></jsp:include>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+<script src="../js/form-validation.js"></script>
 <script>
-    window.onload = function() {
+    $(function() {
         $('#introduced').datepicker({
             dateFormat: 'yy-mm-dd',
             altField: '#thealtdate',
@@ -82,8 +85,8 @@
             altField: '#thealtdate',
             altFormat: 'yy-mm-dd'
         });
-    }
+    });
 </script>
-<jsp:include page="partials/scripts.jsp"></jsp:include>
+
 </body>
 </html>
