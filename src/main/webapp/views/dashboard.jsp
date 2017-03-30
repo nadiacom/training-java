@@ -113,7 +113,7 @@
 <footer class="navbar-fixed-bottom">
     <div class="container text-center">
 
-    <my_tags:paginator currentPage="${currentPage}" pgEnd="${pgEnd}" lastPage="${lastPage}" pgStart="${pgStart}" url="/dashboard"/>
+    <my_tags:paginator currentPage="${currentPage}" pgEnd="${pgEnd}" lastPage="${lastPage}" pgStart="${pgStart}" search="${search}" url="/dashboard"/>
 
     </div>
 </footer>

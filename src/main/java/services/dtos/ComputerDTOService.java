@@ -49,4 +49,12 @@ public interface ComputerDTOService {
      * @return number of ComputerDTO.
      */
     int getNumberComputersDTO();
+
+    /**
+     * Count computers DTO by name.
+     *
+     * @param name             computer DTO name.
+     * @return list of computers DTO.
+     */
+    int countByName(String name);
 }

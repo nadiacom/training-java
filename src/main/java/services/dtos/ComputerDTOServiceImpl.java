@@ -62,6 +62,11 @@ public class ComputerDTOServiceImpl implements ComputerDTOService {
     }
 
     @Override
+    public int countByName(String name) {
+        return ComputerDaoImpl.getInstance().countByName(name);
+    }
+
+    @Override
     public ComputerDTO findById(int id) {
         Computer computer = ComputerDaoImpl.getInstance().findById(Long.valueOf(id));
         return ComputerMapper.getInstance().from(computer);

@@ -21,6 +21,7 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
     private static final String SQL_INSERT = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
     private static final String SQL_SELECT_BY_ID = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE id = ?";
     private static final String SQL_SELECT_BY_NAME = "SELECT * FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.name LIKE ? OR company.name LIKE ? LIMIT ? OFFSET ?";
+    private static final String SQL_COUNT_BY_NAME = "SELECT COUNT(*) as total FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.name LIKE ? OR company.name LIKE ?";
     private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id =? WHERE id = ?";
     private static final String SQL_DELETE = "DELETE FROM computer WHERE id = ?";
     private static final String SQL_SELECT_ALL = "SELECT * FROM computer";
@@ -70,7 +71,7 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
         try {
         /* Get connexion back from Factory */
             connexion = daoFactory.getConnection();
-            preparedStatement = initPreparedStatement(connexion, SQL_INSERT, true, computer.getName(), computer.getIntroduced().toString(), computer.getDiscontinued().toString(), computer.getCompany().getId());
+            preparedStatement = initPreparedStatement(connexion, SQL_INSERT, true, computer.getName(), computer.getIntroduced().toString(), computer.getDiscontinued().toString(), computer.getCompany() != null ? computer.getCompany().getId() : null);
             int status = preparedStatement.executeUpdate();
         /* Analyze status returned from insert request */
             if (status == 0) {
@@ -89,6 +90,7 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
             throw new DAOException(e);
         } finally {
             close(resultSet, preparedStatement, connexion);
+            System.out.println("companyid created Computer DAO: " + id);
             return id;
         }
     }
@@ -131,6 +133,25 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
             close(resultSet, preparedStatement, connexion);
         }
         return listComputer;
+    }
+
+    @Override
+    public int countByName(String name) throws DAOException {
+        int nb = 0;
+        try {
+         /* Get connexion back from Factory */
+            connexion = daoFactory.getConnection();
+            preparedStatement = initPreparedStatement(connexion, SQL_COUNT_BY_NAME, false, "%" + name + "%", "%" + name + "%");
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                nb = resultSet.getInt("total");
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(resultSet, preparedStatement, connexion);
+        }
+        return nb;
     }
 
     @Override
@@ -219,7 +240,7 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
 
     @Override
     public int getNumberComputers() throws DAOException {
-        int nb = 1;
+        int nb = 0;
         try {
          /* Get connexion back from Factory */
             connexion = daoFactory.getConnection();

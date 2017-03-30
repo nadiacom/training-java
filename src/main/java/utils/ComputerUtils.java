@@ -28,4 +28,21 @@ public class ComputerUtils {
         }
         return listComputer1;
     }
+
+
+    /**
+     * Get computers list for current pagination from request.
+     *
+     * @param request          http request.
+     * @return list of computers.
+     */
+    public static int getNumberComputers(javax.servlet.http.HttpServletRequest request) {
+        int nb = 0;
+        if (request.getParameter("search") != null) {
+            nb = ComputerDTOServiceImpl.getInstance().countByName(request.getParameter("search"));
+        } else {
+            nb = ComputerDTOServiceImpl.getInstance().getNumberComputersDTO();
+        }
+        return nb;
+    }
 }

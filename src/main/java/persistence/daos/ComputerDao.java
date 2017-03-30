@@ -86,6 +86,15 @@ public interface ComputerDao {
     int getNumberComputers() throws DAOException;
 
     /**
+     * Count computer by name.
+     *
+     * @param name             computer name.
+     * @return list of computers.
+     * @throws DAOException DAOException.
+     */
+    int countByName(String name) throws DAOException;
+
+    /**
      * Delete all computers that belong to one given company.
      *
      * @param companyId company id.

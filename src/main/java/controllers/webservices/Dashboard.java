@@ -2,7 +2,6 @@ package controllers.webservices;
 
 import models.dtos.ComputerDTO;
 import services.ComputerService;
-import services.dtos.ComputerDTOServiceImpl;
 import utils.ComputerUtils;
 import utils.Pagination;
 import utils.SessionUtils;
@@ -38,7 +37,7 @@ public class Dashboard extends javax.servlet.http.HttpServlet {
 
         //PAGINATION
         //Get total number of computers
-        int nbComputer = ComputerDTOServiceImpl.getInstance().getNumberComputersDTO();
+        int nbComputer = ComputerUtils.getNumberComputers(request);
         //Call Pagination method
         int[] values = Pagination.getPagination(nbComputerByPage, Pagination.getCurrentPage(request), nbComputer);
 
@@ -51,6 +50,10 @@ public class Dashboard extends javax.servlet.http.HttpServlet {
         request.setAttribute("pgEnd", values[2]);
         request.setAttribute("totalPages", values[0]);
         request.setAttribute("lastPage", Pagination.isLastPage());
+
+        if (request.getParameter("search") != null) {
+            request.setAttribute("search", request.getParameter("search"));
+        }
 
         //Dispatch view
         RequestDispatcher rd = request.getRequestDispatcher("views/dashboard.jsp");
@@ -69,7 +72,7 @@ public class Dashboard extends javax.servlet.http.HttpServlet {
             String[] selected = request.getParameter("selection").split(",");
             for (int i = 0; i < selected.length; i++) {
                 //And delete computer from id
-                Long computerId = ComputerService.getInstance().deleteComputer(Integer.valueOf(selected[i]));
+                ComputerService.getInstance().deleteComputer(Integer.valueOf(selected[i]));
                 doGet(request, response);
             }
         }

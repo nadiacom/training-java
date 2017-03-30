@@ -62,10 +62,7 @@ public class ComputerValidator {
             //If computer company id is filled
             if (!empty(request.getParameter("companyId"))) {
                 //Return if discontinued date pattern is valid or not
-                System.out.println("company id valid ?:" + isValidCompanyId(request.getParameter("companyId")));
-
                 if (!isValidCompanyId(request.getParameter("companyId"))) {
-                    System.out.println("company id is not valid.");
                     throw new ComputerCompanyValidatorException("Company id is not valid.");
                 }
             }
@@ -143,7 +140,6 @@ public class ComputerValidator {
      * @return company id.
      */
     public Integer getValidCompanyId(String company) {
-        System.out.println("company: " + company);
         Integer companyId = null;
         if (!company.equals("null")) {
             try {

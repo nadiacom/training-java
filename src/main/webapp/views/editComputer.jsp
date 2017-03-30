@@ -39,7 +39,7 @@
                     </div>
                 </c:if>
 
-                <form name="computer_edit" action="/edit?computer=${computer.id}" method="POST">
+                <form id="computer_form" action="/edit?computer=${computer.id}" method="POST">
                     <input type="hidden" value="${computer.id}" name="id" id="id"/> <!-- TODO: Change this value with the computer id -->
                     <fieldset>
                         <div class="form-group">

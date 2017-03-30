@@ -5,26 +5,53 @@
 <%@ attribute name="pgEnd" required="true" type="java.lang.Integer"%>
 <%@ attribute name="currentPage" required="true" type="java.lang.Integer"%>
 <%@ attribute name="lastPage" required="true" type="java.lang.Boolean"%>
+<%@ attribute name="search" required="false" type="java.lang.String"%>
 
 <ul class="pagination">
-    <c:if test="${currentPage > 1}">
-        <li>
-            <a href="${url}?currentPage=${currentPage-1}" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-        </li>
-    </c:if>
-    <c:forEach var="i" begin="${pgStart}" end="${pgEnd-1}">
-        <li class="${i == currentPage ? 'active' : ''}"><a href="${url}?currentPage=${i}">${i}</a></li>
-    </c:forEach>
+    <c:choose>
+        <c:when test="${not empty search}">
+            <c:if test="${currentPage > 1}">
+                <li>
+                    <a href="${url}?currentPage=${currentPage-1}&search=${search}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            </c:if>
+            <c:forEach var="i" begin="${pgStart}" end="${pgEnd-1}">
+                <li class="${i == currentPage ? 'active' : ''}"><a href="${url}?currentPage=${i}&search=${search}">${i}</a></li>
+            </c:forEach>
 
-    <c:if test="${not lastPage}">
-        <li>
-            <a href="${url}?currentPage=${currentPage+1}" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        </li>
-    </c:if>
+            <c:if test="${not lastPage}">
+                <li>
+                    <a href="${url}?currentPage=${currentPage+1}&search=${search}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </c:if>
+        </c:when>
+        <c:otherwise>
+            <c:if test="${currentPage > 1}">
+                <li>
+                    <a href="${url}?currentPage=${currentPage-1}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            </c:if>
+            <c:forEach var="i" begin="${pgStart}" end="${pgEnd-1}">
+                <li class="${i == currentPage ? 'active' : ''}"><a href="${url}?currentPage=${i}">${i}</a></li>
+            </c:forEach>
+
+            <c:if test="${not lastPage}">
+                <li>
+                    <a href="${url}?currentPage=${currentPage+1}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </c:if>
+        </c:otherwise>
+    </c:choose>
+
+
 </ul>
 
 <div class="btn-group btn-group-sm pull-right" role="group">

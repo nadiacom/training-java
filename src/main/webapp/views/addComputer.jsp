@@ -36,7 +36,7 @@
                         <strong>Error : </strong>${errorMsg}
                     </div>
                 </c:if>
-                <form name="computer_add" id="computer_edit_add" action="/add" method="POST">
+                <form id="computer_form" id="computer_edit_add" action="/add" method="POST">
                     <fieldset>
                         <div class="form-group">
                             <label for="computerName">Computer name</label>
