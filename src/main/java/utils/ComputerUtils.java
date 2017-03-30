@@ -41,7 +41,7 @@ public class ComputerUtils {
         if (request.getParameter("search") != null) {
             nb = ComputerDTOServiceImpl.getInstance().countByName(request.getParameter("search"));
         } else {
-            nb = ComputerDTOServiceImpl.getInstance().getNumberComputersDTO();
+            nb = ComputerDTOServiceImpl.getInstance().count();
         }
         return nb;
     }

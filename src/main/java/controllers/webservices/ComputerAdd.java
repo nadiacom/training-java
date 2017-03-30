@@ -36,7 +36,7 @@ public class ComputerAdd extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         //Get companies ids and names
-        List<Company> companies = CompanyService.getInstance().getAllCompanies();
+        List<Company> companies = CompanyService.getInstance().getAll();
         //Set view parameters
         request.setAttribute("companies", companies);
         //Dispatch view
@@ -70,7 +70,7 @@ public class ComputerAdd extends HttpServlet {
         } finally {
             if (error.isEmpty()) {
                 //Create computer
-                Computer computer = ComputerService.getInstance().createComputer(request.getParameter("name"), inputValidator.getLocalDate(request.getParameter("introduced")), inputValidator.getLocalDate(request.getParameter("discontinued")), computerValidator.getValidCompanyId(request.getParameter("companyId")));
+                Computer computer = ComputerService.getInstance().create(request.getParameter("name"), inputValidator.getLocalDate(request.getParameter("introduced")), inputValidator.getLocalDate(request.getParameter("discontinued")), computerValidator.getValidCompanyId(request.getParameter("companyId")));
                 //Redirect to dashboard
                 response.sendRedirect("/dashboard");
             } else {
