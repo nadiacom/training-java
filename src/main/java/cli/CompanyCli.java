@@ -19,7 +19,7 @@ public class CompanyCli {
      */
     public void printAllCompanies() {
         System.out.println("List of the companies :");
-        List<Company> listCompanies = companyService.getAllCompanies();
+        List<Company> listCompanies = companyService.getAll();
         for (int i = 0; i < listCompanies.size(); i++) {
             System.out.println(listCompanies.get(i));
         }
@@ -32,7 +32,7 @@ public class CompanyCli {
      */
     public void printCompaniesByPage(int page) {
         System.out.println("Here is the list of the registered companies :");
-        List<Company> listCompanies = companyService.getCompaniesByPage(page);
+        List<Company> listCompanies = companyService.getByPage(page);
         for (int i = 0; i < listCompanies.size(); i++) {
             System.out.println(listCompanies.get(i));
         }
@@ -45,7 +45,7 @@ public class CompanyCli {
      * @return company
      */
     public Company getCompanyById(Long id) {
-        return companyService.getCompanyById(id);
+        return companyService.getById(id);
     }
 
     /**
@@ -55,7 +55,7 @@ public class CompanyCli {
      */
     public void delete(int id) {
         //Check if company exists
-        if (companyService.getCompanyById(Long.valueOf(id)) != null) {
+        if (companyService.getById(Long.valueOf(id)) != null) {
             //Remove company
             System.out.println("Removed company with id: " + companyService.delete(id));
             //Check if company owns computers

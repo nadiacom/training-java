@@ -239,7 +239,7 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
     }
 
     @Override
-    public int getNumberComputers() throws DAOException {
+    public int count() throws DAOException {
         int nb = 0;
         try {
          /* Get connexion back from Factory */

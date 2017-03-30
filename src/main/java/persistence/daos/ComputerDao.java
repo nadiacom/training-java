@@ -77,16 +77,16 @@ public interface ComputerDao {
     List<Computer> getPageList(int page, int nbComputerByPage) throws DAOException;
 
     /**
-     * Get number of computers.
+     * Count number of computers.
      *
      * @return number of computers.
      * @throws DAOException exception dao.
      * @throws SQLException SQL exception.
      */
-    int getNumberComputers() throws DAOException;
+    int count() throws DAOException;
 
     /**
-     * Count computer by name.
+     * Count computer with given name.
      *
      * @param name             computer name.
      * @return list of computers.

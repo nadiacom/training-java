@@ -44,14 +44,14 @@ public interface ComputerDTOService {
     List<ComputerDTO> getPageList(int page, int nbComputerByPage);
 
     /**
-     * Get number of ComputerDTO.
+     * Count number of ComputerDTO.
      *
      * @return number of ComputerDTO.
      */
-    int getNumberComputersDTO();
+    int count();
 
     /**
-     * Count computers DTO by name.
+     * Count computers DTO with given name.
      *
      * @param name             computer DTO name.
      * @return list of computers DTO.

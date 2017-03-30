@@ -57,8 +57,8 @@ public class ComputerDTOServiceImpl implements ComputerDTOService {
     }
 
     @Override
-    public int getNumberComputersDTO() {
-        return ComputerDaoImpl.getInstance().getNumberComputers();
+    public int count() {
+        return ComputerDaoImpl.getInstance().count();
     }
 
     @Override

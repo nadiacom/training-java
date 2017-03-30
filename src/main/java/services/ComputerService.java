@@ -6,7 +6,6 @@ import persistence.daos.CompanyDaoImpl;
 import persistence.daos.ComputerDao;
 import persistence.daos.ComputerDaoImpl;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class ComputerService {
      *
      * @return all computers.s
      */
-    public List<Computer> getAllComputers() {
+    public List<Computer> getAll() {
         return computerDao.getAll();
     }
 
@@ -49,7 +48,7 @@ public class ComputerService {
      * @param nbComputerByPage number of computers displayed by page.
      * @return computer list by page.
      */
-    public List<Computer> getComputersByPage(int page, int nbComputerByPage) {
+    public List<Computer> getByPage(int page, int nbComputerByPage) {
         return computerDao.getPageList(page, nbComputerByPage);
     }
 
@@ -63,7 +62,7 @@ public class ComputerService {
      * @param companyId    (required) company id of the computer.
      * @return computer id.
      */
-    public Long updateComputer(int id, String name, LocalDate introduced, LocalDate discontinued, int companyId) {
+    public Long update(int id, String name, LocalDate introduced, LocalDate discontinued, int companyId) {
         /* Retieve computer */
         Computer c1 = computerDao.findById(Long.valueOf(id));
         /* Update computer */
@@ -82,7 +81,7 @@ public class ComputerService {
      * @param id (required) computer id.
      * @return computer id.
      */
-    public Long deleteComputer(int id) {
+    public Long delete(int id) {
         /* Retieve computer */
         Computer c1 = computerDao.findById(Long.valueOf(id));
         /* Delete computer and return id */
@@ -131,7 +130,7 @@ public class ComputerService {
      * @param companyId    (required) company id of the computer.
      * @return computer id.
      */
-    public Computer createComputer(String name, LocalDate introduced, LocalDate discontinued, Integer companyId) {
+    public Computer create(String name, LocalDate introduced, LocalDate discontinued, Integer companyId) {
         /* Build a new computer from model builder */
         Computer computer = new
                 Computer.ComputerBuilder()
@@ -153,18 +152,8 @@ public class ComputerService {
      * @param id (required) computer id.
      * @return computer.
      */
-    public Computer getComputer(int id) {
+    public Computer get(int id) {
         return computerDao.findById(Long.valueOf(id));
-    }
-
-    /**
-     * Get number of computers.
-     *
-     * @return number of computers.
-     * @throws SQLException SQL exception.
-     */
-    public int getNumberComputers() {
-        return computerDao.getNumberComputers();
     }
 
 }

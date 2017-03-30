@@ -18,7 +18,7 @@ public class ComputerCli {
      */
     public void printAllComputers() {
         System.out.println("Here is the list of the registered computers :");
-        List<Computer> listComputers = computerService.getAllComputers();
+        List<Computer> listComputers = computerService.getAll();
         for (int i = 0; i < listComputers.size(); i++) {
             System.out.println(listComputers.get(i));
         }
@@ -32,7 +32,7 @@ public class ComputerCli {
      */
     public void printComputersByPage(int page, int nbComputerByPage) {
         System.out.println("Here is the list of the registered computers :");
-        List<Computer> listComputers = computerService.getComputersByPage(page, nbComputerByPage);
+        List<Computer> listComputers = computerService.getByPage(page, nbComputerByPage);
         for (int i = 0; i < listComputers.size(); i++) {
             System.out.println(listComputers.get(i));
         }
@@ -48,7 +48,7 @@ public class ComputerCli {
      * @param companyId    (required) company id of the computer.
      */
     public void updateComputer(int id, String name, LocalDate introduced, LocalDate discontinued, int companyId) {
-        System.out.println("Updated computer: id = " + computerService.updateComputer(id, name, introduced, discontinued, companyId));
+        System.out.println("Updated computer: id = " + computerService.update(id, name, introduced, discontinued, companyId));
     }
 
     /**
@@ -57,8 +57,8 @@ public class ComputerCli {
      * @param id (required) computer id.
      */
     public void deleteComputer(int id) {
-        if (computerService.getComputer(id) != null) {
-            System.out.println("Removed computer with id: " + computerService.deleteComputer(id));
+        if (computerService.get(id) != null) {
+            System.out.println("Removed computer with id: " + computerService.delete(id));
         } else {
             System.out.println("No computer exists with the given id. Try another one.");
         }
@@ -73,7 +73,7 @@ public class ComputerCli {
      * @param companyId    (required) company id of the computer.
      */
     public void createComputer(String name, LocalDate introduced, LocalDate discontinued, int companyId) {
-        System.out.println("You created computer : " + computerService.createComputer(name, introduced, discontinued, companyId));
+        System.out.println("You created computer : " + computerService.create(name, introduced, discontinued, companyId));
     }
 
     /**
@@ -82,8 +82,8 @@ public class ComputerCli {
      * @param id (required) computer id.
      */
     public void showComputerDetails(int id) {
-        if (computerService.getComputer(id) != null) {
-            System.out.println("Computer: " + computerService.getComputer(id));
+        if (computerService.get(id) != null) {
+            System.out.println("Computer: " + computerService.get(id));
         } else {
             System.out.println("No computer exists with the given id. Try another one.");
         }

@@ -34,7 +34,7 @@ public class CompanyService {
      *
      * @return all companies.
      */
-    public List<Company> getAllCompanies() {
+    public List<Company> getAll() {
         return companyDao.getAll();
     }
 
@@ -44,7 +44,7 @@ public class CompanyService {
      * @param page (required) page number.
      * @return companies list by page.
      */
-    public List<Company> getCompaniesByPage(int page) {
+    public List<Company> getByPage(int page) {
         return companyDao.getPageList(page);
     }
 
@@ -54,7 +54,7 @@ public class CompanyService {
      * @param id (required) company id.
      * @return company.
      */
-    public Company getCompanyById(Long id) {
+    public Company getById(Long id) {
         return companyDao.findById(id);
     }
 
