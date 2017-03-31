@@ -18,6 +18,7 @@ public class ComputerEditUrlValidator {
             throw new ComputerEditUrlValidatorException("Computer id is not valid.");
             //Check if computer exists
         } else if (!computerExists(urlParameters)) {
+            System.out.println("computer id: " + urlParameters);
             throw new ComputerEditUrlValidatorException("Computer does not exist.");
         }
     }
@@ -28,7 +29,9 @@ public class ComputerEditUrlValidator {
      * @throws ComputerEditUrlValidatorException ComputerEditUrlValidatorException.
      */
     public boolean computerExists(String id) throws ComputerEditUrlValidatorException {
-        return ComputerDaoImpl.getInstance().findById(Long.valueOf(id)).getId() == Long.valueOf(id) ? true : false;
+        long computerDbId =  ComputerDaoImpl.INSTANCE.findById(Long.valueOf(id)).getId();
+        long computerFrontId = Long.parseLong(id);
+        return (computerDbId == computerFrontId ? true : false);
     }
 
     /**

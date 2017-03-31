@@ -46,6 +46,7 @@ public interface ComputerDao {
      * @param computer (required) computer.
      * @return computer id.
      * @throws DAOException exception dao.
+     * @throws SQLException SQLException.
      */
     Long update(Computer computer) throws DAOException;
 

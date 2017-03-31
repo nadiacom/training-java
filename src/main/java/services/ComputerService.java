@@ -29,8 +29,8 @@ public class ComputerService {
     }
 
     /* Instantiation of companyDao and computerDao */
-    private static ComputerDao computerDao = ComputerDaoImpl.getInstance();
-    private static CompanyDao companyDao = CompanyDaoImpl.getInstance();
+    private static ComputerDao computerDao = ComputerDaoImpl.INSTANCE;
+    private static CompanyDao companyDao = CompanyDaoImpl.INSTANCE;
 
     /**
      * Get all computers.

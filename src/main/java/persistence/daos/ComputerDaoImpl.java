@@ -4,46 +4,45 @@ import cli.CompanyCli;
 import exceptions.daos.DAOException;
 import models.Company;
 import models.Computer;
+import persistence.DAOFactory;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static persistence.daos.DAOUtilitaire.close;
 import static persistence.daos.DAOUtilitaire.initPreparedStatement;
 
 /**
  * Created by ebiz on 14/03/17.
  */
-public class ComputerDaoImpl extends Dao implements ComputerDao {
+public enum ComputerDaoImpl implements ComputerDao {
+
+    INSTANCE;
+
+    protected DAOFactory daoFactory = DAOFactory.INSTANCE;
+    private Connection connexion;
 
     private static final String SQL_INSERT = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
-    private static final String SQL_SELECT_BY_ID = "SELECT id, name, introduced, discontinued, company_id FROM computer WHERE id = ?";
-    private static final String SQL_SELECT_BY_NAME = "SELECT * FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.name LIKE ? OR company.name LIKE ? LIMIT ? OFFSET ?";
+    private static final String SQL_SELECT_BY_ID = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.id = ?";
+    private static final String SQL_SELECT_BY_NAME = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.name LIKE ? OR company.name LIKE ? LIMIT ? OFFSET ?";
     private static final String SQL_COUNT_BY_NAME = "SELECT COUNT(*) as total FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.name LIKE ? OR company.name LIKE ?";
     private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id =? WHERE id = ?";
     private static final String SQL_DELETE = "DELETE FROM computer WHERE id = ?";
-    private static final String SQL_SELECT_ALL = "SELECT * FROM computer";
+    private static final String SQL_SELECT_ALL = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id";
     private static final String SQL_COUNT = "SELECT COUNT(*) as total FROM computer";
-    private static final String SQL_SELECT_PAGE = "SELECT * FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.id LIMIT ? OFFSET ?";
+    private static final String SQL_SELECT_PAGE = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id LIMIT ? OFFSET ?";
     private static final String SQL_DELETE_BY_COMPANY = "DELETE FROM computer WHERE company_id = ?";
-    private static final String SQL_SELECT_BY_COMPANY = "SELECT * FROM computer WHERE company_id = ?";
+    private static final String SQL_SELECT_BY_COMPANY = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE company_id = ?";
     private static CompanyCli companyService = new CompanyCli();
     Computer computer = null;
 
     /**
      * Default constructor.
      */
-    private ComputerDaoImpl() {
-    }
-
-    private static class SingletonHelper {
-        private static final ComputerDao INSTANCE = new ComputerDaoImpl();
-    }
-
-    public static ComputerDao getInstance() {
-        return ComputerDaoImpl.SingletonHelper.INSTANCE;
+    ComputerDaoImpl() {
     }
 
     /**
@@ -54,7 +53,9 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
      * @throws SQLException SQL exception.
      */
     private static Computer map(ResultSet resultSet) throws SQLException {
-        Company company = companyService.getCompanyById(resultSet.getLong("company_id"));
+        Company company = new Company();
+        company.setId(resultSet.getLong("id"));
+        company.setName(resultSet.getString("company_name"));
         Computer computer = new
                 Computer.ComputerBuilder()
                 .id(resultSet.getLong("id"))
@@ -68,17 +69,19 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
 
     @Override
     public Long create(Computer computer) throws DAOException {
+        Long id = null;
         try {
         /* Get connexion back from Factory */
+            daoFactory.open();
             connexion = daoFactory.getConnection();
-            preparedStatement = initPreparedStatement(connexion, SQL_INSERT, true, computer.getName(), computer.getIntroduced().toString(), computer.getDiscontinued().toString(), computer.getCompany() != null ? computer.getCompany().getId() : null);
+            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_INSERT, true, computer.getName(), computer.getIntroduced().toString(), computer.getDiscontinued().toString(), computer.getCompany() != null ? computer.getCompany().getId() : null);
             int status = preparedStatement.executeUpdate();
         /* Analyze status returned from insert request */
             if (status == 0) {
                 throw new DAOException("Failed to create company, no row were created.");
             }
         /* Get auto-generated id from insert request */
-            resultSet = preparedStatement.getGeneratedKeys();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
                 /* Initialize id property of computer bean */
                 computer.setId(resultSet.getLong(1));
@@ -86,11 +89,11 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
             } else {
                 throw new DAOException("Failed to create company, no auto generated ID returned.");
             }
+            daoFactory.close(resultSet, preparedStatement);
+            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
-            close(resultSet, preparedStatement, connexion);
-            System.out.println("companyid created Computer DAO: " + id);
             return id;
         }
     }
@@ -98,18 +101,18 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
     @Override
     public Computer findById(Long id) throws DAOException {
         try {
-         /* Get connexion back from Factory */
+            daoFactory.open();
             connexion = daoFactory.getConnection();
-            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_ID, false, id);
-            resultSet = preparedStatement.executeQuery();
+            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_ID, false, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
          /* Iterate over returned ResultSet */
             if (resultSet.next()) {
                 computer = map(resultSet);
             }
+            daoFactory.close(resultSet, preparedStatement);
+            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
-        } finally {
-            close(resultSet, preparedStatement, connexion);
         }
         return computer;
     }
@@ -118,19 +121,19 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
     public List<Computer> findByName(String name, int page, int nbComputerByPage) throws DAOException {
         List<Computer> listComputer = new ArrayList<Computer>();
         try {
-         /* Get connexion back from Factory */
+            daoFactory.open();
             connexion = daoFactory.getConnection();
-            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_NAME, false, "%" + name + "%", "%" + name + "%", nbComputerByPage, (page - 1) * nbComputerByPage);
-            resultSet = preparedStatement.executeQuery();
+            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_NAME, false, "%" + name + "%", "%" + name + "%", nbComputerByPage, (page - 1) * nbComputerByPage);
+            ResultSet resultSet = preparedStatement.executeQuery();
          /* Iterate over returned ResultSet */
             while (resultSet.next()) {
                 computer = map(resultSet);
                 listComputer.add(computer);
             }
+            daoFactory.close(resultSet, preparedStatement);
+            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
-        } finally {
-            close(resultSet, preparedStatement, connexion);
         }
         return listComputer;
     }
@@ -139,27 +142,28 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
     public int countByName(String name) throws DAOException {
         int nb = 0;
         try {
-         /* Get connexion back from Factory */
+            daoFactory.open();
             connexion = daoFactory.getConnection();
-            preparedStatement = initPreparedStatement(connexion, SQL_COUNT_BY_NAME, false, "%" + name + "%", "%" + name + "%");
-            resultSet = preparedStatement.executeQuery();
+            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_COUNT_BY_NAME, false, "%" + name + "%", "%" + name + "%");
+            ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 nb = resultSet.getInt("total");
             }
+            daoFactory.close(resultSet, preparedStatement);
+            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
-        } finally {
-            close(resultSet, preparedStatement, connexion);
         }
         return nb;
     }
 
     @Override
     public Long update(Computer computer) throws DAOException {
+        Long id = null;
         try {
-         /* Get connexion back from Factory */
+            daoFactory.open();
             connexion = daoFactory.getConnection();
-            preparedStatement = initPreparedStatement(connexion, SQL_UPDATE, false, computer.getName(), computer.getIntroduced().toString(), computer.getDiscontinued().toString(), computer.getCompany().getId(), computer.getId());
+            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_UPDATE, false, computer.getName(), computer.getIntroduced().toString(), computer.getDiscontinued().toString(), computer.getCompany().getId(), computer.getId());
             int status = preparedStatement.executeUpdate();
             /* Analyze status returned from update request */
             if (status == 0) {
@@ -167,20 +171,22 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
             } else {
                 id = computer.getId();
             }
+            daoFactory.close(preparedStatement);
+            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
-            close(resultSet, preparedStatement, connexion);
             return id;
         }
     }
 
     @Override
     public Long remove(Computer computer) throws DAOException {
+        Long id = null;
         try {
-         /* Get connexion back from Factory */
+            daoFactory.open();
             connexion = daoFactory.getConnection();
-            preparedStatement = initPreparedStatement(connexion, SQL_DELETE, false, computer.getId());
+            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_DELETE, false, computer.getId());
             int status = preparedStatement.executeUpdate();
            /* Analyze status returned from insert request */
             if (status == 0) {
@@ -188,10 +194,11 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
             } else {
                 id = computer.getId();
             }
+            daoFactory.close(preparedStatement);
+            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
-            close(resultSet, preparedStatement, connexion);
             return id;
         }
     }
@@ -200,40 +207,40 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
     public List<Computer> getAll() throws DAOException {
         List<Computer> listComputer = new ArrayList<Computer>();
         try {
-         /* Get connexion back from Factory */
+            daoFactory.open();
             connexion = daoFactory.getConnection();
-            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_ALL, false);
-            resultSet = preparedStatement.executeQuery();
+            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_ALL, false);
+            ResultSet resultSet = preparedStatement.executeQuery();
          /* Iterate over returned ResultSet */
             while (resultSet.next()) {
                 computer = map(resultSet);
                 listComputer.add(computer);
             }
+            daoFactory.close(resultSet, preparedStatement);
+            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
-        } finally {
-            close(resultSet, preparedStatement, connexion);
         }
         return listComputer;
     }
 
     @Override
     public List<Computer> getPageList(int page, int nbComputerByPage) throws DAOException {
-        List<Computer> listComputer = new ArrayList<Computer>();
+        List<Computer> listComputer = new ArrayList<>();
         try {
-         /* Get connexion back from Factory */
+            daoFactory.open();
             connexion = daoFactory.getConnection();
-            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_PAGE, false, nbComputerByPage, (page - 1) * nbComputerByPage);
-            resultSet = preparedStatement.executeQuery();
+            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_PAGE, false, nbComputerByPage, (page - 1) * nbComputerByPage);
+            ResultSet resultSet = preparedStatement.executeQuery();
          /* Iterate over returned ResultSet */
             while (resultSet.next()) {
                 computer = map(resultSet);
                 listComputer.add(computer);
             }
+            daoFactory.close(resultSet, preparedStatement);
+            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
-        } finally {
-            close(resultSet, preparedStatement, connexion);
         }
         return listComputer;
     }
@@ -242,17 +249,17 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
     public int count() throws DAOException {
         int nb = 0;
         try {
-         /* Get connexion back from Factory */
+            daoFactory.open();
             connexion = daoFactory.getConnection();
-            preparedStatement = initPreparedStatement(connexion, SQL_COUNT, false);
-            resultSet = preparedStatement.executeQuery();
+            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_COUNT, false);
+            ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 nb = resultSet.getInt("total");
             }
+            daoFactory.close(resultSet, preparedStatement);
+            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
-        } finally {
-            close(resultSet, preparedStatement, connexion);
         }
         return nb;
     }
@@ -261,18 +268,18 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
     public void deleteByCompanyId(Long companyId) throws DAOException {
         List<Computer> listComputer = new ArrayList<Computer>();
         try {
-         /* Get connexion back from Factory */
+            daoFactory.open();
             connexion = daoFactory.getConnection();
-            preparedStatement = initPreparedStatement(connexion, SQL_DELETE_BY_COMPANY, false, companyId);
+            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_DELETE_BY_COMPANY, false, companyId);
             int status = preparedStatement.executeUpdate();
            /* Analyze status returned from insert request */
             if (status == 0) {
                 throw new DAOException("Failed to update table, no row were modified.");
             }
+            daoFactory.close(preparedStatement);
+            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
-        } finally {
-            close(resultSet, preparedStatement, connexion);
         }
     }
 
@@ -280,19 +287,19 @@ public class ComputerDaoImpl extends Dao implements ComputerDao {
     public List<Computer> findByCompanyId(Long companyId) {
         List<Computer> listComputer = new ArrayList<Computer>();
         try {
-         /* Get connexion back from Factory */
+            daoFactory.open();
             connexion = daoFactory.getConnection();
-            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_COMPANY, false, companyId);
-            resultSet = preparedStatement.executeQuery();
+            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_COMPANY, false, companyId);
+            ResultSet resultSet = preparedStatement.executeQuery();
          /* Iterate over returned ResultSet */
             while (resultSet.next()) {
                 computer = map(resultSet);
                 listComputer.add(computer);
             }
+            daoFactory.close(resultSet, preparedStatement);
+            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
-        } finally {
-            close(resultSet, preparedStatement, connexion);
         }
         return listComputer;
     }
