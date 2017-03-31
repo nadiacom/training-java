@@ -31,7 +31,7 @@ public class ComputerDTOServiceImpl implements ComputerDTOService {
     @Override
     public List<ComputerDTO> getAll() {
         //Get all companies (from DAO)
-        List<Computer> computers = ComputerDaoImpl.getInstance().getAll();
+        List<Computer> computers = ComputerDaoImpl.INSTANCE.getAll();
         List<ComputerDTO> companiesDTO = new ArrayList<>();
         for (int i = 0; i < computers.size(); i++) {
             //Map each Computer to ComputerDTO model
@@ -45,7 +45,7 @@ public class ComputerDTOServiceImpl implements ComputerDTOService {
     @Override
     public List<ComputerDTO> getPageList(int page, int nbComputerByPage) {
         //Get all companies (from DAO)
-        List<Computer> computers = ComputerDaoImpl.getInstance().getPageList(page, nbComputerByPage);
+        List<Computer> computers = ComputerDaoImpl.INSTANCE.getPageList(page, nbComputerByPage);
         List<ComputerDTO> companiesDTO = new ArrayList<>();
         for (int i = 0; i < computers.size(); i++) {
             //Map each Computer to ComputerDTO model
@@ -58,24 +58,24 @@ public class ComputerDTOServiceImpl implements ComputerDTOService {
 
     @Override
     public int count() {
-        return ComputerDaoImpl.getInstance().count();
+        return ComputerDaoImpl.INSTANCE.count();
     }
 
     @Override
     public int countByName(String name) {
-        return ComputerDaoImpl.getInstance().countByName(name);
+        return ComputerDaoImpl.INSTANCE.countByName(name);
     }
 
     @Override
     public ComputerDTO findById(int id) {
-        Computer computer = ComputerDaoImpl.getInstance().findById(Long.valueOf(id));
+        Computer computer = ComputerDaoImpl.INSTANCE.findById(Long.valueOf(id));
         return ComputerMapper.getInstance().from(computer);
     }
 
     @Override
     public List<ComputerDTO> findByName(String name, int page, int nbComputerByPage) {
         //Get all companies (from DAO)
-        List<Computer> computers = ComputerDaoImpl.getInstance().findByName(name, page, nbComputerByPage);
+        List<Computer> computers = ComputerDaoImpl.INSTANCE.findByName(name, page, nbComputerByPage);
         List<ComputerDTO> companiesDTO = new ArrayList<>();
         for (int i = 0; i < computers.size(); i++) {
             //Map each Computer to ComputerDTO model

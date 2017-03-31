@@ -27,7 +27,7 @@ public class CompanyService {
 
 
     /* Instantiation of companyDao */
-    private static CompanyDao companyDao = CompanyDaoImpl.getInstance();
+    private static CompanyDao companyDao = CompanyDaoImpl.INSTANCE;
 
     /**
      * Get all companies.

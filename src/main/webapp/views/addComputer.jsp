@@ -36,11 +36,11 @@
                         <strong>Error : </strong>${errorMsg}
                     </div>
                 </c:if>
-                <form id="computer_form" id="computer_edit_add" action="/add" method="POST">
+                <form id="computer_form" action="/add" method="POST">
                     <fieldset>
                         <div class="form-group">
-                            <label for="computerName">Computer name</label>
-                            <input type="text" class="form-control" name="name" id="computerName" placeholder="Computer name">
+                            <label for="name">Computer name</label>
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Computer name">
                         </div>
                         <div class="form-group">
                             <label for="introduced">Introduced date</label>

@@ -117,7 +117,7 @@ public class ComputerValidator {
             valid = false;
         } else {
             //Check if company exists in database
-            valid = CompanyDaoImpl.getInstance().findById(Long.valueOf(getValidCompanyId(companyId))).getId() == Long.valueOf(getValidCompanyId(companyId)) ? true : false;
+            valid = CompanyDaoImpl.INSTANCE.findById(Long.valueOf(getValidCompanyId(companyId))).getId() == Long.valueOf(getValidCompanyId(companyId)) ? true : false;
         }
         return valid;
     }

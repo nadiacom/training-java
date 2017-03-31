@@ -33,7 +33,7 @@ public class CompanyDTOServiceImpl implements CompanyDTOService {
     @Override
     public List<CompanyDTO> getAll() {
         //Get all companies (from DAO)
-        List<Company> companies = CompanyDaoImpl.getInstance().getAll();
+        List<Company> companies = CompanyDaoImpl.INSTANCE.getAll();
         List<CompanyDTO> companiesDTO = new ArrayList<>();
         for (int i = 0; i < companies.size(); i++) {
             //Map each company to companyDTO model
@@ -47,7 +47,7 @@ public class CompanyDTOServiceImpl implements CompanyDTOService {
     @Override
     public List<CompanyDTO> getPageList(int page) {
         //Get all companies (from DAO)
-        List<Company> companies = CompanyDaoImpl.getInstance().getPageList(page);
+        List<Company> companies = CompanyDaoImpl.INSTANCE.getPageList(page);
         List<CompanyDTO> companiesDTO = new ArrayList<>();
         for (int i = 0; i < companies.size(); i++) {
             //Map each company to companyDTO model
@@ -60,14 +60,14 @@ public class CompanyDTOServiceImpl implements CompanyDTOService {
 
     @Override
     public CompanyDTO findById(int id) {
-        Company company = CompanyDaoImpl.getInstance().findById(Long.valueOf(id));
+        Company company = CompanyDaoImpl.INSTANCE.findById(Long.valueOf(id));
         return CompanyMapper.getInstance().from(company);
     }
 
     @Override
     public List<CompanyDTO> findByName(String name, int page, int nbComputerByPage) {
         //Get all companies (from DAO)
-        List<Company> companies = CompanyDaoImpl.getInstance().findByName(name, page, nbComputerByPage);
+        List<Company> companies = CompanyDaoImpl.INSTANCE.findByName(name, page, nbComputerByPage);
         List<CompanyDTO> companiesDTO = new ArrayList<>();
         for (int i = 0; i < companies.size(); i++) {
             //Map each company to companyDTO model

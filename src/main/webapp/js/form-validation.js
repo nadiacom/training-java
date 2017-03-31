@@ -8,7 +8,7 @@ $(function () {
     $("form[id='computer_form']").validate({
         // Specify validation rules
         rules: {
-            name: "required",
+            computerName: "required",
             introduced: {datePattern: true},
             discontinued: {
                 datePattern: true,
@@ -16,10 +16,7 @@ $(function () {
             }
         },
         messages: {
-            name: "Please enter a computer name",
-        },
-        submitHandler: function (form) {
-            form.submit();
+            name: "Please enter a computer name"
         }
     });
 
@@ -34,8 +31,6 @@ $(function () {
     $.validator.addMethod("greaterThan",
         function (value, element, params) {
             if (!/Invalid|NaN/.test(new Date(value))) {
-                console.log("param: "+$(params));
-                console.log("$(params).val(): "+$(params).val());
                 return new Date(value) > new Date($(params).val());
             }
             return isNaN(value) && isNaN($(params).val())
