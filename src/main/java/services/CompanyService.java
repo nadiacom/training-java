@@ -1,33 +1,32 @@
 package services;
 
 import models.Company;
+import models.Computer;
+import persistence.DAOFactory;
 import persistence.daos.CompanyDao;
 import persistence.daos.CompanyDaoImpl;
+import persistence.daos.ComputerDao;
+import persistence.daos.ComputerDaoImpl;
 
 import java.util.List;
 
 /**
  * Created by ebiz on 20/03/17.
  */
-public class CompanyService {
+public enum CompanyService {
+
+    INSTANCE;
 
     /**
      * Default constructor.
      */
-    private CompanyService() {
+    CompanyService() {
     }
 
-    private static class SingletonHelper {
-        private static final CompanyService INSTANCE = new CompanyService();
-    }
-
-    public static CompanyService getInstance() {
-        return CompanyService.SingletonHelper.INSTANCE;
-    }
-
-
-    /* Instantiation of companyDao */
     private static CompanyDao companyDao = CompanyDaoImpl.INSTANCE;
+    private static ComputerDao computerDao = ComputerDaoImpl.INSTANCE;
+
+    protected DAOFactory daoFactory = DAOFactory.INSTANCE;
 
     /**
      * Get all companies.
@@ -35,7 +34,10 @@ public class CompanyService {
      * @return all companies.
      */
     public List<Company> getAll() {
-        return companyDao.getAll();
+        daoFactory.open();
+        List<Company> companies = companyDao.getAll();
+        daoFactory.close();
+        return companies;
     }
 
     /**
@@ -45,7 +47,10 @@ public class CompanyService {
      * @return companies list by page.
      */
     public List<Company> getByPage(int page) {
-        return companyDao.getPageList(page);
+        daoFactory.open();
+        List<Company> companies = companyDao.getPageList(page);
+        daoFactory.close();
+        return companies;
     }
 
     /**
@@ -55,7 +60,10 @@ public class CompanyService {
      * @return company.
      */
     public Company getById(Long id) {
-        return companyDao.findById(id);
+        daoFactory.open();
+        Company company = companyDao.findById(id);
+        daoFactory.close();
+        return company;
     }
 
     /**
@@ -67,7 +75,10 @@ public class CompanyService {
      * @return list of companies.
      */
     public List<Company> findByName(String name, int page, int nbComputerByPage) {
-        return companyDao.findByName(name, page, nbComputerByPage);
+        daoFactory.open();
+        List<Company> companies = companyDao.findByName(name, page, nbComputerByPage);
+        daoFactory.close();
+        return companies;
     }
 
     /**
@@ -77,8 +88,41 @@ public class CompanyService {
      * @return deleted company id.
      */
     public Long delete(int id) {
+        daoFactory.open();
          /* Retieve computer */
         Company c1 = companyDao.findById(Long.valueOf(id));
-        return companyDao.delete(c1);
+        Long companyId = companyDao.delete(c1);
+        daoFactory.close();
+        return companyId;
+    }
+
+    /**
+     * Delete company.
+     *
+     * @param company (required) company.
+     * @return deleted company id.
+     */
+    public Long delete(Company company) {
+        daoFactory.open();
+        daoFactory.startTransaction();
+        Long companyId = null;
+        if (company != null) {
+            //Delete company
+            companyId = companyDao.delete(company);
+            System.out.println("Removed company with id: " + companyId);
+            //Delete potential computers belonging to this company
+            List<Computer> computers = computerDao.findByCompanyId(company.getId());
+            if (!computers.isEmpty()) {
+                computerDao.deleteByCompanyId(company.getId());
+                System.out.println("Removed following computer: " + computers);
+            } else {
+                System.out.println("No computer belong to this company. No computer removed");
+            }
+        } else {
+            System.out.println("No company exists with the given id. Try another one.");
+        }
+        daoFactory.commit();
+        daoFactory.close();
+        return companyId;
     }
 }

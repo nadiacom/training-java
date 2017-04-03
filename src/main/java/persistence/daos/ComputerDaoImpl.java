@@ -72,7 +72,6 @@ public enum ComputerDaoImpl implements ComputerDao {
         Long id = null;
         try {
         /* Get connexion back from Factory */
-            daoFactory.open();
             connexion = daoFactory.getConnection();
             PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_INSERT, true, computer.getName(), computer.getIntroduced().toString(), computer.getDiscontinued().toString(), computer.getCompany() != null ? computer.getCompany().getId() : null);
             int status = preparedStatement.executeUpdate();
@@ -90,7 +89,6 @@ public enum ComputerDaoImpl implements ComputerDao {
                 throw new DAOException("Failed to create company, no auto generated ID returned.");
             }
             daoFactory.close(resultSet, preparedStatement);
-            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
@@ -101,7 +99,6 @@ public enum ComputerDaoImpl implements ComputerDao {
     @Override
     public Computer findById(Long id) throws DAOException {
         try {
-            daoFactory.open();
             connexion = daoFactory.getConnection();
             PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_ID, false, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -110,7 +107,6 @@ public enum ComputerDaoImpl implements ComputerDao {
                 computer = map(resultSet);
             }
             daoFactory.close(resultSet, preparedStatement);
-            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -121,7 +117,6 @@ public enum ComputerDaoImpl implements ComputerDao {
     public List<Computer> findByName(String name, int page, int nbComputerByPage) throws DAOException {
         List<Computer> listComputer = new ArrayList<Computer>();
         try {
-            daoFactory.open();
             connexion = daoFactory.getConnection();
             PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_NAME, false, "%" + name + "%", "%" + name + "%", nbComputerByPage, (page - 1) * nbComputerByPage);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -131,7 +126,6 @@ public enum ComputerDaoImpl implements ComputerDao {
                 listComputer.add(computer);
             }
             daoFactory.close(resultSet, preparedStatement);
-            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -142,7 +136,6 @@ public enum ComputerDaoImpl implements ComputerDao {
     public int countByName(String name) throws DAOException {
         int nb = 0;
         try {
-            daoFactory.open();
             connexion = daoFactory.getConnection();
             PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_COUNT_BY_NAME, false, "%" + name + "%", "%" + name + "%");
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -150,7 +143,6 @@ public enum ComputerDaoImpl implements ComputerDao {
                 nb = resultSet.getInt("total");
             }
             daoFactory.close(resultSet, preparedStatement);
-            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -161,7 +153,6 @@ public enum ComputerDaoImpl implements ComputerDao {
     public Long update(Computer computer) throws DAOException {
         Long id = null;
         try {
-            daoFactory.open();
             connexion = daoFactory.getConnection();
             PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_UPDATE, false, computer.getName(), computer.getIntroduced().toString(), computer.getDiscontinued().toString(), computer.getCompany().getId(), computer.getId());
             int status = preparedStatement.executeUpdate();
@@ -172,7 +163,6 @@ public enum ComputerDaoImpl implements ComputerDao {
                 id = computer.getId();
             }
             daoFactory.close(preparedStatement);
-            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
@@ -184,7 +174,6 @@ public enum ComputerDaoImpl implements ComputerDao {
     public Long remove(Computer computer) throws DAOException {
         Long id = null;
         try {
-            daoFactory.open();
             connexion = daoFactory.getConnection();
             PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_DELETE, false, computer.getId());
             int status = preparedStatement.executeUpdate();
@@ -195,7 +184,6 @@ public enum ComputerDaoImpl implements ComputerDao {
                 id = computer.getId();
             }
             daoFactory.close(preparedStatement);
-            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
@@ -207,7 +195,6 @@ public enum ComputerDaoImpl implements ComputerDao {
     public List<Computer> getAll() throws DAOException {
         List<Computer> listComputer = new ArrayList<Computer>();
         try {
-            daoFactory.open();
             connexion = daoFactory.getConnection();
             PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_ALL, false);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -217,7 +204,6 @@ public enum ComputerDaoImpl implements ComputerDao {
                 listComputer.add(computer);
             }
             daoFactory.close(resultSet, preparedStatement);
-            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -228,7 +214,6 @@ public enum ComputerDaoImpl implements ComputerDao {
     public List<Computer> getPageList(int page, int nbComputerByPage) throws DAOException {
         List<Computer> listComputer = new ArrayList<>();
         try {
-            daoFactory.open();
             connexion = daoFactory.getConnection();
             PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_PAGE, false, nbComputerByPage, (page - 1) * nbComputerByPage);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -238,7 +223,6 @@ public enum ComputerDaoImpl implements ComputerDao {
                 listComputer.add(computer);
             }
             daoFactory.close(resultSet, preparedStatement);
-            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -249,7 +233,6 @@ public enum ComputerDaoImpl implements ComputerDao {
     public int count() throws DAOException {
         int nb = 0;
         try {
-            daoFactory.open();
             connexion = daoFactory.getConnection();
             PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_COUNT, false);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -257,7 +240,6 @@ public enum ComputerDaoImpl implements ComputerDao {
                 nb = resultSet.getInt("total");
             }
             daoFactory.close(resultSet, preparedStatement);
-            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -268,7 +250,6 @@ public enum ComputerDaoImpl implements ComputerDao {
     public void deleteByCompanyId(Long companyId) throws DAOException {
         List<Computer> listComputer = new ArrayList<Computer>();
         try {
-            daoFactory.open();
             connexion = daoFactory.getConnection();
             PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_DELETE_BY_COMPANY, false, companyId);
             int status = preparedStatement.executeUpdate();
@@ -277,7 +258,6 @@ public enum ComputerDaoImpl implements ComputerDao {
                 throw new DAOException("Failed to update table, no row were modified.");
             }
             daoFactory.close(preparedStatement);
-            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -287,7 +267,6 @@ public enum ComputerDaoImpl implements ComputerDao {
     public List<Computer> findByCompanyId(Long companyId) {
         List<Computer> listComputer = new ArrayList<Computer>();
         try {
-            daoFactory.open();
             connexion = daoFactory.getConnection();
             PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_COMPANY, false, companyId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -297,7 +276,6 @@ public enum ComputerDaoImpl implements ComputerDao {
                 listComputer.add(computer);
             }
             daoFactory.close(resultSet, preparedStatement);
-            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
         }

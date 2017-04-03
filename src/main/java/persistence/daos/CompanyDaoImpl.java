@@ -75,7 +75,6 @@ public enum CompanyDaoImpl implements CompanyDao {
     @Override
     public Company findById(Long id) throws DAOException {
         try {
-            daoFactory.open();
             connexion = daoFactory.getConnection();
             PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_ID, false, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -84,7 +83,6 @@ public enum CompanyDaoImpl implements CompanyDao {
                 company = map(resultSet.getLong("id"), resultSet.getString("name"));
             }
             daoFactory.close(resultSet, preparedStatement);
-            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -95,7 +93,6 @@ public enum CompanyDaoImpl implements CompanyDao {
     public List<Company> findByName(String name, int page, int nbComputerByPage) throws DAOException {
         listCompanies = new ArrayList<Company>();
         try {
-            daoFactory.open();
             connexion = daoFactory.getConnection();
             PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_NAME, false, "%" + name + "%", PAGE_SIZE, (page - 1) * PAGE_SIZE);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -105,7 +102,6 @@ public enum CompanyDaoImpl implements CompanyDao {
                 listCompanies.add(company);
             }
             daoFactory.close(resultSet, preparedStatement);
-            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -116,7 +112,6 @@ public enum CompanyDaoImpl implements CompanyDao {
     public List<Company> getAll() throws DAOException {
         listCompanies = new ArrayList<Company>();
         try {
-            daoFactory.open();
             connexion = daoFactory.getConnection();
             PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_ALL, false);
 
@@ -127,7 +122,6 @@ public enum CompanyDaoImpl implements CompanyDao {
                 listCompanies.add(company);
             }
             daoFactory.close(resultSet, preparedStatement);
-            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -138,7 +132,6 @@ public enum CompanyDaoImpl implements CompanyDao {
     public List<Company> getPageList(int page) throws DAOException {
         listCompanies = new ArrayList<Company>();
         try {
-            daoFactory.open();
             connexion = daoFactory.getConnection();
             PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_PAGE, false, PAGE_SIZE, (page - 1) * PAGE_SIZE);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -148,7 +141,6 @@ public enum CompanyDaoImpl implements CompanyDao {
                 listCompanies.add(company);
             }
             daoFactory.close(resultSet, preparedStatement);
-            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -159,7 +151,6 @@ public enum CompanyDaoImpl implements CompanyDao {
     public Long delete(Company company) throws DAOException {
         Long id = null;
         try {
-            daoFactory.open();
             connexion = daoFactory.getConnection();
             PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_DELETE, false, company.getId());
             int status = preparedStatement.executeUpdate();
@@ -170,7 +161,6 @@ public enum CompanyDaoImpl implements CompanyDao {
                 id = company.getId();
             }
             daoFactory.close(preparedStatement);
-            daoFactory.close();
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
