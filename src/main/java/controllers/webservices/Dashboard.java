@@ -72,7 +72,7 @@ public class Dashboard extends javax.servlet.http.HttpServlet {
             String[] selected = request.getParameter("selection").split(",");
             for (int i = 0; i < selected.length; i++) {
                 //And delete computer from id
-                ComputerService.getInstance().delete(Integer.valueOf(selected[i]));
+                ComputerService.INSTANCE.delete(Integer.valueOf(selected[i]));
                 doGet(request, response);
             }
         }

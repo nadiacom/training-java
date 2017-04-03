@@ -1,6 +1,7 @@
 package services;
 
 import models.Computer;
+import persistence.DAOFactory;
 import persistence.daos.CompanyDao;
 import persistence.daos.CompanyDaoImpl;
 import persistence.daos.ComputerDao;
@@ -12,25 +13,20 @@ import java.util.List;
 /**
  * Created by ebiz on 20/03/17.
  */
-public class ComputerService {
+public enum ComputerService {
+
+    INSTANCE;
 
     /**
      * Default constructor.
      */
-    private ComputerService() {
+    ComputerService() {
     }
 
-    private static class SingletonHelper {
-        private static final ComputerService INSTANCE = new ComputerService();
-    }
-
-    public static ComputerService getInstance() {
-        return ComputerService.SingletonHelper.INSTANCE;
-    }
-
-    /* Instantiation of companyDao and computerDao */
     private static ComputerDao computerDao = ComputerDaoImpl.INSTANCE;
     private static CompanyDao companyDao = CompanyDaoImpl.INSTANCE;
+
+    protected DAOFactory daoFactory = DAOFactory.INSTANCE;
 
     /**
      * Get all computers.
@@ -38,7 +34,10 @@ public class ComputerService {
      * @return all computers.s
      */
     public List<Computer> getAll() {
-        return computerDao.getAll();
+        daoFactory.open();
+        List<Computer> computers = computerDao.getAll();
+        daoFactory.close();
+        return computers;
     }
 
     /**
@@ -49,7 +48,10 @@ public class ComputerService {
      * @return computer list by page.
      */
     public List<Computer> getByPage(int page, int nbComputerByPage) {
-        return computerDao.getPageList(page, nbComputerByPage);
+        daoFactory.open();
+        List<Computer> computers = computerDao.getPageList(page, nbComputerByPage);
+        daoFactory.close();
+        return computers;
     }
 
     /**
@@ -63,16 +65,19 @@ public class ComputerService {
      * @return computer id.
      */
     public Long update(int id, String name, LocalDate introduced, LocalDate discontinued, int companyId) {
-        /* Retieve computer */
+        /* Retieve */
+        daoFactory.open();
         Computer c1 = computerDao.findById(Long.valueOf(id));
-        /* Update computer */
+        /* Update */
         c1.setName(name);
         c1.setIntroduced(introduced);
         c1.setDiscontinued(discontinued);
-         /* Get and set company from input company_id */
+         /* Get and set company */
         c1.setCompany(companyDao.findById(Long.valueOf(companyId)));
         /* Update and return computer id */
-        return computerDao.update(c1);
+        Long computerId = computerDao.update(c1);
+        daoFactory.close();
+        return computerId;
     }
 
     /**
@@ -82,10 +87,11 @@ public class ComputerService {
      * @return computer id.
      */
     public Long delete(int id) {
-        /* Retieve computer */
+        /* Retieve */
         Computer c1 = computerDao.findById(Long.valueOf(id));
-        /* Delete computer and return id */
-        return computerDao.remove(c1);
+        /* Delete and return id */
+        Long computerId = computerDao.remove(c1);
+        return computerId;
     }
 
     /**
@@ -94,7 +100,9 @@ public class ComputerService {
      * @param id company id.
      */
     public void deleteByCompanyId(int id) {
+        daoFactory.open();
         computerDao.deleteByCompanyId(Long.valueOf(id));
+        daoFactory.close();
     }
 
     /**
@@ -106,7 +114,10 @@ public class ComputerService {
      * @return list of computers.
      */
     public List<Computer> findByName(String name, int page, int nbComputerByPage) {
-        return computerDao.findByName(name, page, nbComputerByPage);
+        daoFactory.open();
+        List<Computer> computers = computerDao.findByName(name, page, nbComputerByPage);
+        daoFactory.close();
+        return computers;
     }
 
 
@@ -117,7 +128,10 @@ public class ComputerService {
      * @return list of computers.
      */
     public List<Computer> findByCompanyId(int id) {
-        return computerDao.findByCompanyId(Long.valueOf(id));
+        daoFactory.open();
+        List<Computer> computers = computerDao.findByCompanyId(Long.valueOf(id));
+        daoFactory.close();
+        return computers;
     }
 
 
@@ -141,9 +155,12 @@ public class ComputerService {
                 .company(companyId != null ? companyDao.findById(Long.valueOf(companyId)) : null)
                 .build();
         /* Create computer */
+        daoFactory.open();
         Long id = computerDao.create(computer);
+        Computer c = computerDao.findById(id);
+        daoFactory.close();
         /* Return computer */
-        return computerDao.findById(id);
+        return c;
     }
 
     /**
@@ -153,7 +170,9 @@ public class ComputerService {
      * @return computer.
      */
     public Computer get(int id) {
-        return computerDao.findById(Long.valueOf(id));
+        daoFactory.open();
+        Computer c = computerDao.findById(Long.valueOf(id));
+        return c;
     }
 
 }

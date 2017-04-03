@@ -93,7 +93,7 @@ public class ComputerEdit extends javax.servlet.http.HttpServlet {
             } finally {
                 if (error.isEmpty()) {
                     //Update computer
-                    ComputerService.getInstance().update(Integer.valueOf(request.getParameter("id")), request.getParameter("name"), inputValidator.getLocalDate(request.getParameter("introduced")), inputValidator.getLocalDate(request.getParameter("discontinued")), computerValidator.getValidCompanyId(request.getParameter("companyId")));
+                    ComputerService.INSTANCE.update(Integer.valueOf(request.getParameter("id")), request.getParameter("name"), inputValidator.getLocalDate(request.getParameter("introduced")), inputValidator.getLocalDate(request.getParameter("discontinued")), computerValidator.getValidCompanyId(request.getParameter("companyId")));
                     //Redirect to dashboard
                     response.sendRedirect("/dashboard");
                 } else {

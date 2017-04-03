@@ -142,4 +142,18 @@ public enum DAOFactory {
         }
         return null;
     }
+
+    /**
+     * Get autocommit value.
+     * @return autocommit.
+     */
+    public boolean isAutoCommit() {
+        boolean autCommit = false;
+        try {
+            autCommit = cHolder.get().getAutoCommit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return autCommit;
+    }
 }

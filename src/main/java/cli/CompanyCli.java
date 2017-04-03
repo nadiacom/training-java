@@ -1,5 +1,6 @@
 package cli;
 
+
 import models.Company;
 import services.CompanyService;
 import services.ComputerService;
@@ -11,8 +12,8 @@ import java.util.List;
  */
 public class CompanyCli {
 
-    private static CompanyService companyService = CompanyService.getInstance();
-    private static ComputerService computerService = ComputerService.getInstance();
+    private static CompanyService companyService = CompanyService.INSTANCE;
+    private static ComputerService computerService = ComputerService.INSTANCE;
 
     /**
      * List and print all companies.
@@ -54,21 +55,7 @@ public class CompanyCli {
      * @param id (required) company id.
      */
     public void delete(int id) {
-        //Check if company exists
-        if (companyService.getById(Long.valueOf(id)) != null) {
-            //Remove company
-            System.out.println("Removed company with id: " + companyService.delete(id));
-            //Check if company owns computers
-            if (!computerService.findByCompanyId(id).isEmpty()) {
-                //Remove computers that belong to given company
-                System.out.println("Removed following computer: " + computerService.findByCompanyId(id));
-                computerService.deleteByCompanyId(id);
-            } else {
-                System.out.println("No computer belong to this company. No computer removed");
-            }
-        } else {
-            System.out.println("No company exists with the given id. Try another one.");
-        }
-
+        Company c = companyService.getById(Long.valueOf(id));
+        companyService.delete(c);
     }
 }
