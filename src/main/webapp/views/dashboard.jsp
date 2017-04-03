@@ -72,18 +72,18 @@
                                     </a>
                             </span>
                 </th>
-                <th>
+                <th><i name="sort" class="fa fa-fw fa-sort"></i>
                     Computer name
                 </th>
-                <th>
+                <th><i name="sort" class="fa fa-fw fa-sort"></i>
                     Introduced date
                 </th>
                 <!-- Table header for Discontinued Date -->
-                <th>
+                <th><i name="sort" class="fa fa-fw fa-sort"></i>
                     Discontinued date
                 </th>
                 <!-- Table header for Company -->
-                <th>
+                <th><i name="sort" class="fa fa-fw fa-sort"></i>
                     Company
                 </th>
 

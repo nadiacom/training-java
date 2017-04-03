@@ -89,7 +89,7 @@ public interface ComputerDao {
     /**
      * Count computer with given name.
      *
-     * @param name             computer name.
+     * @param name computer name.
      * @return list of computers.
      * @throws DAOException DAOException.
      */
@@ -110,4 +110,16 @@ public interface ComputerDao {
      * @return list of computers.
      */
     List<Computer> findByCompanyId(Long companyId);
+
+    /**
+     * Get all computers by page, order by column name.
+     *
+     * @param page             (required) page number.
+     * @param nbComputerByPage number of computers displayed by page.
+     * @param columnName       colmun name in db.
+     * @param orderBy          order by "ASC" or "DESC".
+     * @return
+     * @throws DAOException exception dao.
+     */
+    List<Computer> getPageListOrderBy(int page, int nbComputerByPage, String columnName, String orderBy) throws DAOException;
 }
