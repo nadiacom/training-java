@@ -97,7 +97,7 @@ public enum CompanyService {
     }
 
     /**
-     * Delete company.
+     * Delete company : used by CLI only.
      *
      * @param company (required) company.
      * @return deleted company id.

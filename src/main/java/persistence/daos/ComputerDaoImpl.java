@@ -36,6 +36,8 @@ public enum ComputerDaoImpl implements ComputerDao {
     private static final String SQL_SELECT_PAGE = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id LIMIT ? OFFSET ?";
     private static final String SQL_DELETE_BY_COMPANY = "DELETE FROM computer WHERE company_id = ?";
     private static final String SQL_SELECT_BY_COMPANY = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE company_id = ?";
+    private static final String SQL_ORDER_BY = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id ORDER BY ? ? LIMIT ? OFFSET ?";
+
     private static CompanyCli companyService = new CompanyCli();
     Computer computer = null;
 
@@ -269,6 +271,25 @@ public enum ComputerDaoImpl implements ComputerDao {
         try {
             connexion = daoFactory.getConnection();
             PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_COMPANY, false, companyId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+         /* Iterate over returned ResultSet */
+            while (resultSet.next()) {
+                computer = map(resultSet);
+                listComputer.add(computer);
+            }
+            daoFactory.close(resultSet, preparedStatement);
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+        return listComputer;
+    }
+
+    @Override
+    public List<Computer> getPageListOrderBy(int page, int nbComputerByPage, String columnName, String orderBy) throws DAOException {
+        List<Computer> listComputer = new ArrayList<>();
+        try {
+            connexion = daoFactory.getConnection();
+            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_PAGE, false, columnName, orderBy, nbComputerByPage, (page - 1) * nbComputerByPage);
             ResultSet resultSet = preparedStatement.executeQuery();
          /* Iterate over returned ResultSet */
             while (resultSet.next()) {
