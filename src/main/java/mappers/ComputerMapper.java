@@ -7,23 +7,17 @@ import services.validators.inputs.Input;
 /**
  * Created by ebiz on 22/03/17.
  */
-public class ComputerMapper {
+public enum ComputerMapper {
 
-    static Input input = new Input();
+    INSTANCE;
 
     /**
      * Default constructor.
      */
-    private ComputerMapper() {
+    ComputerMapper() {
     }
 
-    private static class SingletonHelper {
-        private static final ComputerMapper INSTANCE = new ComputerMapper();
-    }
-
-    public static ComputerMapper getInstance() {
-        return ComputerMapper.SingletonHelper.INSTANCE;
-    }
+    static Input input = new Input();
 
     /**
      * Map computerDTO to computer.
@@ -39,7 +33,7 @@ public class ComputerMapper {
                 .introduced(computerDTO.getIntroduced() != null ? input.getLocalDate(computerDTO.getIntroduced()) : null)
                 .discontinued(computerDTO.getDiscontinued() != null ? input.getLocalDate(computerDTO.getDiscontinued()) : null)
                 //Get companyDTO and map it to company
-                .company(CompanyMapper.getInstance().from(computerDTO.getCompanyDTO()))
+                .company(CompanyMapper.INSTANCE.from(computerDTO.getCompanyDTO()))
                 .build();
         return computer;
     }
@@ -58,7 +52,7 @@ public class ComputerMapper {
                 .introduced(computer.getDiscontinued() != null ? computer.getIntroduced().toString() : "")
                 .discontinued(computer.getDiscontinued() != null ? computer.getDiscontinued().toString() : "")
                 //Get companyDTO and map it to company
-                .company(CompanyMapper.getInstance().from(computer.getCompany()))
+                .company(CompanyMapper.INSTANCE.from(computer.getCompany()))
                 .build();
         return computerDTO;
     }

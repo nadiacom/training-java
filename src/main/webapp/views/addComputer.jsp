@@ -55,7 +55,7 @@
                             <select class="form-control" name="companyId" id="companyId">
                                 <option value="null">- None -</option>
                                 <c:forEach var="company" items="${companies}">
-                                    <option value="${company.id}"  ${company.id == computer.company.id ? 'selected="selected"' : ''}>${company.id} - ${company.name}</option>
+                                    <option value="${company.id}">${company.id} - ${company.name}</option>
                                 </c:forEach>
                             </select>
                         </div>

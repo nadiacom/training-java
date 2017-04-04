@@ -2,6 +2,7 @@ package persistence.daos;
 
 import exceptions.daos.DAOException;
 import models.Company;
+import org.slf4j.LoggerFactory;
 import persistence.DAOFactory;
 
 import java.sql.Connection;
@@ -21,8 +22,7 @@ public enum CompanyDaoImpl implements CompanyDao {
     INSTANCE;
 
     protected DAOFactory daoFactory = DAOFactory.INSTANCE;
-
-    private Connection connexion;
+    private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.CompanyDaoImpl");
 
     private static final String SQL_SELECT_BY_ID = "SELECT id, name FROM company WHERE id = ?";
     private static final String SQL_SELECT_BY_NAME = "SELECT id, name FROM company WHERE name LIKE ? LIMIT ? OFFSET ?";
@@ -32,8 +32,6 @@ public enum CompanyDaoImpl implements CompanyDao {
 
     private static final int PAGE_SIZE = 10;
 
-    private Company company = null;
-    private List<Company> listCompanies;
 
     /**
      * Default constructor.
@@ -74,75 +72,98 @@ public enum CompanyDaoImpl implements CompanyDao {
 
     @Override
     public Company findById(Long id) throws DAOException {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Company company = null;
         try {
-            connexion = daoFactory.getConnection();
-            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_ID, false, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            Connection connexion = daoFactory.getConnection();
+            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_ID, false, id);
+            resultSet = preparedStatement.executeQuery();
+            LOGGER.debug(preparedStatement.toString());
         /* Iterate over returned ResultSet */
             if (resultSet.next()) {
                 company = map(resultSet.getLong("id"), resultSet.getString("name"));
             }
-            daoFactory.close(resultSet, preparedStatement);
         } catch (SQLException e) {
+            LOGGER.debug(e.toString());
             throw new DAOException(e);
+        } finally {
+            daoFactory.close(resultSet, preparedStatement);
         }
         return company;
     }
 
     @Override
     public List<Company> findByName(String name, int page, int nbComputerByPage) throws DAOException {
-        listCompanies = new ArrayList<Company>();
+        List<Company> listCompanies = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Company company = null;
         try {
-            connexion = daoFactory.getConnection();
-            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_NAME, false, "%" + name + "%", PAGE_SIZE, (page - 1) * PAGE_SIZE);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            Connection connexion = daoFactory.getConnection();
+            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_NAME, false, "%" + name + "%", PAGE_SIZE, (page - 1) * PAGE_SIZE);
+            resultSet = preparedStatement.executeQuery();
+            LOGGER.debug(preparedStatement.toString());
          /* Iterate over returned ResultSet */
             while (resultSet.next()) {
                 company = map(resultSet.getLong("id"), resultSet.getString("name"));
                 listCompanies.add(company);
             }
-            daoFactory.close(resultSet, preparedStatement);
         } catch (SQLException e) {
+            LOGGER.debug(e.toString());
             throw new DAOException(e);
+        } finally {
+            daoFactory.close(resultSet, preparedStatement);
         }
         return listCompanies;
     }
 
     @Override
     public List<Company> getAll() throws DAOException {
-        listCompanies = new ArrayList<Company>();
+        List<Company> listCompanies = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Company company = null;
         try {
-            connexion = daoFactory.getConnection();
-            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_ALL, false);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
+            Connection connexion = daoFactory.getConnection();
+            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_ALL, false);
+            resultSet = preparedStatement.executeQuery();
+            LOGGER.debug(preparedStatement.toString());
         /* Iterate over returned ResultSet */
             while (resultSet.next()) {
                 company = map(resultSet.getLong("id"), resultSet.getString("name"));
                 listCompanies.add(company);
             }
-            daoFactory.close(resultSet, preparedStatement);
         } catch (SQLException e) {
+            LOGGER.debug(e.toString());
             throw new DAOException(e);
+        } finally {
+            daoFactory.close(resultSet, preparedStatement);
         }
         return listCompanies;
     }
 
     @Override
     public List<Company> getPageList(int page) throws DAOException {
-        listCompanies = new ArrayList<Company>();
+        List<Company> listCompanies = new ArrayList<>();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Company company = null;
         try {
-            connexion = daoFactory.getConnection();
-            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_PAGE, false, PAGE_SIZE, (page - 1) * PAGE_SIZE);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            Connection connexion = daoFactory.getConnection();
+            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_PAGE, false, PAGE_SIZE, (page - 1) * PAGE_SIZE);
+            resultSet = preparedStatement.executeQuery();
+            LOGGER.debug(preparedStatement.toString());
          /* Iterate over returned ResultSet */
             while (resultSet.next()) {
                 company = map(resultSet.getLong("id"), resultSet.getString("name"));
                 listCompanies.add(company);
             }
-            daoFactory.close(resultSet, preparedStatement);
         } catch (SQLException e) {
+            LOGGER.debug(e.toString());
             throw new DAOException(e);
+        } finally {
+            daoFactory.close(resultSet, preparedStatement);
         }
         return listCompanies;
     }
@@ -150,9 +171,11 @@ public enum CompanyDaoImpl implements CompanyDao {
     @Override
     public Long delete(Company company) throws DAOException {
         Long id = null;
+        PreparedStatement preparedStatement = null;
         try {
-            connexion = daoFactory.getConnection();
-            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_DELETE, false, company.getId());
+            Connection connexion = daoFactory.getConnection();
+            preparedStatement = initPreparedStatement(connexion, SQL_DELETE, false, company.getId());
+            LOGGER.debug(preparedStatement.toString());
             int status = preparedStatement.executeUpdate();
            /* Analyze status returned from insert request */
             if (status == 0) {
@@ -160,12 +183,13 @@ public enum CompanyDaoImpl implements CompanyDao {
             } else {
                 id = company.getId();
             }
-            daoFactory.close(preparedStatement);
         } catch (SQLException e) {
+            LOGGER.debug(e.toString());
             throw new DAOException(e);
         } finally {
-            return id;
+            daoFactory.close(preparedStatement);
         }
+        return id;
     }
 
 

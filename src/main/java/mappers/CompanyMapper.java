@@ -6,20 +6,14 @@ import models.dtos.CompanyDTO;
 /**
  * Created by ebiz on 22/03/17.
  */
-public class CompanyMapper {
+public enum CompanyMapper {
+
+    INSTANCE;
 
     /**
      * Default constructor.
      */
-    private CompanyMapper() {
-    }
-
-    private static class SingletonHelper {
-        private static final CompanyMapper INSTANCE = new CompanyMapper();
-    }
-
-    public static CompanyMapper getInstance() {
-        return CompanyMapper.SingletonHelper.INSTANCE;
+    CompanyMapper() {
     }
 
     /**

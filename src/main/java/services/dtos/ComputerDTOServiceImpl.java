@@ -4,6 +4,7 @@ import mappers.ComputerMapper;
 import models.Computer;
 import models.dtos.ComputerDTO;
 import persistence.daos.ComputerDaoImpl;
+import services.ComputerService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,31 +12,25 @@ import java.util.List;
 /**
  * Created by ebiz on 22/03/17.
  */
-public class ComputerDTOServiceImpl implements ComputerDTOService {
+public enum ComputerDTOServiceImpl implements ComputerDTOService {
+
+    INSTANCE;
 
     /**
      * Default constructor.
      */
-    private ComputerDTOServiceImpl() {
-    }
-
-    private static class SingletonHelper {
-        private static final ComputerDTOServiceImpl INSTANCE = new ComputerDTOServiceImpl();
-    }
-
-    public static ComputerDTOServiceImpl getInstance() {
-        return ComputerDTOServiceImpl.SingletonHelper.INSTANCE;
+    ComputerDTOServiceImpl() {
     }
 
 
     @Override
     public List<ComputerDTO> getAll() {
         //Get all companies (from DAO)
-        List<Computer> computers = ComputerDaoImpl.INSTANCE.getAll();
+        List<Computer> computers = ComputerService.INSTANCE.getAll();
         List<ComputerDTO> companiesDTO = new ArrayList<>();
         for (int i = 0; i < computers.size(); i++) {
             //Map each Computer to ComputerDTO model
-            ComputerDTO computerDTO = ComputerMapper.getInstance().from(computers.get(i));
+            ComputerDTO computerDTO = ComputerMapper.INSTANCE.from(computers.get(i));
             companiesDTO.add(computerDTO);
         }
         //Return Computer DTO list
@@ -45,11 +40,11 @@ public class ComputerDTOServiceImpl implements ComputerDTOService {
     @Override
     public List<ComputerDTO> getPageList(int page, int nbComputerByPage) {
         //Get all companies (from DAO)
-        List<Computer> computers = ComputerDaoImpl.INSTANCE.getPageList(page, nbComputerByPage);
+        List<Computer> computers = ComputerService.INSTANCE.getByPage(page, nbComputerByPage);
         List<ComputerDTO> companiesDTO = new ArrayList<>();
         for (int i = 0; i < computers.size(); i++) {
             //Map each Computer to ComputerDTO model
-            ComputerDTO computerDTO = ComputerMapper.getInstance().from(computers.get(i));
+            ComputerDTO computerDTO = ComputerMapper.INSTANCE.from(computers.get(i));
             companiesDTO.add(computerDTO);
         }
         //Return Computer DTO list
@@ -58,28 +53,28 @@ public class ComputerDTOServiceImpl implements ComputerDTOService {
 
     @Override
     public int count() {
-        return ComputerDaoImpl.INSTANCE.count();
+        return ComputerService.INSTANCE.count();
     }
 
     @Override
     public int countByName(String name) {
-        return ComputerDaoImpl.INSTANCE.countByName(name);
+        return ComputerService.INSTANCE.countByName(name);
     }
 
     @Override
     public ComputerDTO findById(int id) {
-        Computer computer = ComputerDaoImpl.INSTANCE.findById(Long.valueOf(id));
-        return ComputerMapper.getInstance().from(computer);
+        Computer computer = ComputerService.INSTANCE.findById(Long.valueOf(id));
+        return ComputerMapper.INSTANCE.from(computer);
     }
 
     @Override
     public List<ComputerDTO> findByName(String name, int page, int nbComputerByPage) {
         //Get all companies (from DAO)
-        List<Computer> computers = ComputerDaoImpl.INSTANCE.findByName(name, page, nbComputerByPage);
+        List<Computer> computers = ComputerService.INSTANCE.findByName(name, page, nbComputerByPage);
         List<ComputerDTO> companiesDTO = new ArrayList<>();
         for (int i = 0; i < computers.size(); i++) {
             //Map each Computer to ComputerDTO model
-            ComputerDTO computerDTO = ComputerMapper.getInstance().from(computers.get(i));
+            ComputerDTO computerDTO = ComputerMapper.INSTANCE.from(computers.get(i));
             companiesDTO.add(computerDTO);
         }
         //Return Computer DTO list
