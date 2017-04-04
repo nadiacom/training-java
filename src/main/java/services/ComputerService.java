@@ -1,6 +1,7 @@
 package services;
 
 import models.Computer;
+import org.slf4j.LoggerFactory;
 import persistence.DAOFactory;
 import persistence.daos.CompanyDao;
 import persistence.daos.CompanyDaoImpl;
@@ -16,6 +17,9 @@ import java.util.List;
 public enum ComputerService {
 
     INSTANCE;
+
+    private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.CompanyDaoImpl");
+
 
     /**
      * Default constructor.
@@ -34,7 +38,6 @@ public enum ComputerService {
      * @return all computers.s
      */
     public List<Computer> getAll() {
-        daoFactory.open();
         List<Computer> computers = computerDao.getAll();
         daoFactory.close();
         return computers;
@@ -48,7 +51,6 @@ public enum ComputerService {
      * @return computer list by page.
      */
     public List<Computer> getByPage(int page, int nbComputerByPage) {
-        daoFactory.open();
         List<Computer> computers = computerDao.getPageList(page, nbComputerByPage);
         daoFactory.close();
         return computers;
@@ -64,16 +66,15 @@ public enum ComputerService {
      * @param companyId    (required) company id of the computer.
      * @return computer id.
      */
-    public Long update(int id, String name, LocalDate introduced, LocalDate discontinued, int companyId) {
+    public Long update(int id, String name, LocalDate introduced, LocalDate discontinued, Integer companyId) {
         /* Retieve */
-        daoFactory.open();
         Computer c1 = computerDao.findById(Long.valueOf(id));
         /* Update */
         c1.setName(name);
         c1.setIntroduced(introduced);
         c1.setDiscontinued(discontinued);
          /* Get and set company */
-        c1.setCompany(companyDao.findById(Long.valueOf(companyId)));
+        c1.setCompany(companyId != null ? companyDao.findById(Long.valueOf(companyId)) : null);
         /* Update and return computer id */
         Long computerId = computerDao.update(c1);
         daoFactory.close();
@@ -91,6 +92,7 @@ public enum ComputerService {
         Computer c1 = computerDao.findById(Long.valueOf(id));
         /* Delete and return id */
         Long computerId = computerDao.remove(c1);
+        daoFactory.close();
         return computerId;
     }
 
@@ -100,9 +102,20 @@ public enum ComputerService {
      * @param id company id.
      */
     public void deleteByCompanyId(int id) {
-        daoFactory.open();
         computerDao.deleteByCompanyId(Long.valueOf(id));
         daoFactory.close();
+    }
+
+    /**
+     * Find computer by id.
+     *
+     * @param id computer id.
+     * @return computer.
+     */
+    public Computer findById(Long id) {
+        Computer c = computerDao.findById(id);
+        daoFactory.close();
+        return c;
     }
 
     /**
@@ -114,7 +127,6 @@ public enum ComputerService {
      * @return list of computers.
      */
     public List<Computer> findByName(String name, int page, int nbComputerByPage) {
-        daoFactory.open();
         List<Computer> computers = computerDao.findByName(name, page, nbComputerByPage);
         daoFactory.close();
         return computers;
@@ -128,7 +140,6 @@ public enum ComputerService {
      * @return list of computers.
      */
     public List<Computer> findByCompanyId(int id) {
-        daoFactory.open();
         List<Computer> computers = computerDao.findByCompanyId(Long.valueOf(id));
         daoFactory.close();
         return computers;
@@ -155,7 +166,6 @@ public enum ComputerService {
                 .company(companyId != null ? companyDao.findById(Long.valueOf(companyId)) : null)
                 .build();
         /* Create computer */
-        daoFactory.open();
         Long id = computerDao.create(computer);
         Computer c = computerDao.findById(id);
         daoFactory.close();
@@ -170,9 +180,32 @@ public enum ComputerService {
      * @return computer.
      */
     public Computer get(int id) {
-        daoFactory.open();
         Computer c = computerDao.findById(Long.valueOf(id));
+        daoFactory.close();
         return c;
+    }
+
+    /**
+     * Count all computers.
+     *
+     * @return nb of computers.
+     */
+    public int count() {
+        int count = computerDao.count();
+        daoFactory.close();
+        return count;
+    }
+
+    /**
+     * Count computers by name.
+     *
+     * @param name computer name.
+     * @return nb of computers.
+     */
+    public int countByName(String name) {
+        int count = computerDao.countByName(name);
+        daoFactory.close();
+        return count;
     }
 
 }

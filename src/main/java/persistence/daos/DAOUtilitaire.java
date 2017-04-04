@@ -1,5 +1,7 @@
 package persistence.daos;
 
+import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -25,7 +27,6 @@ public class DAOUtilitaire {
         for (int i = 0; i < objets.length; i++) {
             preparedStatement.setObject(i + 1, objets[i]);
         }
-        System.out.println(preparedStatement);
         return preparedStatement;
     }
 }

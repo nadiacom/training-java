@@ -22,9 +22,9 @@ public class ComputerUtils {
 
         List<ComputerDTO> listComputer1;
         if (request.getParameter("search") != null) {
-            listComputer1 = ComputerDTOServiceImpl.getInstance().findByName(request.getParameter("search"), currentPage, nbComputerByPage);
+            listComputer1 = ComputerDTOServiceImpl.INSTANCE.findByName(request.getParameter("search"), currentPage, nbComputerByPage);
         } else {
-            listComputer1 = ComputerDTOServiceImpl.getInstance().getPageList(currentPage, nbComputerByPage);
+            listComputer1 = ComputerDTOServiceImpl.INSTANCE.getPageList(currentPage, nbComputerByPage);
         }
         return listComputer1;
     }
@@ -39,9 +39,9 @@ public class ComputerUtils {
     public static int getNumberComputers(javax.servlet.http.HttpServletRequest request) {
         int nb = 0;
         if (request.getParameter("search") != null) {
-            nb = ComputerDTOServiceImpl.getInstance().countByName(request.getParameter("search"));
+            nb = ComputerDTOServiceImpl.INSTANCE.countByName(request.getParameter("search"));
         } else {
-            nb = ComputerDTOServiceImpl.getInstance().count();
+            nb = ComputerDTOServiceImpl.INSTANCE.count();
         }
         return nb;
     }

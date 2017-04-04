@@ -72,18 +72,18 @@
                                     </a>
                             </span>
                 </th>
-                <th><i name="sort" class="fa fa-fw fa-sort"></i>
+                <th><i id="computerName" name="sort" class="fa fa-fw fa-sort"></i>
                     Computer name
                 </th>
-                <th><i name="sort" class="fa fa-fw fa-sort"></i>
+                <th><i id="computerIntroduced" name="sort" class="fa fa-fw fa-sort"></i>
                     Introduced date
                 </th>
                 <!-- Table header for Discontinued Date -->
-                <th><i name="sort" class="fa fa-fw fa-sort"></i>
+                <th><i id="computerDiscontinued" name="sort" class="fa fa-fw fa-sort"></i>
                     Discontinued date
                 </th>
                 <!-- Table header for Company -->
-                <th><i name="sort" class="fa fa-fw fa-sort"></i>
+                <th><i id="companyName" name="sort" class="fa fa-fw fa-sort"></i>
                     Company
                 </th>
 
@@ -97,7 +97,7 @@
                         <input type="checkbox" name="cb" id="cb" class="cb" value="${computer.id}">
                     </td>
                     <td>
-                        <a id="edit" href="edit?computer=${computer.id}" onclick="">${computer.name}</a>
+                        <a id="edit" href="edit?id=${computer.id}" onclick="">${computer.name}</a>
                     </td>
                     <td>${computer.introduced}</td>
                     <td>${computer.discontinued}</td>

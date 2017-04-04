@@ -34,7 +34,6 @@ public enum CompanyService {
      * @return all companies.
      */
     public List<Company> getAll() {
-        daoFactory.open();
         List<Company> companies = companyDao.getAll();
         daoFactory.close();
         return companies;
@@ -46,8 +45,7 @@ public enum CompanyService {
      * @param page (required) page number.
      * @return companies list by page.
      */
-    public List<Company> getByPage(int page) {
-        daoFactory.open();
+    public List<Company> getPageList(int page) {
         List<Company> companies = companyDao.getPageList(page);
         daoFactory.close();
         return companies;
@@ -59,8 +57,7 @@ public enum CompanyService {
      * @param id (required) company id.
      * @return company.
      */
-    public Company getById(Long id) {
-        daoFactory.open();
+    public Company findById(Long id) {
         Company company = companyDao.findById(id);
         daoFactory.close();
         return company;
@@ -75,7 +72,6 @@ public enum CompanyService {
      * @return list of companies.
      */
     public List<Company> findByName(String name, int page, int nbComputerByPage) {
-        daoFactory.open();
         List<Company> companies = companyDao.findByName(name, page, nbComputerByPage);
         daoFactory.close();
         return companies;
@@ -88,7 +84,6 @@ public enum CompanyService {
      * @return deleted company id.
      */
     public Long delete(int id) {
-        daoFactory.open();
          /* Retieve computer */
         Company c1 = companyDao.findById(Long.valueOf(id));
         Long companyId = companyDao.delete(c1);
@@ -103,7 +98,6 @@ public enum CompanyService {
      * @return deleted company id.
      */
     public Long delete(Company company) {
-        daoFactory.open();
         daoFactory.startTransaction();
         Long companyId = null;
         if (company != null) {

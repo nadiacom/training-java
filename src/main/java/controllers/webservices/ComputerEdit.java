@@ -8,6 +8,7 @@ import exceptions.validators.models.computer.ComputerNameValidatorException;
 import exceptions.validators.urls.ComputerEditUrlValidatorException;
 import models.dtos.CompanyDTO;
 import models.dtos.ComputerDTO;
+import org.slf4j.LoggerFactory;
 import services.ComputerService;
 import services.dtos.CompanyDTOServiceImpl;
 import services.dtos.ComputerDTOServiceImpl;
@@ -26,6 +27,8 @@ import java.util.List;
 public class ComputerEdit extends javax.servlet.http.HttpServlet {
 
     private static Input inputValidator = new Input();
+    private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.ComputerEdit");
+
 
     /**
      * doGet method.
@@ -40,17 +43,17 @@ public class ComputerEdit extends javax.servlet.http.HttpServlet {
         ComputerEditUrlValidator computerEditUrlValidator = new ComputerEditUrlValidator();
         String error = "";
         try {
-            computerEditUrlValidator.isUrlValid(request.getParameter("computer"));
+            computerEditUrlValidator.isUrlValid(request.getParameter("id"));
         } catch (ComputerEditUrlValidatorException e) {
             error = e.getMessage();
         } finally {
             if (error.isEmpty()) {
                 //Get computer id
-                int id = Integer.valueOf(request.getParameter("computer"));
+                int id = Integer.valueOf(request.getParameter("id"));
                 //Get computer from id
-                ComputerDTO c = ComputerDTOServiceImpl.getInstance().findById(id);
+                ComputerDTO c = ComputerDTOServiceImpl.INSTANCE.findById(id);
                 //Get companies ids and names
-                List<CompanyDTO> companies = CompanyDTOServiceImpl.getInstance().getAll();
+                List<CompanyDTO> companies = CompanyDTOServiceImpl.INSTANCE.getAll();
                 //Set view parameters
                 request.setAttribute("computer", c);
                 request.setAttribute("companies", companies);
@@ -76,7 +79,7 @@ public class ComputerEdit extends javax.servlet.http.HttpServlet {
      */
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         String error = "";
-        if (request.getParameter("computer") != null) {
+        if (request.getParameter("id") != null) {
             ComputerValidator computerValidator = new ComputerValidator();
 
             try {
@@ -92,6 +95,12 @@ public class ComputerEdit extends javax.servlet.http.HttpServlet {
             } catch (ValidatorException e) {
             } finally {
                 if (error.isEmpty()) {
+                    //LOG
+                    LOGGER.debug("EDIT id: " + request.getParameter("id"));
+                    LOGGER.debug("EDIT name: " + request.getParameter("name"));
+                    LOGGER.debug("EDIT intro " + inputValidator.getLocalDate(request.getParameter("introduced")));
+                    LOGGER.debug("EDIT discon " + inputValidator.getLocalDate(request.getParameter("discontinued")));
+                    LOGGER.debug("EDIT company id: " + computerValidator.getValidCompanyId(request.getParameter("companyId")));
                     //Update computer
                     ComputerService.INSTANCE.update(Integer.valueOf(request.getParameter("id")), request.getParameter("name"), inputValidator.getLocalDate(request.getParameter("introduced")), inputValidator.getLocalDate(request.getParameter("discontinued")), computerValidator.getValidCompanyId(request.getParameter("companyId")));
                     //Redirect to dashboard
@@ -101,6 +110,8 @@ public class ComputerEdit extends javax.servlet.http.HttpServlet {
                     doGet(request, response);
                 }
             }
+        } else {
+            LOGGER.debug("POST EDIT WITH NULL computer");
         }
     }
 }

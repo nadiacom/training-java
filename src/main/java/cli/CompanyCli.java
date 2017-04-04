@@ -33,7 +33,7 @@ public class CompanyCli {
      */
     public void printCompaniesByPage(int page) {
         System.out.println("Here is the list of the registered companies :");
-        List<Company> listCompanies = companyService.getByPage(page);
+        List<Company> listCompanies = companyService.getPageList(page);
         for (int i = 0; i < listCompanies.size(); i++) {
             System.out.println(listCompanies.get(i));
         }
@@ -46,7 +46,7 @@ public class CompanyCli {
      * @return company
      */
     public Company getCompanyById(Long id) {
-        return companyService.getById(id);
+        return companyService.findById(id);
     }
 
     /**
@@ -55,7 +55,7 @@ public class CompanyCli {
      * @param id (required) company id.
      */
     public void delete(int id) {
-        Company c = companyService.getById(Long.valueOf(id));
+        Company c = companyService.findById(Long.valueOf(id));
         companyService.delete(c);
     }
 }

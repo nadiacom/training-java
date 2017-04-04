@@ -18,8 +18,9 @@ object Add {
 
   val add = exec(http("Add: Add page")
     .get(config.getString("application.urls.addPage")).check(status.is(200))
-    .resources(http("Add: Add js")
-      .get(config.getString("application.urls.static.js.add"))))
+    //.resources(http("Add: Add js")
+      //.get(config.getString("application.urls.static.js.add")))
+  )
     .pause(3, 10)
     .feed(feederName)
     .feed(feederAdd)

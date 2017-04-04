@@ -2,6 +2,7 @@ package persistence;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -19,6 +20,8 @@ public enum DAOFactory {
     private HikariDataSource ds;
     private ThreadLocal<Connection> cHolder;
 
+    private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.DaoFactory");
+
     /**
      * Default constructor.
      */
@@ -26,6 +29,8 @@ public enum DAOFactory {
         if (cHolder == null) {
             // Examines both filesystem and classpath for .properties file
             HikariConfig config = new HikariConfig(PROPERTIES_FILE);
+            config.setMaximumPoolSize(100);
+
             ds = new HikariDataSource(config);
             cHolder = new ThreadLocal<>();
         }
@@ -39,6 +44,7 @@ public enum DAOFactory {
         try {
             cHolder.get().setAutoCommit(false);
         } catch (SQLException e) {
+            LOGGER.debug(e.toString());
             e.printStackTrace();
         }
     }
@@ -50,6 +56,7 @@ public enum DAOFactory {
         try {
             cHolder.get().commit();
         } catch (SQLException e) {
+            LOGGER.debug(e.toString());
             e.printStackTrace();
         }
     }
@@ -61,6 +68,7 @@ public enum DAOFactory {
         try {
             cHolder.get().rollback();
         } catch (SQLException e) {
+            LOGGER.debug(e.toString());
             e.printStackTrace();
         }
     }
@@ -76,6 +84,7 @@ public enum DAOFactory {
                 cHolder.set(c);
             }
         } catch (SQLException e) {
+            LOGGER.debug(e.toString());
             e.printStackTrace();
         }
     }
@@ -89,6 +98,7 @@ public enum DAOFactory {
         try {
             connection.close();
         } catch (SQLException e) {
+            LOGGER.debug(e.toString());
             e.printStackTrace();
         }
     }
@@ -103,11 +113,13 @@ public enum DAOFactory {
         try {
             resultSet.close();
         } catch (SQLException e) {
+            LOGGER.debug(e.toString());
             e.printStackTrace();
         }
         try {
             statement.close();
         } catch (SQLException e) {
+            LOGGER.debug(e.toString());
             e.printStackTrace();
         }
     }
@@ -121,6 +133,7 @@ public enum DAOFactory {
         try {
             statement.close();
         } catch (SQLException e) {
+            LOGGER.debug(e.toString());
             e.printStackTrace();
         }
     }
@@ -138,6 +151,7 @@ public enum DAOFactory {
             }
             return c;
         } catch (SQLException e) {
+            LOGGER.debug(e.toString());
             e.printStackTrace();
         }
         return null;
@@ -152,6 +166,7 @@ public enum DAOFactory {
         try {
             autCommit = cHolder.get().getAutoCommit();
         } catch (SQLException e) {
+            LOGGER.debug(e.toString());
             e.printStackTrace();
         }
         return autCommit;

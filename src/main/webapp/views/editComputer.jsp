@@ -29,7 +29,7 @@
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2 box">
                 <div class="label label-default pull-right">
-                    id: 0
+                    id: ${computer.id}
                 </div>
                 <h1>Edit Computer</h1>
 
@@ -39,9 +39,9 @@
                     </div>
                 </c:if>
 
-                <form id="computer_form" action="/edit?computer=${computer.id}" method="POST">
-                    <input type="hidden" value="${computer.id}" name="id" id="id"/> <!-- TODO: Change this value with the computer id -->
+                <form id="computer_form" action="/edit" method="POST">
                     <fieldset>
+                        <input type="hidden" name="id" id="id" value="${computer.id}"/>
                         <div class="form-group">
                             <label for="name">Computer name</label>
                             <input type="text" class="form-control" name="name" id="name" placeholder="Computer name" value="${computer.name}">

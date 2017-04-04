@@ -42,7 +42,6 @@ public class ComputerAdd extends HttpServlet {
         //Dispatch view
         RequestDispatcher rd = request.getRequestDispatcher("views/addComputer.jsp");
         rd.include(request, response);
-
     }
 
     /**
