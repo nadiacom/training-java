@@ -21,7 +21,7 @@ public interface ComputerDTOService {
      * Find computers DTO by name.
      *
      * @param name             computer DTO name.
-     * @param page             (required) page number.
+     * @param page             page number.
      * @param nbComputerByPage number of computers DTO displayed by page.
      * @return list of computers DTO.
      */
@@ -37,11 +37,23 @@ public interface ComputerDTOService {
     /**
      * Get all ComputerDTO by page.
      *
-     * @param page             (required) page number.
+     * @param page             page number.
      * @param nbComputerByPage number of computers displayed by page.
      * @return list of ComputerDTO by page.
      */
     List<ComputerDTO> getPageList(int page, int nbComputerByPage);
+
+    /**
+     * Get ComputerDTO by page, name and order by column.
+     *
+     * @param name             computer DTO name.
+     * @param columnName       column name.
+     * @param orderBy          order by: "ASC" or "DESC".
+     * @param page             page number.
+     * @param nbComputerByPage number of computers DTO displayed by page.
+     * @return list of computers DTO.
+     */
+    List<ComputerDTO> findByNameAndOrder(String name, String columnName, String orderBy, int page, int nbComputerByPage);
 
     /**
      * Count number of ComputerDTO.
@@ -53,7 +65,7 @@ public interface ComputerDTOService {
     /**
      * Count computers DTO with given name.
      *
-     * @param name             computer DTO name.
+     * @param name computer DTO name.
      * @return list of computers DTO.
      */
     int countByName(String name);

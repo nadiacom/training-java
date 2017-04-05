@@ -3,7 +3,6 @@ package services.dtos;
 import mappers.ComputerMapper;
 import models.Computer;
 import models.dtos.ComputerDTO;
-import persistence.daos.ComputerDaoImpl;
 import services.ComputerService;
 
 import java.util.ArrayList;
@@ -71,6 +70,20 @@ public enum ComputerDTOServiceImpl implements ComputerDTOService {
     public List<ComputerDTO> findByName(String name, int page, int nbComputerByPage) {
         //Get all companies (from DAO)
         List<Computer> computers = ComputerService.INSTANCE.findByName(name, page, nbComputerByPage);
+        List<ComputerDTO> companiesDTO = new ArrayList<>();
+        for (int i = 0; i < computers.size(); i++) {
+            //Map each Computer to ComputerDTO model
+            ComputerDTO computerDTO = ComputerMapper.INSTANCE.from(computers.get(i));
+            companiesDTO.add(computerDTO);
+        }
+        //Return Computer DTO list
+        return companiesDTO;
+    }
+
+    @Override
+    public List<ComputerDTO> findByNameAndOrder(String name, String columnName, String orderBy, int page, int nbComputerByPage) {
+        //Get all companies (from DAO)
+        List<Computer> computers = ComputerService.INSTANCE.findByNameAndOrder(name, columnName, orderBy, page, nbComputerByPage);
         List<ComputerDTO> companiesDTO = new ArrayList<>();
         for (int i = 0; i < computers.size(); i++) {
             //Map each Computer to ComputerDTO model

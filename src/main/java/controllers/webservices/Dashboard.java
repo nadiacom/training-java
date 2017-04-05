@@ -32,7 +32,6 @@ public class Dashboard extends javax.servlet.http.HttpServlet {
         int nbComputerByPage = (Integer) session.getAttribute("paginateLimit");
 
         //GET COMPUTERS LIST
-        //Call Computer utils and pagination method
         List<ComputerDTO> listComputer = ComputerUtils.getPageList(request, Pagination.getCurrentPage(request), nbComputerByPage);
 
         //PAGINATION
@@ -53,6 +52,9 @@ public class Dashboard extends javax.servlet.http.HttpServlet {
 
         if (request.getParameter("search") != null) {
             request.setAttribute("search", request.getParameter("search"));
+        }
+        if (request.getParameter("order") != null) {
+            request.setAttribute("order", request.getParameter("order"));
         }
 
         //Dispatch view

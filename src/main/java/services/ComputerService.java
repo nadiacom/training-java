@@ -132,6 +132,21 @@ public enum ComputerService {
         return computers;
     }
 
+    /**
+     * Find computers by name, page and order by column.
+     *
+     * @param name             computer name.
+     * @param colmunName       column name.
+     * @param orderBy          order by : "ASC" or "DESC".
+     * @param page             page number.
+     * @param nbComputerByPage number of computers displayed by page.
+     * @return list of computers.
+     */
+    public List<Computer> findByNameAndOrder(String name, String colmunName, String orderBy, int page, int nbComputerByPage) {
+        List<Computer> computers = computerDao.getPageListOrderBy(page, nbComputerByPage, name, colmunName, orderBy);
+        daoFactory.close();
+        return computers;
+    }
 
     /**
      * Retrieve all computers that belong to a given company.

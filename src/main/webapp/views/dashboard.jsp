@@ -72,18 +72,18 @@
                                     </a>
                             </span>
                 </th>
-                <th><i id="computerName" name="sort" class="fa fa-fw fa-sort"></i>
+                <th><a href="/dashboard?currentPage=${currentPage}&search=${search}&order=c.name&click=name"><i id="computerName" name="sort" class="fa fa-fw fa-sort"></i></a>
                     Computer name
                 </th>
-                <th><i id="computerIntroduced" name="sort" class="fa fa-fw fa-sort"></i>
+                <th><a href="/dashboard?currentPage=${currentPage}&search=${search}&order=c.introduced&click=introduced"><i id="computerIntroduced" name="sort" class="fa fa-fw fa-sort"></i></a>
                     Introduced date
                 </th>
                 <!-- Table header for Discontinued Date -->
-                <th><i id="computerDiscontinued" name="sort" class="fa fa-fw fa-sort"></i>
+                <th><a href="/dashboard?currentPage=${currentPage}&search=${search}&order=c.discontinued&click=discontinued"><i id="computerDiscontinued" name="sort" class="fa fa-fw fa-sort"></i></a>
                     Discontinued date
                 </th>
                 <!-- Table header for Company -->
-                <th><i id="companyName" name="sort" class="fa fa-fw fa-sort"></i>
+                <th><a href="/dashboard?currentPage=${currentPage}&search=${search}&order=company.&click=company"><i id="companyName" name="sort" class="fa fa-fw fa-sort"></i></a>
                     Company
                 </th>
 
@@ -113,7 +113,7 @@
 <footer class="navbar-fixed-bottom">
     <div class="container text-center">
 
-    <my_tags:paginator currentPage="${currentPage}" pgEnd="${pgEnd}" lastPage="${lastPage}" pgStart="${pgStart}" search="${search}" url="/dashboard"/>
+    <my_tags:paginator currentPage="${currentPage}" pgEnd="${pgEnd}" lastPage="${lastPage}" pgStart="${pgStart}" search="${search}" order="${order}" url="/dashboard"/>
 
     </div>
 </footer>
