@@ -18,6 +18,8 @@ public enum CompanyDTOServiceImpl implements CompanyDTOService {
     INSTANCE;
 
     static Input input = new Input();
+    private CompanyService companyService = CompanyService.INSTANCE;
+    private CompanyMapper companyMapper = CompanyMapper.INSTANCE;
 
     /**
      * Default constructor.
@@ -28,11 +30,11 @@ public enum CompanyDTOServiceImpl implements CompanyDTOService {
     @Override
     public List<CompanyDTO> getAll() {
         //Get all companies (from DAO)
-        List<Company> companies = CompanyService.INSTANCE.getAll();
+        List<Company> companies = companyService.getAll();
         List<CompanyDTO> companiesDTO = new ArrayList<>();
         for (int i = 0; i < companies.size(); i++) {
             //Map each company to companyDTO model
-            CompanyDTO companyDTO = CompanyMapper.INSTANCE.from(companies.get(i));
+            CompanyDTO companyDTO = companyMapper.from(companies.get(i));
             companiesDTO.add(companyDTO);
         }
         //Return company DTO list
@@ -42,11 +44,11 @@ public enum CompanyDTOServiceImpl implements CompanyDTOService {
     @Override
     public List<CompanyDTO> getPageList(int page) {
         //Get all companies (from DAO)
-        List<Company> companies = CompanyService.INSTANCE.getPageList(page);
+        List<Company> companies = companyService.getPageList(page);
         List<CompanyDTO> companiesDTO = new ArrayList<>();
         for (int i = 0; i < companies.size(); i++) {
             //Map each company to companyDTO model
-            CompanyDTO companyDTO = CompanyMapper.INSTANCE.from(companies.get(i));
+            CompanyDTO companyDTO = companyMapper.from(companies.get(i));
             companiesDTO.add(companyDTO);
         }
         //Return company DTO list
@@ -55,18 +57,18 @@ public enum CompanyDTOServiceImpl implements CompanyDTOService {
 
     @Override
     public CompanyDTO findById(int id) {
-        Company company = CompanyService.INSTANCE.findById(Long.valueOf(id));
-        return CompanyMapper.INSTANCE.from(company);
+        Company company = companyService.findById(Long.valueOf(id));
+        return companyMapper.from(company);
     }
 
     @Override
     public List<CompanyDTO> findByName(String name, int page, int nbComputerByPage) {
         //Get all companies (from DAO)
-        List<Company> companies = CompanyService.INSTANCE.findByName(name, page, nbComputerByPage);
+        List<Company> companies = companyService.findByName(name, page, nbComputerByPage);
         List<CompanyDTO> companiesDTO = new ArrayList<>();
         for (int i = 0; i < companies.size(); i++) {
             //Map each company to companyDTO model
-            CompanyDTO companyDTO = CompanyMapper.INSTANCE.from(companies.get(i));
+            CompanyDTO companyDTO = companyMapper.from(companies.get(i));
             companiesDTO.add(companyDTO);
         }
         //Return company DTO list
