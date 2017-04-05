@@ -29,7 +29,6 @@ public class ComputerEdit extends javax.servlet.http.HttpServlet {
     private static Input inputValidator = new Input();
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.ComputerEdit");
 
-
     /**
      * doGet method.
      *

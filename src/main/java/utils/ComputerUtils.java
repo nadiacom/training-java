@@ -14,6 +14,7 @@ public class ComputerUtils {
     private static boolean isOrderAsC = false;
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.ComputerUtils");
+    private static ComputerDTOServiceImpl computerDTOService = ComputerDTOServiceImpl.INSTANCE;
 
 
     /**
@@ -38,13 +39,13 @@ public class ComputerUtils {
             }
         }
         if (request.getParameter("search") != null && request.getParameter("order") != null) {
-            listComputer = ComputerDTOServiceImpl.INSTANCE.findByNameAndOrder(request.getParameter("search"), request.getParameter("order"), order, currentPage, nbComputerByPage);
+            listComputer = computerDTOService.findByNameAndOrder(request.getParameter("search"), request.getParameter("order"), order, currentPage, nbComputerByPage);
         } else if (request.getParameter("search") != null) {
-            listComputer = ComputerDTOServiceImpl.INSTANCE.findByName(request.getParameter("search"), currentPage, nbComputerByPage);
+            listComputer = computerDTOService.findByName(request.getParameter("search"), currentPage, nbComputerByPage);
         } else if (request.getParameter("order") != null) {
-            listComputer = ComputerDTOServiceImpl.INSTANCE.findByNameAndOrder("", request.getParameter("order"), order, currentPage, nbComputerByPage);
+            listComputer = computerDTOService.findByNameAndOrder("", request.getParameter("order"), order, currentPage, nbComputerByPage);
         } else {
-            listComputer = ComputerDTOServiceImpl.INSTANCE.getPageList(currentPage, nbComputerByPage);
+            listComputer = computerDTOService.getPageList(currentPage, nbComputerByPage);
         }
         return listComputer;
     }
@@ -59,9 +60,9 @@ public class ComputerUtils {
     public static int getNumberComputers(javax.servlet.http.HttpServletRequest request) {
         int nb = 0;
         if (request.getParameter("search") != null) {
-            nb = ComputerDTOServiceImpl.INSTANCE.countByName(request.getParameter("search"));
+            nb = computerDTOService.countByName(request.getParameter("search"));
         } else {
-            nb = ComputerDTOServiceImpl.INSTANCE.count();
+            nb = computerDTOService.count();
         }
         return nb;
     }
