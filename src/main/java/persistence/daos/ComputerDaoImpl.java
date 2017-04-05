@@ -37,7 +37,7 @@ public enum ComputerDaoImpl implements ComputerDao {
     private static final String SQL_SELECT_PAGE = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id LIMIT ? OFFSET ?";
     private static final String SQL_DELETE_BY_COMPANY = "DELETE FROM computer WHERE company_id = ?";
     private static final String SQL_SELECT_BY_COMPANY = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE company_id = ?";
-    private static final String SQL_ORDER_BY = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id ORDER BY ? ? LIMIT ? OFFSET ?";
+    private static final String SQL_ORDER_BY = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.name LIKE ? OR company.name LIKE ? ORDER BY ? ? LIMIT ? OFFSET ?";
 
     private static CompanyCli companyService = new CompanyCli();
 
@@ -311,12 +311,22 @@ public enum ComputerDaoImpl implements ComputerDao {
     }
 
     @Override
-    public List<Computer> getPageListOrderBy(int page, int nbComputerByPage, String columnName, String orderBy) throws DAOException {
+    public List<Computer> getPageListOrderBy(int page, int nbComputerByPage, String name, String columnName, String orderBy) throws DAOException {
         List<Computer> listComputer = new ArrayList<>();
         Computer computer = null;
         try {
             Connection connexion = daoFactory.getConnection();
-            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_PAGE, false, columnName, orderBy, nbComputerByPage, (page - 1) * nbComputerByPage);
+            String sql = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON " +
+                    "c.company_id = company.id WHERE c.name LIKE ? OR company.name LIKE ? ORDER BY ";
+            sql += columnName + " " + orderBy;
+            sql += " LIMIT ? OFFSET ?";
+            LOGGER.debug(sql);
+            PreparedStatement preparedStatement = connexion.prepareStatement(sql);
+            preparedStatement.setString(1, "%" + name + "%");
+            preparedStatement.setString(2, "%" + name + "%");
+            preparedStatement.setLong(3, nbComputerByPage);
+            preparedStatement.setLong(4, (page - 1) * nbComputerByPage);
+
             ResultSet resultSet = preparedStatement.executeQuery();
             LOGGER.debug(preparedStatement.toString());
          /* Iterate over returned ResultSet */
