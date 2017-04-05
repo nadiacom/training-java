@@ -69,7 +69,7 @@ public class ComputerAdd extends HttpServlet {
         } finally {
             if (error.isEmpty()) {
                 //Create computer
-                Computer computer = ComputerService.INSTANCE.create(request.getParameter("name"), inputValidator.getLocalDate(request.getParameter("introduced")), inputValidator.getLocalDate(request.getParameter("discontinued")), computerValidator.getValidCompanyId(request.getParameter("companyId")));
+                ComputerService.INSTANCE.create(request.getParameter("name"), inputValidator.getLocalDate(request.getParameter("introduced")), inputValidator.getLocalDate(request.getParameter("discontinued")), computerValidator.getValidCompanyId(request.getParameter("companyId")));
                 //Redirect to dashboard
                 response.sendRedirect("/dashboard");
             } else {
