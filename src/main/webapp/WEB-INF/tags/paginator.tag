@@ -51,7 +51,7 @@
             </c:if>
         </c:otherwise>
     </c:choose>
-    
+
 </ul>
 
 <div class="btn-group btn-group-sm pull-right" role="group">
