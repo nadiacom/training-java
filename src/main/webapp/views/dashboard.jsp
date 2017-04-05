@@ -72,18 +72,18 @@
                                     </a>
                             </span>
                 </th>
-                <th><a href="/dashboard?currentPage=${currentPage}&search=${search}&order=c.name&click=name"><i id="computerName" name="sort" class="fa fa-fw fa-sort"></i></a>
+                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="name" id="computerName" order="c.name" url="/dashboard"/>
                     Computer name
                 </th>
-                <th><a href="/dashboard?currentPage=${currentPage}&search=${search}&order=c.introduced&click=introduced"><i id="computerIntroduced" name="sort" class="fa fa-fw fa-sort"></i></a>
+                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="introduced" id="computerIntroduced" order="c.introduced" url="/dashboard"/>
                     Introduced date
                 </th>
                 <!-- Table header for Discontinued Date -->
-                <th><a href="/dashboard?currentPage=${currentPage}&search=${search}&order=c.discontinued&click=discontinued"><i id="computerDiscontinued" name="sort" class="fa fa-fw fa-sort"></i></a>
+                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="discontinued" id="computerDiscontinued" order="c.discontinued" url="/dashboard"/>
                     Discontinued date
                 </th>
                 <!-- Table header for Company -->
-                <th><a href="/dashboard?currentPage=${currentPage}&search=${search}&order=company.&click=company"><i id="companyName" name="sort" class="fa fa-fw fa-sort"></i></a>
+                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="company" id="companyName" order="company.name" url="/dashboard"/>
                     Company
                 </th>
 
