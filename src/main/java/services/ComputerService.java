@@ -155,7 +155,7 @@ public enum ComputerService {
      * @param companyId    (required) company id of the computer.
      * @return computer id.
      */
-    public Computer create(String name, LocalDate introduced, LocalDate discontinued, Integer companyId) {
+    public Long create(String name, LocalDate introduced, LocalDate discontinued, Integer companyId) {
         /* Build a new computer from model builder */
         Computer computer = new
                 Computer.ComputerBuilder()
@@ -167,10 +167,9 @@ public enum ComputerService {
                 .build();
         /* Create computer */
         Long id = computerDao.create(computer);
-        Computer c = computerDao.findById(id);
         daoFactory.close();
         /* Return computer */
-        return c;
+        return id;
     }
 
     /**

@@ -72,23 +72,21 @@ public enum CompanyDaoImpl implements CompanyDao {
 
     @Override
     public Company findById(Long id) throws DAOException {
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+
         Company company = null;
         try {
             Connection connexion = daoFactory.getConnection();
-            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_ID, false, id);
-            resultSet = preparedStatement.executeQuery();
+            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_ID, false, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
             LOGGER.debug(preparedStatement.toString());
         /* Iterate over returned ResultSet */
             if (resultSet.next()) {
                 company = map(resultSet.getLong("id"), resultSet.getString("name"));
             }
+            daoFactory.close(resultSet, preparedStatement);
         } catch (SQLException e) {
             LOGGER.debug(e.toString());
             throw new DAOException(e);
-        } finally {
-            daoFactory.close(resultSet, preparedStatement);
         }
         return company;
     }
@@ -96,24 +94,21 @@ public enum CompanyDaoImpl implements CompanyDao {
     @Override
     public List<Company> findByName(String name, int page, int nbComputerByPage) throws DAOException {
         List<Company> listCompanies = new ArrayList<>();
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
         Company company = null;
         try {
             Connection connexion = daoFactory.getConnection();
-            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_NAME, false, "%" + name + "%", PAGE_SIZE, (page - 1) * PAGE_SIZE);
-            resultSet = preparedStatement.executeQuery();
+            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_NAME, false, "%" + name + "%", PAGE_SIZE, (page - 1) * PAGE_SIZE);
+            ResultSet resultSet = preparedStatement.executeQuery();
             LOGGER.debug(preparedStatement.toString());
          /* Iterate over returned ResultSet */
             while (resultSet.next()) {
                 company = map(resultSet.getLong("id"), resultSet.getString("name"));
                 listCompanies.add(company);
             }
+            daoFactory.close(resultSet, preparedStatement);
         } catch (SQLException e) {
             LOGGER.debug(e.toString());
             throw new DAOException(e);
-        } finally {
-            daoFactory.close(resultSet, preparedStatement);
         }
         return listCompanies;
     }
@@ -121,24 +116,21 @@ public enum CompanyDaoImpl implements CompanyDao {
     @Override
     public List<Company> getAll() throws DAOException {
         List<Company> listCompanies = new ArrayList<>();
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
         Company company = null;
         try {
             Connection connexion = daoFactory.getConnection();
-            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_ALL, false);
-            resultSet = preparedStatement.executeQuery();
+            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_ALL, false);
+            ResultSet resultSet = preparedStatement.executeQuery();
             LOGGER.debug(preparedStatement.toString());
         /* Iterate over returned ResultSet */
             while (resultSet.next()) {
                 company = map(resultSet.getLong("id"), resultSet.getString("name"));
                 listCompanies.add(company);
             }
+            daoFactory.close(resultSet, preparedStatement);
         } catch (SQLException e) {
             LOGGER.debug(e.toString());
             throw new DAOException(e);
-        } finally {
-            daoFactory.close(resultSet, preparedStatement);
         }
         return listCompanies;
     }
@@ -146,24 +138,21 @@ public enum CompanyDaoImpl implements CompanyDao {
     @Override
     public List<Company> getPageList(int page) throws DAOException {
         List<Company> listCompanies = new ArrayList<>();
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
         Company company = null;
         try {
             Connection connexion = daoFactory.getConnection();
-            preparedStatement = initPreparedStatement(connexion, SQL_SELECT_PAGE, false, PAGE_SIZE, (page - 1) * PAGE_SIZE);
-            resultSet = preparedStatement.executeQuery();
+            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_PAGE, false, PAGE_SIZE, (page - 1) * PAGE_SIZE);
+            ResultSet resultSet = preparedStatement.executeQuery();
             LOGGER.debug(preparedStatement.toString());
          /* Iterate over returned ResultSet */
             while (resultSet.next()) {
                 company = map(resultSet.getLong("id"), resultSet.getString("name"));
                 listCompanies.add(company);
             }
+            daoFactory.close(resultSet, preparedStatement);
         } catch (SQLException e) {
             LOGGER.debug(e.toString());
             throw new DAOException(e);
-        } finally {
-            daoFactory.close(resultSet, preparedStatement);
         }
         return listCompanies;
     }
@@ -171,10 +160,9 @@ public enum CompanyDaoImpl implements CompanyDao {
     @Override
     public Long delete(Company company) throws DAOException {
         Long id = null;
-        PreparedStatement preparedStatement = null;
         try {
             Connection connexion = daoFactory.getConnection();
-            preparedStatement = initPreparedStatement(connexion, SQL_DELETE, false, company.getId());
+            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_DELETE, false, company.getId());
             LOGGER.debug(preparedStatement.toString());
             int status = preparedStatement.executeUpdate();
            /* Analyze status returned from insert request */
@@ -183,11 +171,10 @@ public enum CompanyDaoImpl implements CompanyDao {
             } else {
                 id = company.getId();
             }
+            daoFactory.close(preparedStatement);
         } catch (SQLException e) {
             LOGGER.debug(e.toString());
             throw new DAOException(e);
-        } finally {
-            daoFactory.close(preparedStatement);
         }
         return id;
     }

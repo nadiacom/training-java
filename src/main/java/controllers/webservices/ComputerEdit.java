@@ -95,12 +95,6 @@ public class ComputerEdit extends javax.servlet.http.HttpServlet {
             } catch (ValidatorException e) {
             } finally {
                 if (error.isEmpty()) {
-                    //LOG
-                    LOGGER.debug("EDIT id: " + request.getParameter("id"));
-                    LOGGER.debug("EDIT name: " + request.getParameter("name"));
-                    LOGGER.debug("EDIT intro " + inputValidator.getLocalDate(request.getParameter("introduced")));
-                    LOGGER.debug("EDIT discon " + inputValidator.getLocalDate(request.getParameter("discontinued")));
-                    LOGGER.debug("EDIT company id: " + computerValidator.getValidCompanyId(request.getParameter("companyId")));
                     //Update computer
                     ComputerService.INSTANCE.update(Integer.valueOf(request.getParameter("id")), request.getParameter("name"), inputValidator.getLocalDate(request.getParameter("introduced")), inputValidator.getLocalDate(request.getParameter("discontinued")), computerValidator.getValidCompanyId(request.getParameter("companyId")));
                     //Redirect to dashboard
@@ -110,8 +104,6 @@ public class ComputerEdit extends javax.servlet.http.HttpServlet {
                     doGet(request, response);
                 }
             }
-        } else {
-            LOGGER.debug("POST EDIT WITH NULL computer");
         }
     }
 }

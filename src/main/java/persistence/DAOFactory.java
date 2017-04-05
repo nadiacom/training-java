@@ -38,6 +38,7 @@ public enum DAOFactory {
 
     /**
      * Start Transaction.
+     *
      * @throws SQLException if SQL bug
      */
     public void startTransaction() {
@@ -110,17 +111,21 @@ public enum DAOFactory {
      * @param statement statement.
      */
     public void close(ResultSet resultSet, Statement statement) {
-        try {
-            resultSet.close();
-        } catch (SQLException e) {
-            LOGGER.debug(e.toString());
-            e.printStackTrace();
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                LOGGER.debug(e.toString());
+                e.printStackTrace();
+            }
         }
-        try {
-            statement.close();
-        } catch (SQLException e) {
-            LOGGER.debug(e.toString());
-            e.printStackTrace();
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                LOGGER.debug(e.toString());
+                e.printStackTrace();
+            }
         }
     }
 
@@ -130,11 +135,13 @@ public enum DAOFactory {
      * @param statement statement.
      */
     public void close(Statement statement) {
-        try {
-            statement.close();
-        } catch (SQLException e) {
-            LOGGER.debug(e.toString());
-            e.printStackTrace();
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                LOGGER.debug(e.toString());
+                e.printStackTrace();
+            }
         }
     }
 
@@ -159,6 +166,7 @@ public enum DAOFactory {
 
     /**
      * Get autocommit value.
+     *
      * @return autocommit.
      */
     public boolean isAutoCommit() {
