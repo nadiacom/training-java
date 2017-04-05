@@ -9,6 +9,21 @@
     <version>v.3.0</version>
     <packaging>war</packaging>
 
+    <properties>
+        <slf4j.version>1.7.24</slf4j.version>
+        <logback-core.version>1.2.1</logback-core.version>
+        <logback-classic.version>1.2.1</logback-classic.version>
+        <mysql-connector.version>6.0.6</mysql-connector.version>
+        <hikari.version>2.6.1</hikari.version>
+        <junit.version>4.12</junit.version>
+        <mockito-core.version>1.10.19</mockito-core.version>
+        <javax.servlet.version>3.1.0</javax.servlet.version>
+        <javax.servlet.jsp.version>2.3.1</javax.servlet.jsp.version>
+        <jstl.version>1.2</jstl.version>
+        <selelium.version>3.3.1</selelium.version>
+        <guava.version>21.0</guava.version>
+    </properties>
+
     <build>
         <defaultGoal>clean install</defaultGoal>
         <plugins>
@@ -51,66 +66,77 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.24</version>
+            <version>${slf4j.version}</version>
+            <scope>compile</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-core -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
-            <version>1.2.1</version>
+            <version>${logback-core.version}</version>
+            <scope>runtime</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.1</version>
+            <version>${logback-classic.version}</version>
+            <scope>runtime</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>6.0.6</version>
+            <version>${mysql-connector.version}</version>
+            <scope>runtime</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>2.6.1</version>
+            <version>${hikari.version}</version>
+            <scope>compile</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>1.10.19</version>
+            <version>${mockito-core.version}</version>
+            <scope>test</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
+            <version>${javax.servlet.version}</version>
+            <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/javax.servlet.jsp/javax.servlet.jsp-api -->
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>javax.servlet.jsp-api</artifactId>
-            <version>2.3.1</version>
+            <version>${javax.servlet.jsp.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
-            <version>1.2</version>
+            <version>${jstl.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>3.3.1</version>
+            <version>${selelium.version}</version>
+            <scope>test</scope>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.guava</groupId>
@@ -122,7 +148,8 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>21.0</version>
+            <version>${guava.version}</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
