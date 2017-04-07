@@ -6,7 +6,7 @@
 
     <groupId>com.e-biz.ncomptier</groupId>
     <artifactId>training-java</artifactId>
-    <version>v.3.0</version>
+    <version>v.3.0_t13</version>
     <packaging>war</packaging>
 
     <properties>
