@@ -6,7 +6,7 @@
 
     <groupId>com.e-biz.ncomptier</groupId>
     <artifactId>training-java</artifactId>
-    <version>v.3.0_t13</version>
+    <version>v.3.0_t13-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <properties>
@@ -24,8 +24,41 @@
         <guava.version>21.0</guava.version>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>test</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <db.url>jdbc:mysql://172.17.0.1:3306/computer-database-db</db.url>
+                <db.driver>com.mysql.cj.jdbc.MysqlDataSource</db.driver>
+                <db.username>root</db.username>
+                <db.password>root</db.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <db.url>jdbc:mysql://localhost:3306/computer-database-db</db.url>
+                <db.driver>com.mysql.cj.jdbc.MysqlDataSource</db.driver>
+                <db.username>root</db.username>
+                <db.password>root</db.password>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
         <defaultGoal>clean install</defaultGoal>
+
         <plugins>
             <plugin>
                 <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
@@ -46,11 +79,12 @@
                         <id>validate</id>
                         <phase>validate</phase>
                         <configuration>
-                            <configLocation>config/checkstyle/checkstyle.xml</configLocation>
-                            <suppressionsLocation>config/checkstyle/suppressions.xml</suppressionsLocation>
+                            <configLocation>src/main/resources/config/checkstyle/checkstyle.xml</configLocation>
+                            <suppressionsLocation>src/main/resources/config/checkstyle/suppressions.xml
+                            </suppressionsLocation>
                             <encoding>UTF-8</encoding>
                             <consoleOutput>true</consoleOutput>
-                            <failsOnError>false</failsOnError>
+                            <failOnViolation>false</failOnViolation>
                         </configuration>
                         <goals>
                             <goal>check</goal>
@@ -59,6 +93,8 @@
                 </executions>
             </plugin>
         </plugins>
+
+
     </build>
 
     <dependencies>
