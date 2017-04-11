@@ -77,6 +77,7 @@ buildNumber.properties
 #Docker files
 Dockerfile.web
 Dockerfile.db
+Dockerfile.mvn
 cdb.cnf
 
 #SQL files
@@ -85,3 +86,14 @@ SQL/
 # End of https://www.gitignore.io/api/intellij,java,maven
 
 
+# Supprimerait src/main/filters/
+# Supprimerait src/main/java/assembly/
+# Supprimerait src/main/java/it/
+# Supprimerait src/main/java/site/
+# Supprimerait src/main/java/ui/
+# Supprimerait src/main/resources-filtered/
+# Supprimerait src/main/webapp/WEB-INF/classes/
+# Supprimerait src/main/webapp/WEB-INF/lib/
+# Supprimerait src/test/filters/
+# Supprimerait src/test/resources-filtered/
+# Supprimerait src/test/ressources/
