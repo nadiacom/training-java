@@ -35,19 +35,22 @@
             </div>
         </c:if>
         <h1 id="homeTitle">
-            <div id="nbComputers" style="display:inline-block;">${nbComputer}</div> Computer(s) found
+            <div id="nbComputers" style="display:inline-block;">${nbComputer}</div>
+            Computer(s) found
         </h1>
 
         <div id="actions" class="form-horizontal">
             <div class="pull-left">
-                <form id="searchForm" action="${pageContext.request.contextPath}/dashboard" method="GET" class="form-inline">
+                <form id="searchForm" action="${pageContext.request.contextPath}/dashboard" method="GET"
+                      class="form-inline">
                     <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name"/>
                     <input type="submit" id="searchsubmit" value="Filter by name"
                            class="btn btn-primary"/>
                 </form>
             </div>
             <div class="pull-right">
-                <a class="btn btn-success" id="addComputer" href="${pageContext.request.contextPath}/add">Add Computer</a>
+                <a class="btn btn-success" id="addComputer" href="${pageContext.request.contextPath}/add">Add
+                    Computer</a>
                 <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
             </div>
         </div>
@@ -72,18 +75,24 @@
                                     </a>
                             </span>
                 </th>
-                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="name" id="computerName" order="c.name" url="${pageContext.request.contextPath}/dashboard"/>
+                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="name" id="computerName"
+                                       order="c.name" url="${pageContext.request.contextPath}/dashboard"/>
                     Computer name
                 </th>
-                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="introduced" id="computerIntroduced" order="c.introduced" url="${pageContext.request.contextPath}/dashboard"/>
+                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="introduced"
+                                       id="computerIntroduced" order="c.introduced"
+                                       url="${pageContext.request.contextPath}/dashboard"/>
                     Introduced date
                 </th>
                 <!-- Table header for Discontinued Date -->
-                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="discontinued" id="computerDiscontinued" order="c.discontinued" url="${pageContext.request.contextPath}/dashboard"/>
+                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="discontinued"
+                                       id="computerDiscontinued" order="c.discontinued"
+                                       url="${pageContext.request.contextPath}/dashboard"/>
                     Discontinued date
                 </th>
                 <!-- Table header for Company -->
-                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="company" id="companyName" order="company.name" url="${pageContext.request.contextPath}/dashboard"/>
+                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="company" id="companyName"
+                                       order="company.name" url="${pageContext.request.contextPath}/dashboard"/>
                     Company
                 </th>
 
@@ -94,10 +103,10 @@
             <c:forEach var="computer" items="${listComputer}">
                 <tr>
                     <td class="editMode">
-                        <input type="checkbox" name="cb" id="cb" class="cb" value="${computer.id}"/>
+                        <input type="checkbox" name="cb" id="cb" class="cb" value="10"/>
                     </td>
                     <td>
-                        <a id="edit" href="edit?id=${computer.id}">test</a>
+                        <a id="edit" href="edit?id=10">test</a>
                     </td>
                     <td>teest</td>
                     <td>tesst</td>
@@ -113,7 +122,8 @@
 <footer class="navbar-fixed-bottom">
     <div class="container text-center">
 
-    <my_tags:paginator currentPage="${currentPage}" pgEnd="${pgEnd}" lastPage="${lastPage}" pgStart="${pgStart}" search="${search}" order="${order}" url="${pageContext.request.contextPath}/dashboard"/>
+        <my_tags:paginator currentPage="${currentPage}" pgEnd="${pgEnd}" lastPage="${lastPage}" pgStart="${pgStart}"
+                           search="${search}" order="${order}" url="${pageContext.request.contextPath}/dashboard"/>
 
     </div>
 </footer>
