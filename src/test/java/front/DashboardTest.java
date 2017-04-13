@@ -3,15 +3,18 @@ package front;
 import org.apache.commons.lang3.time.StopWatch;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
@@ -22,7 +25,7 @@ import static org.junit.Assert.assertEquals;
  * Created by ebiz on 24/03/17.
  */
 
-
+@Ignore
 public class DashboardTest {
 
     private WebDriver driver;
@@ -31,8 +34,9 @@ public class DashboardTest {
 
     @Before
     public void setUp() {
-        System.setProperty("webdriver.gecko.driver", "/home/ebiz/outils/drivers/geckodriver");
-        driver = new FirefoxDriver();
+        System.setProperty("webdriver.gecko.driver", "src/main/resources/drivers/geckodriver");
+        //driver = new FirefoxDriver();
+        driver = new FirefoxDriver(new FirefoxBinary(new File("path/to/your/firefox.exe")));
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         driver.manage().window().maximize();
         testUtils = new TestUtils(driver);

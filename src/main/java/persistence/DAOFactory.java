@@ -29,7 +29,6 @@ public enum DAOFactory {
         if (cHolder == null) {
             // Examines both filesystem and classpath for .properties file
             HikariConfig config = new HikariConfig(PROPERTIES_FILE);
-            config.setMaximumPoolSize(100);
 
             ds = new HikariDataSource(config);
             cHolder = new ThreadLocal<>();

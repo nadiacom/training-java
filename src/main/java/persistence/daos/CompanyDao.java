@@ -3,7 +3,6 @@ package persistence.daos;
 import exceptions.daos.DAOException;
 import models.Company;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**

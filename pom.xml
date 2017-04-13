@@ -6,7 +6,7 @@
 
     <groupId>com.e-biz.ncomptier</groupId>
     <artifactId>training-java</artifactId>
-    <version>v.3.0_t13-SNAPSHOT</version>
+    <version>SNAPSHOT</version>
     <packaging>war</packaging>
 
     <properties>
@@ -23,30 +23,6 @@
         <selelium.version>3.3.1</selelium.version>
         <guava.version>21.0</guava.version>
     </properties>
-
-    <profiles>
-        <profile>
-            <id>test</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <db.url>jdbc:mysql://172.17.0.1:3306/computer-database-db</db.url>
-                <db.driver>com.mysql.cj.jdbc.MysqlDataSource</db.driver>
-                <db.username>root</db.username>
-                <db.password>root</db.password>
-            </properties>
-        </profile>
-        <profile>
-            <id>dev</id>
-            <properties>
-                <db.url>jdbc:mysql://localhost:3306/computer-database-db</db.url>
-                <db.driver>com.mysql.cj.jdbc.MysqlDataSource</db.driver>
-                <db.username>root</db.username>
-                <db.password>root</db.password>
-            </properties>
-        </profile>
-    </profiles>
 
     <build>
 
@@ -96,6 +72,31 @@
 
 
     </build>
+
+    <profiles>
+        <profile>
+            <id>test</id>
+            <properties>
+                <db.url>jdbc:mysql://172.17.0.1:3307/computer-database-db</db.url>
+                <db.driver>com.mysql.cj.jdbc.MysqlDataSource</db.driver>
+                <db.username>root</db.username>
+                <db.password>root</db.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <db.url>jdbc:mysql://172.17.0.1:3306/computer-database-db</db.url>
+                <db.driver>com.mysql.cj.jdbc.MysqlDataSource</db.driver>
+                <db.username>root</db.username>
+                <db.password>root</db.password>
+            </properties>
+        </profile>
+    </profiles>
+
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->

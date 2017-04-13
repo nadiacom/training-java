@@ -15,10 +15,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <!-- Bootstrap -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="../css/dataTables.bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="../css/font-awesome.css" rel="stylesheet" media="screen">
-    <link href="../css/main.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/css/dataTables.bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/css/font-awesome.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
 <header class="navbar navbar-inverse navbar-fixed-top">
@@ -40,20 +40,20 @@
 
         <div id="actions" class="form-horizontal">
             <div class="pull-left">
-                <form id="searchForm" action="/dashboard" method="GET" class="form-inline">
+                <form id="searchForm" action="${pageContext.request.contextPath}/dashboard" method="GET" class="form-inline">
                     <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name"/>
                     <input type="submit" id="searchsubmit" value="Filter by name"
                            class="btn btn-primary"/>
                 </form>
             </div>
             <div class="pull-right">
-                <a class="btn btn-success" id="addComputer" href="/add">Add Computer</a>
+                <a class="btn btn-success" id="addComputer" href="${pageContext.request.contextPath}/add">Add Computer</a>
                 <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
             </div>
         </div>
     </div>
 
-    <form id="deleteForm" action="/dashboard" method="POST">
+    <form id="deleteForm" action="${pageContext.request.contextPath}/dashboard" method="POST">
         <input type="hidden" name="selection" value="">
     </form>
 
@@ -72,18 +72,18 @@
                                     </a>
                             </span>
                 </th>
-                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="name" id="computerName" order="c.name" url="/dashboard"/>
+                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="name" id="computerName" order="c.name" url="${pageContext.request.contextPath}/dashboard"/>
                     Computer name
                 </th>
-                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="introduced" id="computerIntroduced" order="c.introduced" url="/dashboard"/>
+                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="introduced" id="computerIntroduced" order="c.introduced" url="${pageContext.request.contextPath}/dashboard"/>
                     Introduced date
                 </th>
                 <!-- Table header for Discontinued Date -->
-                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="discontinued" id="computerDiscontinued" order="c.discontinued" url="/dashboard"/>
+                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="discontinued" id="computerDiscontinued" order="c.discontinued" url="${pageContext.request.contextPath}/dashboard"/>
                     Discontinued date
                 </th>
                 <!-- Table header for Company -->
-                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="company" id="companyName" order="company.name" url="/dashboard"/>
+                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="company" id="companyName" order="company.name" url="${pageContext.request.contextPath}/dashboard"/>
                     Company
                 </th>
 
@@ -113,7 +113,7 @@
 <footer class="navbar-fixed-bottom">
     <div class="container text-center">
 
-    <my_tags:paginator currentPage="${currentPage}" pgEnd="${pgEnd}" lastPage="${lastPage}" pgStart="${pgStart}" search="${search}" order="${order}" url="/dashboard"/>
+    <my_tags:paginator currentPage="${currentPage}" pgEnd="${pgEnd}" lastPage="${lastPage}" pgStart="${pgStart}" search="${search}" order="${order}" url="${pageContext.request.contextPath}/dashboard"/>
 
     </div>
 </footer>
@@ -139,8 +139,8 @@
         }
     }
 </script>
-<jsp:include page="partials/scripts.jsp"></jsp:include>
-<script src="/js/dashboard.js"></script>
+<jsp:include page="${pageContext.request.contextPath}/partials/scripts.jsp"></jsp:include>
+<script src="${pageContext.request.contextPath}/js/dashboard.js"></script>
 </body>
 
 </html>

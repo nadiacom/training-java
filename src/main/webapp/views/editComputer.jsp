@@ -13,10 +13,10 @@
     <title>Computer Database</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="../css/font-awesome.css" rel="stylesheet" media="screen">
-    <link href="../css/jquery-ui.min.css" rel="stylesheet" media="screen">
-    <link href="../css/main.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/css/font-awesome.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/css/jquery-ui.min.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
 <header class="navbar navbar-inverse navbar-fixed-top">
@@ -39,7 +39,7 @@
                     </div>
                 </c:if>
 
-                <form id="computer_form" action="/edit" method="POST">
+                <form id="computer_form" action="${pageContext.request.contextPath}/edit" method="POST">
                     <fieldset>
                         <input type="hidden" name="id" id="id" value="${computer.id}"/>
                         <div class="form-group">
@@ -67,7 +67,7 @@
                     <div class="actions pull-right">
                         <input type="submit" value="Edit" class="btn btn-primary">
                         or
-                        <a href="/dashboard" class="btn btn-default">Cancel</a>
+                        <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-default">Cancel</a>
                     </div>
                 </form>
             </div>
@@ -76,7 +76,7 @@
 </section>
 <jsp:include page="partials/scripts.jsp"></jsp:include>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-<script src="../js/form-validation.js"></script>
+<script src="${pageContext.request.contextPath}/js/form-validation.js"></script>
 <script>
     window.onload = function() {
         $('#introduced').datepicker({
