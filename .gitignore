@@ -74,17 +74,7 @@ buildNumber.properties
 # Exclude maven wrapper
 !/.mvn/wrapper/maven-wrapper.jar
 
-#Docker files
-Dockerfile.web
-Dockerfile.db
-Dockerfile.mvn
-cdb.cnf
-
-#SQL files
-SQL/
-
 # End of https://www.gitignore.io/api/intellij,java,maven
-
 
 # Supprimerait src/main/filters/
 # Supprimerait src/main/java/assembly/

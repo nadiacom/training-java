@@ -1,0 +1,6 @@
+FROM tomcat:8.5-jre8
+MAINTAINER "Nadia Comptier <nadia.comptier@gmail.com>"
+
+# COPY /usr/src/app/build/training-java-v.3.0_t13-SNAPSHOT /usr/local/tomcat/webapps/
+
+# CMD ["bin/catalina.sh", "run"]
