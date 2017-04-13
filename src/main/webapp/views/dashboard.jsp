@@ -103,10 +103,10 @@
             <c:forEach var="computer" items="${listComputer}">
                 <tr>
                     <td class="editMode">
-                        <input type="checkbox" name="cb" id="cb" class="cb" value="10"/>
+                        <input type="checkbox" name="cb" class="cb" value="10"/>
                     </td>
                     <td>
-                        <a id="edit" href="edit?id=10">test</a>
+                        <a name="edit" href="edit?id=10">test</a>
                     </td>
                     <td>teest</td>
                     <td>tesst</td>
