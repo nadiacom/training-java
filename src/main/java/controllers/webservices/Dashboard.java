@@ -1,6 +1,7 @@
 package controllers.webservices;
 
 import models.dtos.ComputerDTO;
+import org.slf4j.LoggerFactory;
 import services.ComputerService;
 import utils.ComputerUtils;
 import utils.Pagination;
@@ -16,6 +17,9 @@ import java.util.List;
  * Created by ebiz on 20/03/17.
  */
 public class Dashboard extends javax.servlet.http.HttpServlet {
+
+    private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.Dashboard");
+
 
     /**
      * @param request  request
@@ -33,7 +37,8 @@ public class Dashboard extends javax.servlet.http.HttpServlet {
 
         //GET COMPUTERS LIST
         List<ComputerDTO> listComputer = ComputerUtils.getPageList(request, Pagination.getCurrentPage(request), nbComputerByPage);
-
+        LOGGER.debug("computer list :" + listComputer.toString());
+       
         //PAGINATION
         //Get total number of computers
         int nbComputer = ComputerUtils.getNumberComputers(request);
