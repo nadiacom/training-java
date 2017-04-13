@@ -44,8 +44,8 @@ public class Dashboard extends javax.servlet.http.HttpServlet {
             LOGGER.debug("computer introduced : " + computer.getIntroduced());
             LOGGER.debug("computer discon : " + computer.getDiscontinued());
             LOGGER.debug("computer company : " + computer.getCompanyDTO().getId() + " "computer.getCompanyDTO().getName());
-         
         }
+
         //PAGINATION
         //Get total number of computers
         int nbComputer = ComputerUtils.getNumberComputers(request);
