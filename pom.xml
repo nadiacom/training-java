@@ -6,7 +6,7 @@
 
     <groupId>com.e-biz.ncomptier</groupId>
     <artifactId>training-java</artifactId>
-    <version>SNAPSHOT</version>
+    <version>snapshot</version>
     <packaging>war</packaging>
 
     <properties>
