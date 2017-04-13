@@ -39,7 +39,7 @@ public class ComputerAdd extends HttpServlet {
         //Set view parameters
         request.setAttribute("companies", companies);
         //Dispatch view
-        RequestDispatcher rd = request.getRequestDispatcher(request.getContextPath() + "views/addComputer.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher(request.getContextPath() + "/views/addComputer.jsp");
         rd.include(request, response);
     }
 
