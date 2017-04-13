@@ -57,7 +57,7 @@ public class ComputerEdit extends javax.servlet.http.HttpServlet {
                 request.setAttribute("computer", c);
                 request.setAttribute("companies", companies);
                 //Dispatch view
-                RequestDispatcher rd = request.getRequestDispatcher(request.getContextPath() + "views/editComputer.jsp");
+                RequestDispatcher rd = request.getRequestDispatcher(request.getContextPath() + "/views/editComputer.jsp");
                 rd.include(request, response);
             } else {
                 request.setAttribute("errorMsg", error);

@@ -58,7 +58,7 @@ public class Dashboard extends javax.servlet.http.HttpServlet {
         }
 
         //Dispatch view
-        RequestDispatcher rd = request.getRequestDispatcher(request.getContextPath() + "views/dashboard.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher(request.getContextPath() + "/views/dashboard.jsp");
         rd.include(request, response);
     }
 
