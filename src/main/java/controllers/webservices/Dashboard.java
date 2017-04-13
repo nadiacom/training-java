@@ -38,7 +38,14 @@ public class Dashboard extends javax.servlet.http.HttpServlet {
         //GET COMPUTERS LIST
         List<ComputerDTO> listComputer = ComputerUtils.getPageList(request, Pagination.getCurrentPage(request), nbComputerByPage);
         LOGGER.debug("computer list :" + listComputer.toString());
-       
+        for (ComputerDTO computer : listComputer) {
+            LOGGER.debug("computer id : "+ computer.getId());
+            LOGGER.debug("computer name : "+ computer.getName());
+            LOGGER.debug("computer introduced : "+ computer.getIntroduced());
+            LOGGER.debug("computer discon : "+ computer.getDiscontinued());
+            LOGGER.debug("computer company : "+ computer.getCompanyDTO().getId() + " "  computer.getCompanyDTO().getName() );
+            
+        }
         //PAGINATION
         //Get total number of computers
         int nbComputer = ComputerUtils.getNumberComputers(request);
