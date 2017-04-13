@@ -99,9 +99,9 @@
                     <td>
                         <a id="edit" href="edit?id=${computer.id}">test</a>
                     </td>
-                    <td>${computer.introduced}</td>
-                    <td>${computer.discontinued}</td>
-                    <td>${computer.companyDTO.name}</td>
+                    <td>teest</td>
+                    <td>tesst</td>
+                    <td>tesst</td>
                 </tr>
             </c:forEach>
             </tbody>
