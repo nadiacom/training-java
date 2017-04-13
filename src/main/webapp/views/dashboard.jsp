@@ -149,7 +149,7 @@
         }
     }
 </script>
-<jsp:include page="${pageContext.request.contextPath}/partials/scripts.jsp"></jsp:include>
+<jsp:include page="${pageContext.request.contextPath}/views/partials/scripts.jsp"></jsp:include>
 <script src="${pageContext.request.contextPath}/js/dashboard.js"></script>
 </body>
 
