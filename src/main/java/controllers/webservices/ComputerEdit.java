@@ -57,12 +57,12 @@ public class ComputerEdit extends javax.servlet.http.HttpServlet {
                 request.setAttribute("computer", c);
                 request.setAttribute("companies", companies);
                 //Dispatch view
-                RequestDispatcher rd = request.getRequestDispatcher("views/editComputer.jsp");
+                RequestDispatcher rd = request.getRequestDispatcher(request.getContextPath() + "views/editComputer.jsp");
                 rd.include(request, response);
             } else {
                 request.setAttribute("errorMsg", error);
                 //Dispatch view
-                RequestDispatcher rd = request.getRequestDispatcher("/dashboard");
+                RequestDispatcher rd = request.getRequestDispatcher(request.getContextPath() + "/dashboard");
                 rd.include(request, response);
             }
         }
@@ -97,7 +97,7 @@ public class ComputerEdit extends javax.servlet.http.HttpServlet {
                     //Update computer
                     ComputerService.INSTANCE.update(Integer.valueOf(request.getParameter("id")), request.getParameter("name"), inputValidator.getLocalDate(request.getParameter("introduced")), inputValidator.getLocalDate(request.getParameter("discontinued")), computerValidator.getValidCompanyId(request.getParameter("companyId")));
                     //Redirect to dashboard
-                    response.sendRedirect("/dashboard");
+                    response.sendRedirect(request.getContextPath() + "/dashboard");
                 } else {
                     request.setAttribute("errorMsg", error);
                     doGet(request, response);

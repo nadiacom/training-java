@@ -1,0 +1,12 @@
+FROM mysql:5.7
+COPY cdb.cnf /etc/mysql/conf.d/
+
+COPY gatling-test/sqlScripts/1-SCHEMA.sql /etc/mysql/conf.d/
+COPY gatling-test/sqlScripts/2-PRIVILEGES.sql /etc/mysql/conf.d/
+COPY SQL/INSERT.sql /etc/mysql/conf.d/
+
+COPY gatling-test/sqlScripts/1-SCHEMA.sql /docker-entrypoint-initdb.d/
+COPY gatling-test/sqlScripts/2-PRIVILEGES.sql /docker-entrypoint-initdb.d/
+COPY SQL/INSERT.sql /docker-entrypoint-initdb.d/
+
+EXPOSE 3306

@@ -3,7 +3,6 @@ package persistence.daos;
 import exceptions.daos.DAOException;
 import models.Computer;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -46,7 +45,6 @@ public interface ComputerDao {
      * @param computer (required) computer.
      * @return computer id.
      * @throws DAOException exception dao.
-     * @throws SQLException SQLException.
      */
     Long update(Computer computer) throws DAOException;
 
@@ -82,7 +80,6 @@ public interface ComputerDao {
      *
      * @return number of computers.
      * @throws DAOException exception dao.
-     * @throws SQLException SQL exception.
      */
     int count() throws DAOException;
 

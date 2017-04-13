@@ -6,7 +6,6 @@ import exceptions.validators.models.computer.ComputerDiscontinuedValidatorExcept
 import exceptions.validators.models.computer.ComputerIntroducedValidatorException;
 import exceptions.validators.models.computer.ComputerNameValidatorException;
 import models.Company;
-import models.Computer;
 import services.CompanyService;
 import services.ComputerService;
 import services.validators.inputs.ComputerValidator;
@@ -40,7 +39,7 @@ public class ComputerAdd extends HttpServlet {
         //Set view parameters
         request.setAttribute("companies", companies);
         //Dispatch view
-        RequestDispatcher rd = request.getRequestDispatcher("views/addComputer.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher(request.getContextPath() + "views/addComputer.jsp");
         rd.include(request, response);
     }
 
@@ -71,7 +70,7 @@ public class ComputerAdd extends HttpServlet {
                 //Create computer
                 ComputerService.INSTANCE.create(request.getParameter("name"), inputValidator.getLocalDate(request.getParameter("introduced")), inputValidator.getLocalDate(request.getParameter("discontinued")), computerValidator.getValidCompanyId(request.getParameter("companyId")));
                 //Redirect to dashboard
-                response.sendRedirect("/dashboard");
+                response.sendRedirect(request.getContextPath() + "/dashboard");
             } else {
                 request.setAttribute("errorMsg", error);
                 doGet(request, response);

@@ -12,6 +12,6 @@
     <title>$Title$</title>
   </head>
   <body>
-  <p>hey</p>Coucou!!!!!!!!
+  <p>hey</p>
   </body>
 </html>

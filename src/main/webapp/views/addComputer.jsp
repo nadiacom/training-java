@@ -14,15 +14,15 @@
     <title>Computer Database</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="../css/font-awesome.css" rel="stylesheet" media="screen">
-    <link href="../css/jquery-ui.min.css" rel="stylesheet" media="screen">
-    <link href="../css/main.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/css/font-awesome.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/css/jquery-ui.min.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
 <header class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="/dashboard"> Application - Computer Database </a>
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/dashboard"> Application - Computer Database </a>
     </div>
 </header>
 
@@ -36,7 +36,7 @@
                         <strong>Error : </strong>${errorMsg}
                     </div>
                 </c:if>
-                <form id="computer_form" action="/add" method="POST">
+                <form id="computer_form" action="${pageContext.request.contextPath}/add" method="POST">
                     <fieldset>
                         <div class="form-group">
                             <label for="name">Computer name</label>
@@ -63,7 +63,7 @@
                     <div class="actions pull-right">
                         <input type="submit" value="Add" class="btn btn-primary">
                         or
-                        <a href="/dashboard" class="btn btn-default">Cancel</a>
+                        <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-default">Cancel</a>
                     </div>
                 </form>
             </div>
@@ -72,7 +72,7 @@
 </section>
 <jsp:include page="partials/scripts.jsp"></jsp:include>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-<script src="../js/form-validation.js"></script>
+<script src="${pageContext.request.contextPath}/js/form-validation.js"></script>
 <script>
     $(function() {
         $('#introduced').datepicker({

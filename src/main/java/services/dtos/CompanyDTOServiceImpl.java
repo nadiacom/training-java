@@ -3,7 +3,6 @@ package services.dtos;
 import mappers.CompanyMapper;
 import models.Company;
 import models.dtos.CompanyDTO;
-import persistence.daos.CompanyDaoImpl;
 import services.CompanyService;
 import services.validators.inputs.Input;
 
