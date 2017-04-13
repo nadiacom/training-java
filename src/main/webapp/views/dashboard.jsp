@@ -97,7 +97,7 @@
                         <input type="checkbox" name="cb" id="cb" class="cb" value="${computer.id}"/>
                     </td>
                     <td>
-                        <a id="edit" href="edit?id=${computer.id}" onclick="">${computer.name}</a>
+                        <a id="edit" href="edit?id=${computer.id}">test</a>
                     </td>
                     <td>${computer.introduced}</td>
                     <td>${computer.discontinued}</td>
