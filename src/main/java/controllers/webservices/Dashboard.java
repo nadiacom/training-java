@@ -65,6 +65,7 @@ public class Dashboard extends javax.servlet.http.HttpServlet {
         RequestDispatcher rd = request.getRequestDispatcher("views/dashboard.jsp");
         rd.include(request, response);
     }
+    
 
     /**
      * @param request  request.
