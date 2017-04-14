@@ -39,15 +39,18 @@ public class ComputerUtils {
             }
         }
         if (request.getParameter("search") != null && request.getParameter("order") != null) {
+            LOGGER.debug("Order parameter: " + request.getParameter("order"));
+            LOGGER.debug("List computer search and order: " + listComputer);
             listComputer = computerDTOService.findByNameAndOrder(request.getParameter("search"), request.getParameter("order"), order, currentPage, nbComputerByPage);
         } else if (request.getParameter("search") != null) {
+            LOGGER.debug("Order parameter: " + request.getParameter("order"));
+            LOGGER.debug("List computer search: " + listComputer);
             listComputer = computerDTOService.findByName(request.getParameter("search"), currentPage, nbComputerByPage);
         } else if (request.getParameter("order") != null) {
             listComputer = computerDTOService.findByNameAndOrder("", request.getParameter("order"), order, currentPage, nbComputerByPage);
             LOGGER.debug("Order parameter: " + request.getParameter("order"));
             LOGGER.debug("List computer order: " + listComputer);
         } else {
-
             listComputer = computerDTOService.getPageList(currentPage, nbComputerByPage);
             LOGGER.debug("List computer : " + listComputer);
         }
