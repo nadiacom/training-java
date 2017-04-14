@@ -55,7 +55,7 @@
 </ul>
 
 <div class="btn-group btn-group-sm pull-right" role="group">
-    <a href="<%=request.getContextPath()%>${url}?limit=0&order=${order}&search=${search}&currentPage=${currentPage}" class="btn btn-default ${sessionScope.paginateLimit == 10 ? 'active' : ''}">10</a>
-    <a href="<%=request.getContextPath()%>${url}?limit=1&order=${order}&search=${search}&currentPage=${currentPage}" class="btn btn-default ${sessionScope.paginateLimit == 50 ? 'active' : ''}">50</a>
-    <a href="<%=request.getContextPath()%>${url}?limit=2&order=${order}&search=${search}&currentPage=${currentPage}" class="btn btn-default ${sessionScope.paginateLimit == 100 ? 'active' : ''}">100</a>
+    <a href="${url}?limit=0&order=${order}&search=${search}&currentPage=${currentPage}" class="btn btn-default ${sessionScope.paginateLimit == 10 ? 'active' : ''}">10</a>
+    <a href="${url}?limit=1&order=${order}&search=${search}&currentPage=${currentPage}" class="btn btn-default ${sessionScope.paginateLimit == 50 ? 'active' : ''}">50</a>
+    <a href="${url}?limit=2&order=${order}&search=${search}&currentPage=${currentPage}" class="btn btn-default ${sessionScope.paginateLimit == 100 ? 'active' : ''}">100</a>
 </div>
