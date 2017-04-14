@@ -29,6 +29,7 @@ public class ComputerUtils {
         String order = "";
 
         List<ComputerDTO> listComputer = null;
+        LOGGER.debug("order parameter: " + request.getParameter("order"));
 
         if (request.getParameter("click") != null) {
             isOrderAsC = !isOrderAsC;
@@ -38,17 +39,17 @@ public class ComputerUtils {
                 order = "DESC";
             }
         }
-        if (request.getParameter("search") != null && request.getParameter("order") != null) {
-            LOGGER.debug("Order parameter: " + request.getParameter("order"));
-            LOGGER.debug("List computer search and order: " + listComputer);
+        if (request.getParameter("search") != null && request.getParameter("order") != null && !(request.getParameter("order")).isEmpty()) {
+            LOGGER.debug("Order parameter 1: " + request.getParameter("order"));
             listComputer = computerDTOService.findByNameAndOrder(request.getParameter("search"), request.getParameter("order"), order, currentPage, nbComputerByPage);
+            LOGGER.debug("List computer search and order: " + listComputer);
         } else if (request.getParameter("search") != null) {
-            LOGGER.debug("Order parameter: " + request.getParameter("order"));
-            LOGGER.debug("List computer search: " + listComputer);
+            LOGGER.debug("Order parameter 2: " + request.getParameter("order"));
             listComputer = computerDTOService.findByName(request.getParameter("search"), currentPage, nbComputerByPage);
-        } else if (request.getParameter("order") != null) {
+            LOGGER.debug("List computer search: " + listComputer);
+        } else if (request.getParameter("order") != null && !(request.getParameter("order").isEmpty())) {
             listComputer = computerDTOService.findByNameAndOrder("", request.getParameter("order"), order, currentPage, nbComputerByPage);
-            LOGGER.debug("Order parameter: " + request.getParameter("order"));
+            LOGGER.debug("Order parameter 3: " + request.getParameter("order"));
             LOGGER.debug("List computer order: " + listComputer);
         } else {
             listComputer = computerDTOService.getPageList(currentPage, nbComputerByPage);
