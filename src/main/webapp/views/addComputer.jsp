@@ -1,4 +1,3 @@
-<%@ taglib prefix="for" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
@@ -8,6 +7,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="my_tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,7 +22,7 @@
 <body>
 <header class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="${pageContext.request.contextPath}/dashboard"> Application - Computer Database </a>
+        <a class="navbar-brand" href=<my_tags:link url="${pageContext.request.contextPath}/dashboard"/>> Application - Computer Database </a>
     </div>
 </header>
 
@@ -63,7 +63,7 @@
                     <div class="actions pull-right">
                         <input type="submit" value="Add" class="btn btn-primary">
                         or
-                        <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-default">Cancel</a>
+                        <a href=<my_tags:link url="${pageContext.request.contextPath}/dashboard"/> class="btn btn-default">Cancel</a>
                     </div>
                 </form>
             </div>

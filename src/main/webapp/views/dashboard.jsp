@@ -49,7 +49,7 @@
                 </form>
             </div>
             <div class="pull-right">
-                <a class="btn btn-success" id="addComputer" href="${pageContext.request.contextPath}/add">Add
+                <a class="btn btn-success" id="addComputer1" href=<my_tags:link url="${pageContext.request.contextPath}/add"/>>Add
                     Computer</a>
                 <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
             </div>
@@ -106,7 +106,7 @@
                         <input type="checkbox" class="cb" value="${computer.id}">
                     </td>
                     <td>
-                        <a class="edit" href="edit?id=${computer.id}">${computer.name}</a>
+                        <a class="edit" href=<my_tags:link url="${pageContext.request.contextPath}/edit" id="${computer.id}"/>>${computer.name}</a>
                     </td>
                     <td>${computer.introduced}</td>
                     <td>${computer.discontinued}</td>
