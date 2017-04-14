@@ -44,12 +44,12 @@ public class ComputerUtils {
             listComputer = computerDTOService.findByName(request.getParameter("search"), currentPage, nbComputerByPage);
         } else if (request.getParameter("order") != null) {
             listComputer = computerDTOService.findByNameAndOrder("", request.getParameter("order"), order, currentPage, nbComputerByPage);
-         
-            LOGGER.debug("List computer order: "+ listComputer);
+            LOGGER.debug("Order parameter: " + request.getParameter("order"));
+            LOGGER.debug("List computer order: " + listComputer);
         } else {
 
             listComputer = computerDTOService.getPageList(currentPage, nbComputerByPage);
-            LOGGER.debug("List computer : "+ listComputer);
+            LOGGER.debug("List computer : " + listComputer);
         }
         return listComputer;
     }
