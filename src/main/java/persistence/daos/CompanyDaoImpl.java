@@ -17,11 +17,8 @@ import static persistence.daos.DAOUtilitaire.initPreparedStatement;
 /**
  * Created by ebiz on 14/03/17.
  */
-public enum CompanyDaoImpl implements CompanyDao {
+public class CompanyDaoImpl implements CompanyDao {
 
-    INSTANCE;
-
-    protected DAOFactory daoFactory = DAOFactory.INSTANCE;
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.CompanyDaoImpl");
 
     private static final String SQL_SELECT_BY_ID = "SELECT id, name FROM company WHERE id = ?";
@@ -31,7 +28,7 @@ public enum CompanyDaoImpl implements CompanyDao {
     private static final String SQL_DELETE = "DELETE FROM company WHERE id = ?";
 
     private static final int PAGE_SIZE = 10;
-
+    private static DAOFactory daoFactory;
 
     /**
      * Default constructor.
@@ -180,4 +177,11 @@ public enum CompanyDaoImpl implements CompanyDao {
     }
 
 
+    public void setDaoFactory(DAOFactory daoFactory) {
+        this.daoFactory = daoFactory;
+    }
+
+    public DAOFactory getDaoFactory() {
+        return daoFactory;
+    }
 }

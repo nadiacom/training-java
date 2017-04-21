@@ -7,9 +7,9 @@ import services.validators.inputs.Input;
 /**
  * Created by ebiz on 22/03/17.
  */
-public enum ComputerMapper {
+public class ComputerMapper {
 
-    INSTANCE;
+    private static CompanyMapper companyMapper;
 
     /**
      * Default constructor.
@@ -33,7 +33,7 @@ public enum ComputerMapper {
                 .introduced(computerDTO.getIntroduced() != null ? input.getLocalDate(computerDTO.getIntroduced()) : null)
                 .discontinued(computerDTO.getDiscontinued() != null ? input.getLocalDate(computerDTO.getDiscontinued()) : null)
                 //Get companyDTO and map it to company
-                .company(CompanyMapper.INSTANCE.from(computerDTO.getCompanyDTO()))
+                .company(companyMapper.from(computerDTO.getCompanyDTO()))
                 .build();
         return computer;
     }
@@ -52,9 +52,16 @@ public enum ComputerMapper {
                 .introduced(computer.getDiscontinued() != null ? computer.getIntroduced().toString() : "")
                 .discontinued(computer.getDiscontinued() != null ? computer.getDiscontinued().toString() : "")
                 //Get companyDTO and map it to company
-                .company(CompanyMapper.INSTANCE.from(computer.getCompany()))
+                .company(companyMapper.from(computer.getCompany()))
                 .build();
         return computerDTO;
     }
 
+    public void setCompanyMapper(CompanyMapper companyMapper) {
+        this.companyMapper = companyMapper;
+    }
+
+    public CompanyMapper getCompanyMapper() {
+        return companyMapper;
+    }
 }

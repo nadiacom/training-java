@@ -4,29 +4,24 @@ import models.Company;
 import models.Computer;
 import persistence.DAOFactory;
 import persistence.daos.CompanyDao;
-import persistence.daos.CompanyDaoImpl;
 import persistence.daos.ComputerDao;
-import persistence.daos.ComputerDaoImpl;
 
 import java.util.List;
 
 /**
  * Created by ebiz on 20/03/17.
  */
-public enum CompanyService {
+public class CompanyService {
 
-    INSTANCE;
+    private static CompanyDao companyDao;
+    private static ComputerDao computerDao;
+    private static DAOFactory daoFactory;
 
     /**
      * Default constructor.
      */
-    CompanyService() {
+    public CompanyService() {
     }
-
-    private static CompanyDao companyDao = CompanyDaoImpl.INSTANCE;
-    private static ComputerDao computerDao = ComputerDaoImpl.INSTANCE;
-
-    protected DAOFactory daoFactory = DAOFactory.INSTANCE;
 
     /**
      * Get all companies.
@@ -119,4 +114,31 @@ public enum CompanyService {
         daoFactory.close();
         return companyId;
     }
+
+    public void setCompanyDao(CompanyDao companyDao) {
+        this.companyDao = companyDao;
+    }
+
+    public CompanyDao getCompanyDao() {
+        return companyDao;
+    }
+
+
+    public void setComputerDao(ComputerDao computerDao) {
+        this.computerDao = computerDao;
+    }
+
+    public ComputerDao getComputerDao() {
+        return computerDao;
+    }
+
+    public void setDaoFactory(DAOFactory daoFactory) {
+        this.daoFactory = daoFactory;
+    }
+
+    public DAOFactory getDaoFactory() {
+        return daoFactory;
+    }
 }
+
+

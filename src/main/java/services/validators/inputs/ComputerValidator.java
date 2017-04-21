@@ -16,6 +16,7 @@ import java.time.LocalDate;
 public class ComputerValidator {
 
     Input input = new Input();
+    private CompanyDaoImpl companyDaoIml;
 
     /**
      * Check if computer input fields are valid or not and throw specified exceptions.
@@ -117,7 +118,7 @@ public class ComputerValidator {
             valid = false;
         } else {
             //Check if company exists in database
-            valid = CompanyDaoImpl.INSTANCE.findById(Long.valueOf(getValidCompanyId(companyId))).getId() == Long.valueOf(getValidCompanyId(companyId)) ? true : false;
+            valid = companyDaoIml.findById(Long.valueOf(getValidCompanyId(companyId))).getId() == Long.valueOf(getValidCompanyId(companyId)) ? true : false;
         }
         return valid;
     }

@@ -14,8 +14,7 @@ public class ComputerUtils {
     private static boolean isOrderAsC = false;
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.ComputerUtils");
-    private static ComputerDTOServiceImpl computerDTOService = ComputerDTOServiceImpl.INSTANCE;
-
+    private static ComputerDTOServiceImpl computerDTOService;
 
     /**
      * Get computers list for current pagination from request.
@@ -73,5 +72,13 @@ public class ComputerUtils {
             nb = computerDTOService.count();
         }
         return nb;
+    }
+
+    public void setComputerDTOService(ComputerDTOServiceImpl computerDTOService) {
+        this.computerDTOService = computerDTOService;
+    }
+
+    public ComputerDTOServiceImpl getComputerDTOService() {
+        return computerDTOService;
     }
 }

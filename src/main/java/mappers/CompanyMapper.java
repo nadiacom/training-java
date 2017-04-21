@@ -6,9 +6,7 @@ import models.dtos.CompanyDTO;
 /**
  * Created by ebiz on 22/03/17.
  */
-public enum CompanyMapper {
-
-    INSTANCE;
+public class CompanyMapper {
 
     /**
      * Default constructor.

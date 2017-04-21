@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class ComputerCli {
 
-    private static ComputerService computerService = ComputerService.INSTANCE;
+    private static ComputerService computerService;
 
     /**
      * List and print all computers.

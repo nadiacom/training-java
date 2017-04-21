@@ -1,6 +1,5 @@
 package persistence.daos;
 
-import cli.CompanyCli;
 import exceptions.daos.DAOException;
 import models.Company;
 import models.Computer;
@@ -19,11 +18,10 @@ import static persistence.daos.DAOUtilitaire.initPreparedStatement;
 /**
  * Created by ebiz on 14/03/17.
  */
-public enum ComputerDaoImpl implements ComputerDao {
+public class ComputerDaoImpl implements ComputerDao {
 
-    INSTANCE;
 
-    protected DAOFactory daoFactory = DAOFactory.INSTANCE;
+    private static DAOFactory daoFactory;
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.ComputerDaoImpl");
 
     private static final String SQL_INSERT = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
@@ -38,8 +36,6 @@ public enum ComputerDaoImpl implements ComputerDao {
     private static final String SQL_DELETE_BY_COMPANY = "DELETE FROM computer WHERE company_id = ?";
     private static final String SQL_SELECT_BY_COMPANY = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE company_id = ?";
     private static final String SQL_ORDER_BY = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.name LIKE ? OR company.name LIKE ? ORDER BY ? ? LIMIT ? OFFSET ?";
-
-    private static CompanyCli companyService = new CompanyCli();
 
     /**
      * Default constructor.
@@ -342,5 +338,12 @@ public enum ComputerDaoImpl implements ComputerDao {
         return listComputer;
     }
 
+    public void setDaoFactory(DAOFactory daoFactory) {
+        this.daoFactory = daoFactory;
+    }
+
+    public DAOFactory getDaoFactory() {
+        return daoFactory;
+    }
 
 }

@@ -9,6 +9,8 @@ import exceptions.validators.urls.ComputerEditUrlValidatorException;
 import models.dtos.CompanyDTO;
 import models.dtos.ComputerDTO;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.WebApplicationContext;
 import services.ComputerService;
 import services.dtos.CompanyDTOServiceImpl;
 import services.dtos.ComputerDTOServiceImpl;
@@ -17,6 +19,8 @@ import services.validators.inputs.Input;
 import services.validators.urls.ComputerEditUrlValidator;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.List;
 
@@ -27,8 +31,19 @@ import java.util.List;
 public class ComputerEdit extends javax.servlet.http.HttpServlet {
 
     private static Input inputValidator = new Input();
+    private ComputerService computerService;
+    private CompanyDTOServiceImpl companyDTOService;
+    private ComputerDTOServiceImpl computerDTOService;
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.ComputerEdit");
 
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        ApplicationContext ac = (ApplicationContext) config.getServletContext().getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
+        this.computerService = (ComputerService) ac.getBean("computerService");
+        this.companyDTOService = (CompanyDTOServiceImpl) ac.getBean("companyDTOService");
+        this.computerDTOService = (ComputerDTOServiceImpl) ac.getBean("computerDTOService");
+    }
     /**
      * doGet method.
      *
@@ -50,9 +65,9 @@ public class ComputerEdit extends javax.servlet.http.HttpServlet {
                 //Get computer id
                 int id = Integer.valueOf(request.getParameter("id"));
                 //Get computer from id
-                ComputerDTO c = ComputerDTOServiceImpl.INSTANCE.findById(id);
+                ComputerDTO c = computerDTOService.findById(id);
                 //Get companies ids and names
-                List<CompanyDTO> companies = CompanyDTOServiceImpl.INSTANCE.getAll();
+                List<CompanyDTO> companies = companyDTOService.getAll();
                 //Set view parameters
                 request.setAttribute("computer", c);
                 request.setAttribute("companies", companies);
@@ -95,7 +110,7 @@ public class ComputerEdit extends javax.servlet.http.HttpServlet {
             } finally {
                 if (error.isEmpty()) {
                     //Update computer
-                    ComputerService.INSTANCE.update(Integer.valueOf(request.getParameter("id")), request.getParameter("name"), inputValidator.getLocalDate(request.getParameter("introduced")), inputValidator.getLocalDate(request.getParameter("discontinued")), computerValidator.getValidCompanyId(request.getParameter("companyId")));
+                    computerService.update(Integer.valueOf(request.getParameter("id")), request.getParameter("name"), inputValidator.getLocalDate(request.getParameter("introduced")), inputValidator.getLocalDate(request.getParameter("discontinued")), computerValidator.getValidCompanyId(request.getParameter("companyId")));
                     //Redirect to dashboard
                     response.sendRedirect(request.getContextPath() + "/dashboard");
                 } else {

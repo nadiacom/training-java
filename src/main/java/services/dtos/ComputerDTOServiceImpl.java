@@ -11,12 +11,10 @@ import java.util.List;
 /**
  * Created by ebiz on 22/03/17.
  */
-public enum ComputerDTOServiceImpl implements ComputerDTOService {
+public class ComputerDTOServiceImpl implements ComputerDTOService {
 
-    INSTANCE;
-
-    private ComputerService computerService = ComputerService.INSTANCE;
-    private ComputerMapper computerMapper = ComputerMapper.INSTANCE;
+    private ComputerService computerService;
+    private ComputerMapper computerMapper;
 
     /**
      * Default constructor.
@@ -97,4 +95,19 @@ public enum ComputerDTOServiceImpl implements ComputerDTOService {
         return companiesDTO;
     }
 
+    public void setComputerMapper(ComputerMapper computerMapper) {
+        this.computerMapper = computerMapper;
+    }
+
+    public ComputerMapper getComputerMapper() {
+        return computerMapper;
+    }
+
+    public void setComputerService(ComputerService computerService) {
+        this.computerService = computerService;
+    }
+
+    public ComputerService getComputerService() {
+        return computerService;
+    }
 }

@@ -8,6 +8,8 @@ import persistence.daos.ComputerDaoImpl;
  */
 public class ComputerEditUrlValidator {
 
+    private static ComputerDaoImpl computerDao;
+
     /**
      * @param urlParameters urlParameters.
      * @throws ComputerEditUrlValidatorException ComputerEditUrlValidatorException.
@@ -29,7 +31,7 @@ public class ComputerEditUrlValidator {
      * @throws ComputerEditUrlValidatorException ComputerEditUrlValidatorException.
      */
     public boolean computerExists(String id) throws ComputerEditUrlValidatorException {
-        long computerDbId =  ComputerDaoImpl.INSTANCE.findById(Long.valueOf(id)).getId();
+        long computerDbId =  computerDao.findById(Long.valueOf(id)).getId();
         long computerFrontId = Long.parseLong(id);
         return (computerDbId == computerFrontId ? true : false);
     }
@@ -48,5 +50,13 @@ public class ComputerEditUrlValidator {
         } catch (NumberFormatException e) {
         }
         return valid;
+    }
+
+    public void setComputerDao(ComputerDaoImpl computerDao) {
+        this.computerDao = computerDao;
+    }
+
+    public ComputerDaoImpl getComputerDao() {
+        return computerDao;
     }
 }
