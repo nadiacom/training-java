@@ -6,12 +6,15 @@ import exceptions.validators.models.computer.ComputerDiscontinuedValidatorExcept
 import exceptions.validators.models.computer.ComputerIntroducedValidatorException;
 import exceptions.validators.models.computer.ComputerNameValidatorException;
 import models.Company;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.WebApplicationContext;
 import services.CompanyService;
 import services.ComputerService;
 import services.validators.inputs.ComputerValidator;
 import services.validators.inputs.Input;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +28,16 @@ import java.util.List;
 public class ComputerAdd extends HttpServlet {
 
     private static Input inputValidator = new Input();
+    private CompanyService companyService;
+    private ComputerService computerService;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        ApplicationContext ac = (ApplicationContext) config.getServletContext().getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
+        this.computerService = (ComputerService) ac.getBean("computerService");
+        this.companyService = (CompanyService) ac.getBean("companyService");
+    }
 
     /**
      * @param request  request.
@@ -35,7 +48,7 @@ public class ComputerAdd extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         //Get companies ids and names
-        List<Company> companies = CompanyService.INSTANCE.getAll();
+        List<Company> companies = companyService.getAll();
         //Set view parameters
         request.setAttribute("companies", companies);
         //Dispatch view
@@ -68,7 +81,7 @@ public class ComputerAdd extends HttpServlet {
         } finally {
             if (error.isEmpty()) {
                 //Create computer
-                ComputerService.INSTANCE.create(request.getParameter("name"), inputValidator.getLocalDate(request.getParameter("introduced")), inputValidator.getLocalDate(request.getParameter("discontinued")), computerValidator.getValidCompanyId(request.getParameter("companyId")));
+                computerService.create(request.getParameter("name"), inputValidator.getLocalDate(request.getParameter("introduced")), inputValidator.getLocalDate(request.getParameter("discontinued")), computerValidator.getValidCompanyId(request.getParameter("companyId")));
                 //Redirect to dashboard
                 response.sendRedirect(request.getContextPath() + "/dashboard");
             } else {

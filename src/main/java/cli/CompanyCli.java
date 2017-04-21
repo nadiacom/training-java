@@ -12,8 +12,8 @@ import java.util.List;
  */
 public class CompanyCli {
 
-    private static CompanyService companyService = CompanyService.INSTANCE;
-    private static ComputerService computerService = ComputerService.INSTANCE;
+    private static CompanyService companyService;
+    private static ComputerService computerService;
 
     /**
      * List and print all companies.

@@ -12,13 +12,11 @@ import java.util.List;
 /**
  * Created by ebiz on 22/03/17.
  */
-public enum CompanyDTOServiceImpl implements CompanyDTOService {
-
-    INSTANCE;
+public class CompanyDTOServiceImpl implements CompanyDTOService {
 
     static Input input = new Input();
-    private CompanyService companyService = CompanyService.INSTANCE;
-    private CompanyMapper companyMapper = CompanyMapper.INSTANCE;
+    private CompanyService companyService;
+    private CompanyMapper companyMapper;
 
     /**
      * Default constructor.
@@ -72,5 +70,22 @@ public enum CompanyDTOServiceImpl implements CompanyDTOService {
         }
         //Return company DTO list
         return companiesDTO;
+    }
+
+
+    public void setCompanyService(CompanyService companyService) {
+        this.companyService = companyService;
+    }
+
+    public CompanyService getCompanyService() {
+        return companyService;
+    }
+
+    public void setCompanyMapper(CompanyMapper companyMapper) {
+        this.companyMapper = companyMapper;
+    }
+
+    public CompanyMapper getCompanyMapper() {
+        return companyMapper;
     }
 }

@@ -14,23 +14,18 @@ import java.util.List;
 /**
  * Created by ebiz on 20/03/17.
  */
-public enum ComputerService {
-
-    INSTANCE;
+public class ComputerService {
 
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.CompanyDaoImpl");
-
+    private static ComputerDao computerDao;
+    private static CompanyDao companyDao;
+    private static DAOFactory daoFactory;
 
     /**
      * Default constructor.
      */
-    ComputerService() {
+    public ComputerService() {
     }
-
-    private static ComputerDao computerDao = ComputerDaoImpl.INSTANCE;
-    private static CompanyDao companyDao = CompanyDaoImpl.INSTANCE;
-
-    protected DAOFactory daoFactory = DAOFactory.INSTANCE;
 
     /**
      * Get all computers.
@@ -222,4 +217,27 @@ public enum ComputerService {
         return count;
     }
 
+    public void setCompanyDao(CompanyDao companyDao) {
+        this.companyDao = companyDao;
+    }
+
+    public CompanyDao getCompanyDao() {
+        return companyDao;
+    }
+
+    public void setComputerDao(ComputerDao computerDao) {
+        this.computerDao = computerDao;
+    }
+
+    public ComputerDao getComputerDao() {
+        return computerDao;
+    }
+
+    public void setDaoFactory(DAOFactory daoFactory) {
+        this.daoFactory = daoFactory;
+    }
+
+    public DAOFactory getDaoFactory() {
+        return daoFactory;
+    }
 }

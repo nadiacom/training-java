@@ -35,8 +35,8 @@ public class DashboardTest {
     @Before
     public void setUp() {
         System.setProperty("webdriver.gecko.driver", "src/main/resources/drivers/geckodriver");
-        //driver = new FirefoxDriver();
-        driver = new FirefoxDriver(new FirefoxBinary(new File("path/to/your/firefox.exe")));
+        driver = new FirefoxDriver();
+        //driver = new FirefoxDriver(new FirefoxBinary(new File("path/to/your/firefox.exe")));
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         driver.manage().window().maximize();
         testUtils = new TestUtils(driver);

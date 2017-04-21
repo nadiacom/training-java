@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.LoggerFactory;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,12 +13,10 @@ import java.sql.Statement;
 /**
  * Created by ebiz on 14/03/17.
  */
-public enum DAOFactory {
+public class DAOFactory {
 
-
-    INSTANCE; //Single instance of DAOFactory
     private final String PROPERTIES_FILE = "/hikari.properties";
-    private HikariDataSource ds;
+    private static DataSource ds;
     private ThreadLocal<Connection> cHolder;
 
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.DaoFactory");
@@ -33,6 +32,10 @@ public enum DAOFactory {
             ds = new HikariDataSource(config);
             cHolder = new ThreadLocal<>();
         }
+    }
+
+    public static void setDs(DataSource ds) {
+        DAOFactory.ds = ds;
     }
 
     /**
