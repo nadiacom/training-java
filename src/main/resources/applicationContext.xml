@@ -47,72 +47,58 @@
 
 
     <!-- DAO Factory -->
-    <bean id="daoFactory" class="persistence.DAOFactory" scope="singleton">
+    <bean id="daoFactory" class="persistence.DAOFactory">
     </bean>
 
     <!-- DAOS -->
-    <bean id="companyDao" class="persistence.daos.CompanyDaoImpl" scope="singleton">
+    <bean id="companyDao" class="persistence.daos.CompanyDaoImpl">
         <property name="daoFactory" ref="daoFactory"/>
     </bean>
 
-    <bean id="computerDao" class="persistence.daos.ComputerDaoImpl" scope="singleton">
+    <bean id="computerDao" class="persistence.daos.ComputerDaoImpl">
         <property name="daoFactory" ref="daoFactory"/>
     </bean>
 
     <!-- SERVICES -->
-    <bean id="companyService" class="services.CompanyService" scope="singleton">
+    <bean id="companyService" class="services.CompanyService">
         <property name="companyDao" ref="companyDao"/>
         <property name="computerDao" ref="computerDao"/>
         <property name="daoFactory" ref="daoFactory"/>
     </bean>
 
-    <bean id="computerService" class="services.ComputerService" scope="singleton">
+    <bean id="computerService" class="services.ComputerService">
         <property name="companyDao" ref="companyDao"/>
         <property name="computerDao" ref="computerDao"/>
         <property name="daoFactory" ref="daoFactory"/>
     </bean>
 
     <!-- MAPPERS -->
-    <bean id="companyMapper" class="mappers.CompanyMapper" scope="singleton">
+    <bean id="companyMapper" class="mappers.CompanyMapper">
     </bean>
 
-    <bean id="computerMapper" class="mappers.ComputerMapper" scope="singleton">
+    <bean id="computerMapper" class="mappers.ComputerMapper">
         <property name="companyMapper" ref="companyMapper"/>
     </bean>
 
     <!-- DTO SERVICES -->
-    <bean id="companyDTOService" class="services.dtos.CompanyDTOServiceImpl" scope="singleton">
+    <bean id="companyDTOService" class="services.dtos.CompanyDTOServiceImpl">
         <property name="companyService" ref="companyService"/>
         <property name="companyMapper" ref="companyMapper"/>
     </bean>
 
-    <bean id="computerDTOService" class="services.dtos.ComputerDTOServiceImpl" scope="singleton">
+    <bean id="computerDTOService" class="services.dtos.ComputerDTOServiceImpl">
         <property name="computerService" ref="computerService"/>
         <property name="computerMapper" ref="computerMapper"/>
     </bean>
 
     <!-- UTILS -->
-    <bean id="computerUtils" class="utils.ComputerUtils" scope="singleton">
+    <bean id="computerUtils" class="utils.ComputerUtils">
         <property name="computerDTOService" ref="computerDTOService"/>
     </bean>
 
     <!-- VALIDATORS -->
-    <bean id="computerValidator" class="services.validators.urls.ComputerEditUrlValidator" scope="singleton">
+    <bean id="computerValidator" class="services.validators.urls.ComputerEditUrlValidator">
         <property name="computerDao" ref="computerDao"/>
-    </bean>
-
-    <!-- SERVLETS -->
-    <bean name="dashboard" class="controllers.webservices.Dashboard" scope="prototype" >
-        <property name="computerService" ref="computerService"/>
-    </bean>
-    <bean name="edit" class="controllers.webservices.ComputerEdit" scope="prototype" >
-        <property name="computerService" ref="computerService"/>
-        <property name="companyDTOService" ref="companyDTOService"/>
-        <property name="computerDTOService" ref="computerDTOService"/>
-    </bean>
-    <bean name="add" class="controllers.webservices.ComputerAdd" scope="prototype" >
-        <property name="computerService" ref="computerService"/>
-        <property name="companyService" ref="companyService"/>
     </bean>
 
 </beans>

@@ -28,12 +28,7 @@ public class CompanyDTOServiceImpl implements CompanyDTOService {
     public List<CompanyDTO> getAll() {
         //Get all companies (from DAO)
         List<Company> companies = companyService.getAll();
-        List<CompanyDTO> companiesDTO = new ArrayList<>();
-        for (int i = 0; i < companies.size(); i++) {
-            //Map each company to companyDTO model
-            CompanyDTO companyDTO = companyMapper.from(companies.get(i));
-            companiesDTO.add(companyDTO);
-        }
+        List<CompanyDTO> companiesDTO = companyMapper.fromList(companies);
         //Return company DTO list
         return companiesDTO;
     }
@@ -42,12 +37,7 @@ public class CompanyDTOServiceImpl implements CompanyDTOService {
     public List<CompanyDTO> getPageList(int page) {
         //Get all companies (from DAO)
         List<Company> companies = companyService.getPageList(page);
-        List<CompanyDTO> companiesDTO = new ArrayList<>();
-        for (int i = 0; i < companies.size(); i++) {
-            //Map each company to companyDTO model
-            CompanyDTO companyDTO = companyMapper.from(companies.get(i));
-            companiesDTO.add(companyDTO);
-        }
+        List<CompanyDTO> companiesDTO = companyMapper.fromList(companies);
         //Return company DTO list
         return companiesDTO;
     }
@@ -62,12 +52,7 @@ public class CompanyDTOServiceImpl implements CompanyDTOService {
     public List<CompanyDTO> findByName(String name, int page, int nbComputerByPage) {
         //Get all companies (from DAO)
         List<Company> companies = companyService.findByName(name, page, nbComputerByPage);
-        List<CompanyDTO> companiesDTO = new ArrayList<>();
-        for (int i = 0; i < companies.size(); i++) {
-            //Map each company to companyDTO model
-            CompanyDTO companyDTO = companyMapper.from(companies.get(i));
-            companiesDTO.add(companyDTO);
-        }
+        List<CompanyDTO> companiesDTO = companyMapper.fromList(companies);
         //Return company DTO list
         return companiesDTO;
     }

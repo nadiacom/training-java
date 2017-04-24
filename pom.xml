@@ -23,16 +23,12 @@
         <selelium.version>3.3.1</selelium.version>
         <guava.version>21.0</guava.version>
         <org.springframework.version>4.3.7.RELEASE</org.springframework.version>
+        <maven-compiler.version>3.6.1</maven-compiler.version>
+        <maven-compiler-conf.version>1.8</maven-compiler-conf.version>
+        <maven-checkstyle.version>2.17</maven-checkstyle.version>
     </properties>
 
     <build>
-
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
 
         <defaultGoal>clean install</defaultGoal>
 
@@ -41,16 +37,16 @@
                 <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.1</version>
+                <version>${maven-compiler.version}</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${maven-compiler-conf.version}</source>
+                    <target>${maven-compiler-conf.version}</target>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>2.17</version>
+                <version>${maven-checkstyle.version}</version>
                 <executions>
                     <execution>
                         <id>validate</id>
@@ -114,7 +110,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
-            <scope>compile</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-core -->
         <dependency>
@@ -149,7 +144,6 @@
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <version>${hikari.version}</version>
-            <scope>compile</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
@@ -170,20 +164,17 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>${javax.servlet.version}</version>
-            <scope>compile</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/javax.servlet.jsp/javax.servlet.jsp-api -->
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>javax.servlet.jsp-api</artifactId>
             <version>${javax.servlet.jsp.version}</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>${jstl.version}</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>
