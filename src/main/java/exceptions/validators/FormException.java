@@ -3,7 +3,7 @@ package exceptions.validators;
 /**
  * Created by ebiz on 22/03/17.
  */
-public class FormException extends ValidatorException {
+public class FormException extends Exception {
 
     /**
      * Constructor ComputerNameValidatorException.

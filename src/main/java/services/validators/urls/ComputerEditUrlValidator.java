@@ -9,28 +9,28 @@ import persistence.daos.ComputerDaoImpl;
 public class ComputerEditUrlValidator {
 
     private static ComputerDaoImpl computerDao;
+    public StringBuilder error;
 
     /**
      * @param urlParameters urlParameters.
      * @throws ComputerEditUrlValidatorException ComputerEditUrlValidatorException.
      */
-    public void isUrlValid(String urlParameters) throws ComputerEditUrlValidatorException {
+    public void isUrlValid(String urlParameters) {
+        error = new StringBuilder();
         //Check if id parameter is an int
         if (!isValidId(urlParameters)) {
-            throw new ComputerEditUrlValidatorException("Computer id is not valid.");
+            error.append("Computer id is not valid.");
             //Check if computer exists
         } else if (!computerExists(urlParameters)) {
-            System.out.println("computer id: " + urlParameters);
-            throw new ComputerEditUrlValidatorException("Computer does not exist.");
+            error.append("Computer does not exist.");
         }
     }
 
     /**
      * @param id id.
      * @return boolean : exists or not.
-     * @throws ComputerEditUrlValidatorException ComputerEditUrlValidatorException.
      */
-    public boolean computerExists(String id) throws ComputerEditUrlValidatorException {
+    public boolean computerExists(String id) {
         long computerDbId =  computerDao.findById(Long.valueOf(id)).getId();
         long computerFrontId = Long.parseLong(id);
         return (computerDbId == computerFrontId ? true : false);
@@ -58,5 +58,13 @@ public class ComputerEditUrlValidator {
 
     public ComputerDaoImpl getComputerDao() {
         return computerDao;
+    }
+
+    /**
+     * Get errors from ComputerEditUrlValidator.
+     * @return error string from StringBuilder.
+     */
+    public String getError() {
+        return error.toString();
     }
 }
