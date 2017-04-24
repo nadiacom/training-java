@@ -4,10 +4,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import services.ComputerService;
+import utils.DashboardUtils;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
@@ -32,9 +35,9 @@ public class Dashboard extends javax.servlet.http.HttpServlet {
      * @throws javax.servlet.ServletException javax servlet exception
      * @throws IOException                    IOException
      */
-    protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
-        
-        models.Dashboard dashboard = new models.Dashboard();
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        DashboardUtils dashboard = new DashboardUtils();
         request = dashboard.setRequest(request);
 
         //Dispatch view
