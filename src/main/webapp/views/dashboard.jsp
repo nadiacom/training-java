@@ -35,7 +35,7 @@
             </div>
         </c:if>
         <h1 id="homeTitle">
-            <div id="nbComputers" style="display:inline-block;">${nbComputer}</div>
+            <div id="nbComputers" style="display:inline-block;">${pageRequest.nbComputers}</div>
             Computer(s) found
         </h1>
 
@@ -75,23 +75,23 @@
                                     </a>
                             </span>
                 </th>
-                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="name" id="computerName"
+                <th><my_tags:sort_link currentPage="${pageRequest.currentPage}" search="${pageRequest.search}" click="name" id="computerName"
                                        order="c.name" url="${pageContext.request.contextPath}/dashboard"/>
                     Computer name
                 </th>
-                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="introduced"
+                <th><my_tags:sort_link currentPage="${pageRequest.currentPage}" search="${pageRequest.search}" click="introduced"
                                        id="computerIntroduced" order="c.introduced"
                                        url="${pageContext.request.contextPath}/dashboard"/>
                     Introduced date
                 </th>
                 <!-- Table header for Discontinued Date -->
-                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="discontinued"
+                <th><my_tags:sort_link currentPage="${pageRequest.currentPage}" search="${pageRequest.search}" click="discontinued"
                                        id="computerDiscontinued" order="c.discontinued"
                                        url="${pageContext.request.contextPath}/dashboard"/>
                     Discontinued date
                 </th>
                 <!-- Table header for Company -->
-                <th><my_tags:sort_link currentPage="${currentPage}" search="${search}" click="company" id="companyName"
+                <th><my_tags:sort_link currentPage="${pageRequest.currentPage}" search="${pageRequest.search}" click="company" id="companyName"
                                        order="company.name" url="${pageContext.request.contextPath}/dashboard"/>
                     Company
                 </th>
@@ -100,7 +100,7 @@
             </thead>
             <!-- Browse attribute computers -->
             <tbody id="results">
-            <c:forEach var="computer" items="${listComputer}">
+            <c:forEach var="computer" items="${pageRequest.listComputers}">
                 <tr>
                     <td class="editMode">
                         <input type="checkbox" class="cb" value="${computer.id}">
@@ -122,8 +122,8 @@
 <footer class="navbar-fixed-bottom">
     <div class="container text-center">
 
-        <my_tags:paginator currentPage="${currentPage}" pgEnd="${pgEnd}" lastPage="${lastPage}" pgStart="${pgStart}"
-                           search="${search}" order="${order}" url="${pageContext.request.contextPath}/dashboard"/>
+        <my_tags:paginator currentPage="${pageRequest.currentPage}" pgEnd="${pageRequest.pgEnd}" lastPage="${pageRequest.lastPage}" pgStart="${pageRequest.pgStart}"
+                           search="${pageRequest.search}" order="${pageRequest.order}" url="${pageContext.request.contextPath}/dashboard"/>
 
     </div>
 </footer>

@@ -1,9 +1,7 @@
-package models;
+package utils;
 
+import models.PageRequest;
 import models.dtos.ComputerDTO;
-import utils.ComputerUtils;
-import utils.Pagination;
-import utils.SessionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,7 +10,7 @@ import java.util.List;
 /**
  * Created by ebiz on 24/04/17.
  */
-public class Dashboard {
+public class DashboardUtils {
 
     public int nbComputerByPage; // number of computers displayed by page
     public int currentPage; // current page number
@@ -22,11 +20,17 @@ public class Dashboard {
     /**
      * Default constructor.
      */
-    public Dashboard() {
+    public DashboardUtils() {
 
     }
 
-    public HttpServletRequest setRequest(HttpServletRequest request){
+    /**
+     * Set Dashboard request.
+     *
+     * @param request Dashboard http request.
+     * @return request.
+     */
+    public HttpServletRequest setRequest(HttpServletRequest request) {
 
         //NUMBER OF COMPUTERS BY PAGINATION
         //Set user and get preference for number of computers by pagination in session
@@ -43,22 +47,23 @@ public class Dashboard {
         //Call Pagination method
         int[] values = Pagination.getPagination(nbComputerByPage, Pagination.getCurrentPage(request), nbComputer);
 
-        //SET PARAMETERS TO VIEW
-        request.setAttribute("listComputer", listComputer);
-        request.setAttribute("currentPage", Pagination.getCurrentPage(request));
-        request.setAttribute("nbComputer", nbComputer);
-        request.setAttribute("nbComputerByPage", nbComputerByPage);
-        request.setAttribute("pgStart", values[1]);
-        request.setAttribute("pgEnd", values[2]);
-        request.setAttribute("totalPages", values[0]);
-        request.setAttribute("lastPage", Pagination.isLastPage());
+        PageRequest pageRequest = new
+                PageRequest.PageRequestBuilder()
+                .nbComputerByPage(nbComputerByPage)
+                .nbComputers(nbComputer)
+                .currentPage(Pagination.getCurrentPage(request))
+                .listComputers(listComputer)
+                .pgStart(values[1])
+                .pgEnd(values[2])
+                .totalPages(values[0])
+                .order(request.getParameter("order") != null ? request.getParameter("order") : null)
+                .search(request.getParameter("search") != null ? request.getParameter("search") : null)
+                .islastPage(Pagination.isLastPage())
+                .build();
 
-        if (request.getParameter("search") != null) {
-            request.setAttribute("search", request.getParameter("search"));
-        }
-        if (request.getParameter("order") != null) {
-            request.setAttribute("order", request.getParameter("order"));
-        }
+        //SET PARAMETERS TO VIEW
+        request.setAttribute("pageRequest", pageRequest);
+
         return request;
     }
 
