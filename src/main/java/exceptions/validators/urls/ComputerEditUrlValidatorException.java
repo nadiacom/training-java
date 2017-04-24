@@ -1,11 +1,9 @@
 package exceptions.validators.urls;
 
-import exceptions.validators.ValidatorException;
-
 /**
  * Created by ebiz on 24/03/17.
  */
-public class ComputerEditUrlValidatorException extends ValidatorException {
+public class ComputerEditUrlValidatorException extends Exception {
 
     /**
      * Constructor ComputerEditUrlValidatorException.

@@ -20,18 +20,18 @@ public class PageRequest {
     public String search; // filter by parameter (search box input)
     public boolean islastPage; // boolean : current page is last page or not
 
+    /**
+     * Default constructor.
+     */
+    public PageRequest() {
+    }
+
     public boolean isLastPage() {
         return this.islastPage;
     }
 
     public void setLastPage(boolean lastPage) {
         this.islastPage = lastPage;
-    }
-
-    /**
-     * Default constructor.
-     */
-    public PageRequest() {
     }
 
     public int getNbComputerByPage() {

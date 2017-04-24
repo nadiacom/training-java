@@ -1,10 +1,7 @@
 package services.validators.inputs;
 
 import exceptions.validators.FormException;
-import exceptions.validators.models.computer.ComputerCompanyValidatorException;
-import exceptions.validators.models.computer.ComputerDiscontinuedValidatorException;
-import exceptions.validators.models.computer.ComputerIntroducedValidatorException;
-import exceptions.validators.models.computer.ComputerNameValidatorException;
+import org.slf4j.LoggerFactory;
 import persistence.daos.CompanyDaoImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,20 +12,20 @@ import java.time.LocalDate;
  */
 public class ComputerValidator {
 
-    Input input = new Input();
+    private Input input = new Input();
     private CompanyDaoImpl companyDaoIml;
+    public StringBuilder error;
+    private boolean first = true;
 
     /**
      * Check if computer input fields are valid or not and throw specified exceptions.
      *
      * @param request request with parameters.
-     * @throws ComputerNameValidatorException         ComputerNameValidatorException.
-     * @throws ComputerIntroducedValidatorException   ComputerIntroducedValidatorException.
-     * @throws ComputerDiscontinuedValidatorException ComputerDiscontinuedValidatorException.
-     * @throws ComputerCompanyValidatorException      ComputerCompanyValidatorException.
-     * @throws FormException                          FormException.
+     * @throws FormException FormException.
      */
-    public void isValidComputer(HttpServletRequest request) throws ComputerNameValidatorException, ComputerIntroducedValidatorException, ComputerDiscontinuedValidatorException, ComputerCompanyValidatorException, FormException {
+    public void isValidComputer(HttpServletRequest request) throws FormException {
+
+        error = new StringBuilder();
 
         if (request.getParameterMap().containsKey("name") && request.getParameterMap().containsKey("introduced") && request.getParameterMap().containsKey("discontinued") && request.getParameterMap().containsKey("companyId")) {
             //If computer name is filled
@@ -36,35 +33,64 @@ public class ComputerValidator {
                 if (!empty(request.getParameter("name"))) {
                     //Return if name is valid or not
                     if (!isValidName(request.getParameter("name"))) {
-                        throw new ComputerNameValidatorException("Computer name is not valid.");
+                        if (first) {
+                            error.append(System.getProperty("line.separator"));
+                        }
+                        error.append("Computer name is not valid.");
+                        first = false;
+                        ;
                     }
                 } else {
-                    //Else throw empty name exception
-                    throw new ComputerNameValidatorException("Computer name is required.");
+                    if (first) {
+                        error.append(System.getProperty("line.separator"));
+                    }
+                    error.append("Computer name is required.");
+                    first = false;
+                    ;
                 }
             }
             //If computer introduced date is filled
             if (!empty(request.getParameter("introduced"))) {
                 //Return if introduced date pattern is valid or not
                 if (!isValidIntroduced(request.getParameter("introduced"))) {
-                    throw new ComputerIntroducedValidatorException("Computer introduced date is not valid, expected pattern : YYYY-MM-dd");
+                    if (first) {
+                        error.append(System.getProperty("line.separator"));
+                    }
+                    error.append("Computer introduced date is not valid, expected pattern : YYYY-MM-dd");
+                    first = false;
+                    ;
                 }
             }
             //If computer discontinued date is filled
             if (!empty(request.getParameter("discontinued"))) {
                 //Return if discontinued date pattern is valid or not
                 if (!isValidDiscontinued(request.getParameter("discontinued"))) {
-                    throw new ComputerDiscontinuedValidatorException("Computer discontinued date is not valid, expected pattern : YYYY-MM-dd");
+                    if (first) {
+                        error.append('\n');
+                    }
+                    error.append("Computer discontinued date is not valid, expected pattern : YYYY-MM-dd");
+                    first = false;
+                    ;
                 }
                 if (!isValidIntervalDate(request.getParameter("introduced"), request.getParameter("discontinued"))) {
-                    throw new ComputerDiscontinuedValidatorException("Please select a valid date interval. Discontinued date should be after introduced date.");
+                    if (first) {
+                        error.append(System.lineSeparator());
+                    }
+                    error.append("Please select a valid date interval. Discontinued date should be after introduced date.");
+                    first = false;
+                    ;
                 }
             }
             //If computer company id is filled
             if (!empty(request.getParameter("companyId"))) {
                 //Return if discontinued date pattern is valid or not
                 if (!isValidCompanyId(request.getParameter("companyId"))) {
-                    throw new ComputerCompanyValidatorException("Company id is not valid.");
+                    if (first) {
+                        error.append(System.getProperty("line.separator"));
+                    }
+                    error.append("Company id is not valid.");
+                    first = false;
+                    ;
                 }
             }
         } else {
@@ -161,6 +187,15 @@ public class ComputerValidator {
     public static boolean empty(final String s) {
         // Null-safe, short-circuit evaluation.
         return s == null || s.trim().isEmpty();
+    }
+
+    /**
+     * Get errors from ComputerValidator.
+     *
+     * @return error string from StringBuilder.
+     */
+    public String getError() {
+        return error.toString();
     }
 
 

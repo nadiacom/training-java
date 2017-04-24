@@ -9,10 +9,14 @@ $(function () {
         // Specify validation rules
         rules: {
             computerName: "required",
-            introduced: {datePattern: true},
+            introduced: {
+                datePattern: true,
+                required: false
+            },
             discontinued: {
                 datePattern: true,
-                greaterThan: $('#introduced')
+                greaterThan: $('#introduced'),
+                required: false,
             }
         },
         messages: {
@@ -30,13 +34,13 @@ $(function () {
 
     $.validator.addMethod("greaterThan",
         function (value, element, params) {
-            if (!/Invalid|NaN/.test(new Date(value))) {
-                return new Date(value) > new Date($(params).val());
+            if ((element.value.length === 0)) {
+                return true;
             }
-            return isNaN(value) && isNaN($(params).val())
-                || (Number(value) > Number($(params).val()));
-        }, 'Please enter a discontinued date greater than introduced date.');
-
-
+            if (!/Invalid|NaN/.test(new Date(value))) {
+                return Date(value) > new Date($(params).val());
+            }
+            return (Number(value) > Number($(params).val()));
+        }, 'Please enter a discontinued date greater than introduced date. !!');
 });
 

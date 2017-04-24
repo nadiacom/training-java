@@ -78,7 +78,7 @@
         $('#introduced').datepicker({
             dateFormat: 'yy-mm-dd',
             altField: '#thealtdate',
-            altFormat: 'yy-mm-dd'
+            altFormat: 'yy-mm-dd',
         });
         $('#discontinued').datepicker({
             dateFormat: 'yy-mm-dd',

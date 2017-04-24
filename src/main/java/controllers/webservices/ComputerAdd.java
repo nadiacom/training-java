@@ -1,10 +1,6 @@
 package controllers.webservices;
 
-import exceptions.validators.ValidatorException;
-import exceptions.validators.models.computer.ComputerCompanyValidatorException;
-import exceptions.validators.models.computer.ComputerDiscontinuedValidatorException;
-import exceptions.validators.models.computer.ComputerIntroducedValidatorException;
-import exceptions.validators.models.computer.ComputerNameValidatorException;
+import exceptions.validators.FormException;
 import models.Company;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
@@ -35,8 +31,8 @@ public class ComputerAdd extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         ApplicationContext ac = (ApplicationContext) config.getServletContext().getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
-        this.computerService = (ComputerService) ac.getBean("computerService");
-        this.companyService = (CompanyService) ac.getBean("companyService");
+        computerService = (ComputerService) ac.getBean("computerService");
+        companyService = (CompanyService) ac.getBean("companyService");
     }
 
     /**
@@ -46,7 +42,6 @@ public class ComputerAdd extends HttpServlet {
      * @throws IOException      IOException.
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         //Get companies ids and names
         List<Company> companies = companyService.getAll();
         //Set view parameters
@@ -68,18 +63,11 @@ public class ComputerAdd extends HttpServlet {
 
         try {
             computerValidator.isValidComputer(request);
-        } catch (ComputerNameValidatorException e) {
+            error = computerValidator.getError();
+        } catch (FormException e) {
             error = e.getMessage();
-        } catch (ComputerIntroducedValidatorException e) {
-            error = e.getMessage();
-        } catch (ComputerDiscontinuedValidatorException e) {
-            error = e.getMessage();
-        } catch (ComputerCompanyValidatorException e) {
-            error = e.getMessage();
-        } catch (ValidatorException e) {
-            //Ignore company id exceptions for now.
         } finally {
-            if (error.isEmpty()) {
+            if (error.length() == 0) {
                 //Create computer
                 computerService.create(request.getParameter("name"), inputValidator.getLocalDate(request.getParameter("introduced")), inputValidator.getLocalDate(request.getParameter("discontinued")), computerValidator.getValidCompanyId(request.getParameter("companyId")));
                 //Redirect to dashboard
