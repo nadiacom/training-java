@@ -6,7 +6,7 @@ import models.dtos.CompanyDTO;
 /**
  * Created by ebiz on 22/03/17.
  */
-public class CompanyMapper {
+public class CompanyMapper implements Mapper<Company, CompanyDTO>{
 
     /**
      * Default constructor.
@@ -20,7 +20,7 @@ public class CompanyMapper {
      * @param companyDTO companyDTO.
      * @return mapped company from companyDTO.
      */
-    public static Company from(CompanyDTO companyDTO) {
+    public Company to(CompanyDTO companyDTO) {
         Company company = new Company(Long.valueOf(companyDTO.getId()), companyDTO.getName());
         return company;
     }
@@ -31,7 +31,7 @@ public class CompanyMapper {
      * @param company company.
      * @return mapped companyDTO from company.
      */
-    public static CompanyDTO from(Company company) {
+    public CompanyDTO from(Company company) {
         CompanyDTO companyDTO = new CompanyDTO(company.getId().intValue(), company.getName());
         return companyDTO;
     }
