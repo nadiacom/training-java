@@ -1,7 +1,6 @@
 package services.validators.inputs;
 
 import exceptions.validators.FormException;
-import org.slf4j.LoggerFactory;
 import persistence.daos.CompanyDaoImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +37,6 @@ public class ComputerValidator {
                         }
                         error.append("Computer name is not valid.");
                         first = false;
-                        ;
                     }
                 } else {
                     if (first) {
@@ -46,7 +44,6 @@ public class ComputerValidator {
                     }
                     error.append("Computer name is required.");
                     first = false;
-                    ;
                 }
             }
             //If computer introduced date is filled
@@ -58,7 +55,6 @@ public class ComputerValidator {
                     }
                     error.append("Computer introduced date is not valid, expected pattern : YYYY-MM-dd");
                     first = false;
-                    ;
                 }
             }
             //If computer discontinued date is filled
@@ -66,11 +62,10 @@ public class ComputerValidator {
                 //Return if discontinued date pattern is valid or not
                 if (!isValidDiscontinued(request.getParameter("discontinued"))) {
                     if (first) {
-                        error.append('\n');
+                        error.append(System.getProperty("line.separator"));
                     }
                     error.append("Computer discontinued date is not valid, expected pattern : YYYY-MM-dd");
                     first = false;
-                    ;
                 }
                 if (!isValidIntervalDate(request.getParameter("introduced"), request.getParameter("discontinued"))) {
                     if (first) {
@@ -78,7 +73,6 @@ public class ComputerValidator {
                     }
                     error.append("Please select a valid date interval. Discontinued date should be after introduced date.");
                     first = false;
-                    ;
                 }
             }
             //If computer company id is filled
@@ -90,7 +84,6 @@ public class ComputerValidator {
                     }
                     error.append("Company id is not valid.");
                     first = false;
-                    ;
                 }
             }
         } else {
