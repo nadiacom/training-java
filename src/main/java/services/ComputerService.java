@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class ComputerService {
 
-    private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.CompanyDaoImpl");
+    private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("services.ComputerService");
     private static ComputerDao computerDao;
     private static CompanyDao companyDao;
     private static DAOFactory daoFactory;

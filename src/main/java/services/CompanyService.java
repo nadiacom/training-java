@@ -2,6 +2,7 @@ package services;
 
 import models.Company;
 import models.Computer;
+import org.slf4j.LoggerFactory;
 import persistence.DAOFactory;
 import persistence.daos.CompanyDao;
 import persistence.daos.ComputerDao;
@@ -13,6 +14,7 @@ import java.util.List;
  */
 public class CompanyService {
 
+    private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("services.CompanyService");
     private static CompanyDao companyDao;
     private static ComputerDao computerDao;
     private static DAOFactory daoFactory;
@@ -98,17 +100,17 @@ public class CompanyService {
         if (company != null) {
             //Delete company
             companyId = companyDao.delete(company);
-            System.out.println("Removed company with id: " + companyId);
+            LOGGER.debug("Removed company with id: " + companyId);
             //Delete potential computers belonging to this company
             List<Computer> computers = computerDao.findByCompanyId(company.getId());
             if (!computers.isEmpty()) {
                 computerDao.deleteByCompanyId(company.getId());
-                System.out.println("Removed following computer: " + computers);
+                LOGGER.debug("Removed following computer: " + computers);
             } else {
-                System.out.println("No computer belong to this company. No computer removed");
+                LOGGER.debug("No computer belong to this company. No computer removed");
             }
         } else {
-            System.out.println("No company exists with the given id. Try another one.");
+            LOGGER.debug("No company exists with the given id. Try another one.");
         }
         daoFactory.commit();
         daoFactory.close();
