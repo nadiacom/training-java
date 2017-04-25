@@ -6,7 +6,7 @@ import models.dtos.CompanyDTO;
 /**
  * Created by ebiz on 22/03/17.
  */
-public class CompanyMapper implements Mapper<Company, CompanyDTO>{
+public class CompanyMapper implements Mapper<Company, CompanyDTO> {
 
     /**
      * Default constructor.
@@ -32,7 +32,7 @@ public class CompanyMapper implements Mapper<Company, CompanyDTO>{
      * @return mapped companyDTO from company.
      */
     public CompanyDTO from(Company company) {
-        CompanyDTO companyDTO = new CompanyDTO(company.getId().intValue(), company.getName());
+        CompanyDTO companyDTO = new CompanyDTO(company.getId(), company.getName());
         return companyDTO;
     }
 }

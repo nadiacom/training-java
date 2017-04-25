@@ -6,7 +6,7 @@ package models.dtos;
 
 public class CompanyDTO {
 
-    public int id;
+    public Long id;
     public String name;
 
     /**
@@ -31,16 +31,16 @@ public class CompanyDTO {
      * @param id (required) company id.
      * @param name (required) company name.
      */
-    public CompanyDTO(int id, String name) {
+    public CompanyDTO(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

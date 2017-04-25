@@ -1,6 +1,7 @@
 package controllers.webservices;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import services.ComputerService;
@@ -20,14 +21,10 @@ import java.io.IOException;
 public class Dashboard extends javax.servlet.http.HttpServlet {
 
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.Dashboard");
+
+    @Autowired
     private ComputerService computerService;
 
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        ApplicationContext ac = (ApplicationContext) config.getServletContext().getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
-        this.computerService = (ComputerService) ac.getBean("computerService");
-    }
 
     /**
      * @param request  request

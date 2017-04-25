@@ -3,20 +3,20 @@ package persistence.daos;
 import exceptions.daos.DAOException;
 import models.Company;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import persistence.DAOFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static persistence.daos.DAOUtilitaire.initPreparedStatement;
+import java.util.Map;
 
 /**
  * Created by ebiz on 14/03/17.
  */
+@Transactional(readOnly = true)
 public class CompanyDaoImpl implements CompanyDao {
 
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.CompanyDaoImpl");
@@ -28,6 +28,8 @@ public class CompanyDaoImpl implements CompanyDao {
     private static final String SQL_DELETE = "DELETE FROM company WHERE id = ?";
 
     private static final int PAGE_SIZE = 10;
+
+    private JdbcTemplate jdbcTemplate;
     private static DAOFactory daoFactory;
 
     /**
@@ -36,18 +38,27 @@ public class CompanyDaoImpl implements CompanyDao {
     CompanyDaoImpl() {
     }
 
+
+    public void setDataSource(DataSource dataSource) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
     /**
-     * Utilitary method to map one row returned from database and company bean.
+     * Map list of companies
      *
-     * @param resultSet (required) ResultSet from database request.
-     * @return mapped company.
-     * @throws SQLException SQL exception.
+     * @param rows list of companies (List<Map<String, Object>>)
+     * @return list of companies (ArrayList)
      */
-    public static Company map(ResultSet resultSet) throws SQLException {
-        Company company = new Company();
-        company.setId(resultSet.getLong("id"));
-        company.setName(resultSet.getString("name"));
-        return company;
+    public List<Company> map(List<Map<String, Object>> rows) {
+        List<Company> companies = new ArrayList<>();
+
+        for (Map<String, Object> map : rows) {
+            Company company = new Company();
+            company.setId((Long) rows.get(0).get("id"));
+            company.setName((String) rows.get(0).get("name"));
+            companies.add(company);
+        }
+        return companies;
     }
 
     /**
@@ -69,113 +80,33 @@ public class CompanyDaoImpl implements CompanyDao {
 
     @Override
     public Company findById(Long id) throws DAOException {
-
-        Company company = null;
-        try {
-            Connection connexion = daoFactory.getConnection();
-            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_ID, false, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            LOGGER.debug(preparedStatement.toString());
-        /* Iterate over returned ResultSet */
-            if (resultSet.next()) {
-                company = map(resultSet.getLong("id"), resultSet.getString("name"));
-            }
-            daoFactory.close(resultSet, preparedStatement);
-        } catch (SQLException e) {
-            LOGGER.debug(e.toString());
-            throw new DAOException(e);
-        }
-        return company;
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_SELECT_BY_ID, id);
+        return map(rows).get(0);
     }
 
     @Override
     public List<Company> findByName(String name, int page, int nbComputerByPage) throws DAOException {
-        List<Company> listCompanies = new ArrayList<>();
-        Company company = null;
-        try {
-            Connection connexion = daoFactory.getConnection();
-            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_NAME, false, "%" + name + "%", PAGE_SIZE, (page - 1) * PAGE_SIZE);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            LOGGER.debug(preparedStatement.toString());
-         /* Iterate over returned ResultSet */
-            while (resultSet.next()) {
-                company = map(resultSet.getLong("id"), resultSet.getString("name"));
-                listCompanies.add(company);
-            }
-            daoFactory.close(resultSet, preparedStatement);
-        } catch (SQLException e) {
-            LOGGER.debug(e.toString());
-            throw new DAOException(e);
-        }
-        return listCompanies;
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_SELECT_BY_NAME, "%" + name + "%", PAGE_SIZE, (page - 1) * PAGE_SIZE);
+        return map(rows);
     }
 
     @Override
     public List<Company> getAll() throws DAOException {
-        List<Company> listCompanies = new ArrayList<>();
-        Company company = null;
-        try {
-            Connection connexion = daoFactory.getConnection();
-            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_ALL, false);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            LOGGER.debug(preparedStatement.toString());
-        /* Iterate over returned ResultSet */
-            while (resultSet.next()) {
-                company = map(resultSet.getLong("id"), resultSet.getString("name"));
-                listCompanies.add(company);
-            }
-            daoFactory.close(resultSet, preparedStatement);
-        } catch (SQLException e) {
-            LOGGER.debug(e.toString());
-            throw new DAOException(e);
-        }
-        return listCompanies;
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_SELECT_ALL);
+        return map(rows);
     }
 
     @Override
     public List<Company> getPageList(int page) throws DAOException {
-        List<Company> listCompanies = new ArrayList<>();
-        Company company = null;
-        try {
-            Connection connexion = daoFactory.getConnection();
-            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_PAGE, false, PAGE_SIZE, (page - 1) * PAGE_SIZE);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            LOGGER.debug(preparedStatement.toString());
-         /* Iterate over returned ResultSet */
-            while (resultSet.next()) {
-                company = map(resultSet.getLong("id"), resultSet.getString("name"));
-                listCompanies.add(company);
-            }
-            daoFactory.close(resultSet, preparedStatement);
-        } catch (SQLException e) {
-            LOGGER.debug(e.toString());
-            throw new DAOException(e);
-        }
-        return listCompanies;
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_SELECT_PAGE);
+        return map(rows);
     }
 
     @Override
     public Long delete(Company company) throws DAOException {
-        Long id = null;
-        try {
-            Connection connexion = daoFactory.getConnection();
-            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_DELETE, false, company.getId());
-            LOGGER.debug(preparedStatement.toString());
-            int status = preparedStatement.executeUpdate();
-           /* Analyze status returned from insert request */
-            if (status == 0) {
-                throw new DAOException("Failed to update table, no row were modified.");
-            } else {
-                id = company.getId();
-            }
-            daoFactory.close(preparedStatement);
-        } catch (SQLException e) {
-            LOGGER.debug(e.toString());
-            throw new DAOException(e);
-        }
-        return id;
+        jdbcTemplate.update(SQL_DELETE, company.getId());
+        return company.getId();
     }
-
 
     public void setDaoFactory(DAOFactory daoFactory) {
         this.daoFactory = daoFactory;

@@ -40,6 +40,13 @@ public class CompanyServiceTest {
         assertEquals(company.toString(), companies.get(0).toString());
         assertEquals(company10.toString(), companies.get(9).toString());
     }
+
+    @Test
+    public void findBiId() throws Exception {
+       Company company = companyService.findById(1L);
+
+    }
+
 }
 
 

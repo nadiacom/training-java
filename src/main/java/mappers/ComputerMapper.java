@@ -4,12 +4,10 @@ import models.Computer;
 import models.dtos.ComputerDTO;
 import services.validators.inputs.Input;
 
-import java.util.Collection;
-
 /**
  * Created by ebiz on 22/03/17.
  */
-public class ComputerMapper implements Mapper<Computer, ComputerDTO>{
+public class ComputerMapper implements Mapper<Computer, ComputerDTO> {
 
     private static CompanyMapper companyMapper;
 
@@ -49,7 +47,7 @@ public class ComputerMapper implements Mapper<Computer, ComputerDTO>{
     public ComputerDTO from(Computer computer) {
         ComputerDTO computerDTO = new
                 ComputerDTO.ComputerDTOBuilder()
-                .id(computer.getId().intValue())
+                .id(computer.getId())
                 .name(computer.getName())
                 .introduced(computer.getDiscontinued() != null ? computer.getIntroduced().toString() : "")
                 .discontinued(computer.getDiscontinued() != null ? computer.getDiscontinued().toString() : "")

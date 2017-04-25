@@ -4,6 +4,8 @@ import cli.CompanyCli;
 import cli.ComputerCli;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import services.validators.inputs.Input;
 
 import java.sql.SQLException;
@@ -13,6 +15,7 @@ import java.util.Scanner;
 /**
  * Created by ebiz on 14/03/17.
  */
+@Component
 public class Main {
 
     public static Logger logger = LoggerFactory.getLogger(Main.class);
@@ -22,6 +25,11 @@ public class Main {
     private static ComputerCli computerService;
     private static Input inputCli;
 
+    @Autowired
+    private Main(CompanyCli companyService, ComputerCli computerService) {
+        Main.companyService = companyService;
+        Main.computerService = computerService;
+    }
 
     /**
      * Command-line interface.
@@ -31,8 +39,7 @@ public class Main {
      */
     public static void main(String[] args) throws SQLException {
 
-        companyService = new CompanyCli();
-        computerService = new ComputerCli();
+
         inputCli = new Input();
 
         do {
@@ -140,4 +147,5 @@ public class Main {
         } while (!(input.nextLine().equals("8")));
         input.close();
     }
+
 }

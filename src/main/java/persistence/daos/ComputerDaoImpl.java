@@ -4,20 +4,26 @@ import exceptions.daos.DAOException;
 import models.Company;
 import models.Computer;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import persistence.DAOFactory;
+import services.validators.inputs.Input;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static persistence.daos.DAOUtilitaire.initPreparedStatement;
 
 /**
  * Created by ebiz on 14/03/17.
  */
+@Transactional(readOnly = true)
 public class ComputerDaoImpl implements ComputerDao {
 
 
@@ -25,22 +31,54 @@ public class ComputerDaoImpl implements ComputerDao {
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.ComputerDaoImpl");
 
     private static final String SQL_INSERT = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
-    private static final String SQL_SELECT_BY_ID = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.id = ?";
-    private static final String SQL_SELECT_BY_NAME = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.name LIKE ? OR company.name LIKE ? LIMIT ? OFFSET ?";
+    private static final String SQL_SELECT_BY_ID = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id AS company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.id = ?";
+    private static final String SQL_SELECT_BY_NAME = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id AS company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.name LIKE ? OR company.name LIKE ? LIMIT ? OFFSET ?";
     private static final String SQL_COUNT_BY_NAME = "SELECT COUNT(*) as total FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.name LIKE ? OR company.name LIKE ?";
     private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id =? WHERE id = ?";
     private static final String SQL_DELETE = "DELETE FROM computer WHERE id = ?";
-    private static final String SQL_SELECT_ALL = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id";
+    private static final String SQL_SELECT_ALL = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id AS company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id";
     private static final String SQL_COUNT = "SELECT COUNT(*) as total FROM computer";
-    private static final String SQL_SELECT_PAGE = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id LIMIT ? OFFSET ?";
+    private static final String SQL_SELECT_PAGE = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id AS company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id LIMIT ? OFFSET ?";
     private static final String SQL_DELETE_BY_COMPANY = "DELETE FROM computer WHERE company_id = ?";
-    private static final String SQL_SELECT_BY_COMPANY = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE company_id = ?";
-    private static final String SQL_ORDER_BY = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.name LIKE ? OR company.name LIKE ? ORDER BY ? ? LIMIT ? OFFSET ?";
+    private static final String SQL_SELECT_BY_COMPANY = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id AS company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE company_id = ?";
+    private static final String SQL_ORDER_BY = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id AS company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.name LIKE ? OR company.name LIKE ? ORDER BY ? ? LIMIT ? OFFSET ?";
+
+    private JdbcTemplate jdbcTemplate;
 
     /**
      * Default constructor.
      */
     ComputerDaoImpl() {
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
+    /**
+     * Map list of companies.
+     *
+     * @param rows list of companies (List<Map<String, Object>>).
+     * @return list of companies (ArrayList).
+     */
+    public List<Computer> map(List<Map<String, Object>> rows) {
+        Input computerUtils = new Input();
+        List<Computer> computers = new ArrayList<>();
+        for (Map<String, Object> map : rows) {
+            Company company = new Company();
+            company.setId((Long) rows.get(0).get("company_id"));
+            company.setName((String) rows.get(0).get("company_name"));
+            Computer computer = new
+                    Computer.ComputerBuilder()
+                    .id((Long) rows.get(0).get("id"))
+                    .name((String) rows.get(0).get("name"))
+                    .introduced((String) rows.get(0).get("introduced") != null ? computerUtils.getLocalDate((String) rows.get(0).get("introduced")) : null)
+                    .discontinued((String) rows.get(0).get("introduced") != null ? computerUtils.getLocalDate((String) rows.get(0).get("discontinued")) : null)
+                    .company(company)
+                    .build();
+            computers.add(computer);
+        }
+        return computers;
     }
 
     /**
@@ -52,7 +90,7 @@ public class ComputerDaoImpl implements ComputerDao {
      */
     private static Computer map(ResultSet resultSet) throws SQLException {
         Company company = new Company();
-        company.setId(resultSet.getLong("id"));
+        company.setId(resultSet.getLong("company_id"));
         company.setName(resultSet.getString("company_name"));
         Computer computer = new
                 Computer.ComputerBuilder()
@@ -98,63 +136,20 @@ public class ComputerDaoImpl implements ComputerDao {
 
     @Override
     public Computer findById(Long id) throws DAOException {
-        Computer computer = null;
-        try {
-            Connection connexion = daoFactory.getConnection();
-            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_ID, false, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            LOGGER.debug(preparedStatement.toString());
-         /* Iterate over returned ResultSet */
-            if (resultSet.next()) {
-                computer = map(resultSet);
-            }
-            daoFactory.close(resultSet, preparedStatement);
-        } catch (SQLException e) {
-            LOGGER.debug(e.toString());
-            throw new DAOException(e);
-        }
-        return computer;
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_SELECT_BY_ID, id);
+        return map(rows).get(0);
     }
 
     @Override
     public List<Computer> findByName(String name, int page, int nbComputerByPage) throws DAOException {
-        List<Computer> listComputer = new ArrayList<Computer>();
-        Computer computer = null;
-        try {
-            Connection connexion = daoFactory.getConnection();
-            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_NAME, false, "%" + name + "%", "%" + name + "%", nbComputerByPage, (page - 1) * nbComputerByPage);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            LOGGER.debug(preparedStatement.toString());
-         /* Iterate over returned ResultSet */
-            while (resultSet.next()) {
-                computer = map(resultSet);
-                listComputer.add(computer);
-            }
-            daoFactory.close(resultSet, preparedStatement);
-        } catch (SQLException e) {
-            LOGGER.debug(e.toString());
-            throw new DAOException(e);
-        }
-        return listComputer;
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_SELECT_BY_NAME, "%" + name + "%", "%" + name + "%", nbComputerByPage, (page - 1) * nbComputerByPage);
+        return map(rows);
     }
 
     @Override
     public int countByName(String name) throws DAOException {
-        int nb = 0;
-        try {
-            Connection connexion = daoFactory.getConnection();
-            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_COUNT_BY_NAME, false, "%" + name + "%", "%" + name + "%");
-            ResultSet resultSet = preparedStatement.executeQuery();
-            LOGGER.debug(preparedStatement.toString());
-            if (resultSet.next()) {
-                nb = resultSet.getInt("total");
-            }
-            daoFactory.close(resultSet, preparedStatement);
-        } catch (SQLException e) {
-            LOGGER.debug(e.toString());
-            throw new DAOException(e);
-        }
-        return nb;
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_COUNT_BY_NAME, "%" + name + "%", "%" + name + "%");
+        return (int) rows.get(0).get("total");
     }
 
     @Override
@@ -203,46 +198,14 @@ public class ComputerDaoImpl implements ComputerDao {
 
     @Override
     public List<Computer> getAll() throws DAOException {
-        List<Computer> listComputer = new ArrayList<Computer>();
-        Computer computer = null;
-        try {
-            Connection connexion = daoFactory.getConnection();
-            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_ALL, false);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            LOGGER.debug(preparedStatement.toString());
-         /* Iterate over returned ResultSet */
-            while (resultSet.next()) {
-                computer = map(resultSet);
-                listComputer.add(computer);
-            }
-            daoFactory.close(resultSet, preparedStatement);
-        } catch (SQLException e) {
-            LOGGER.debug(e.toString());
-            throw new DAOException(e);
-        }
-        return listComputer;
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_SELECT_ALL);
+        return map(rows);
     }
 
     @Override
     public List<Computer> getPageList(int page, int nbComputerByPage) throws DAOException {
-        List<Computer> listComputer = new ArrayList<>();
-        Computer computer = null;
-        try {
-            Connection connexion = daoFactory.getConnection();
-            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_PAGE, false, nbComputerByPage, (page - 1) * nbComputerByPage);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            LOGGER.debug("PAGE LIST : " + preparedStatement.toString());
-         /* Iterate over returned ResultSet */
-            while (resultSet.next()) {
-                computer = map(resultSet);
-                listComputer.add(computer);
-            }
-            daoFactory.close(resultSet, preparedStatement);
-        } catch (SQLException e) {
-            LOGGER.debug(e.toString());
-            throw new DAOException(e);
-        }
-        return listComputer;
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_SELECT_PAGE, nbComputerByPage, (page - 1) * nbComputerByPage);
+        return map(rows);
     }
 
     @Override
@@ -286,24 +249,8 @@ public class ComputerDaoImpl implements ComputerDao {
 
     @Override
     public List<Computer> findByCompanyId(Long companyId) {
-        List<Computer> listComputer = new ArrayList<Computer>();
-        Computer computer = null;
-        try {
-            Connection connexion = daoFactory.getConnection();
-            PreparedStatement preparedStatement = initPreparedStatement(connexion, SQL_SELECT_BY_COMPANY, false, companyId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            LOGGER.debug(preparedStatement.toString());
-         /* Iterate over returned ResultSet */
-            while (resultSet.next()) {
-                computer = map(resultSet);
-                listComputer.add(computer);
-            }
-            daoFactory.close(resultSet, preparedStatement);
-        } catch (SQLException e) {
-            LOGGER.debug(e.toString());
-            throw new DAOException(e);
-        }
-        return listComputer;
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_SELECT_BY_COMPANY, companyId);
+        return map(rows);
     }
 
     @Override

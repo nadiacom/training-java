@@ -45,6 +45,10 @@
         </property>
     </bean>
 
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
 
     <!-- DAO Factory -->
     <bean id="daoFactory" class="persistence.DAOFactory">
@@ -52,10 +56,12 @@
 
     <!-- DAOS -->
     <bean id="companyDao" class="persistence.daos.CompanyDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
         <property name="daoFactory" ref="daoFactory"/>
     </bean>
 
     <bean id="computerDao" class="persistence.daos.ComputerDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
         <property name="daoFactory" ref="daoFactory"/>
     </bean>
 
@@ -101,4 +107,13 @@
         <property name="computerDao" ref="computerDao"/>
     </bean>
 
+    <!-- CLI SERVICES -->
+    <bean id="companyCliService" class="cli.CompanyCli">
+        <property name="companyService" ref="companyService"/>
+    </bean>
+
+    <bean id="computerCliService" class="cli.ComputerCli">
+        <property name="computerService" ref="computerService"/>
+        <property name="companyService" ref="companyService"/>
+    </bean>
 </beans>

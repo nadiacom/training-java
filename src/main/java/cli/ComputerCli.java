@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class ComputerCli {
 
-    private static ComputerService computerService;
+    private ComputerService computerService;
 
     /**
      * List and print all computers.
@@ -87,5 +87,11 @@ public class ComputerCli {
         } else {
             System.out.println("No computer exists with the given id. Try another one.");
         }
+    }
+
+    public void setComputerService(ComputerService computerService) {
+    }
+
+    public void setCompanyService(services.CompanyService companyService) {
     }
 }

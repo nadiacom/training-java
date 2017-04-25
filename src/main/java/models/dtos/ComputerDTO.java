@@ -5,7 +5,7 @@ package models.dtos;
  */
 public class ComputerDTO {
 
-    private int id;
+    private Long id;
     private String name;
     private String introduced;
     private String discontinued;
@@ -18,11 +18,11 @@ public class ComputerDTO {
 
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -77,7 +77,7 @@ public class ComputerDTO {
          * @param id (required) computerDTO id.
          * @return computerDTO builder.
          */
-        public ComputerDTOBuilder id(int id) {
+        public ComputerDTOBuilder id(Long id) {
             c.setId(id);
             return this;
         }

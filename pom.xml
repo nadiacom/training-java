@@ -6,7 +6,7 @@
 
     <groupId>com.e-biz.ncomptier</groupId>
     <artifactId>training-java</artifactId>
-    <version>snapshot</version>
+    <version>5.0.BUILD-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <properties>
@@ -29,6 +29,13 @@
     </properties>
 
     <build>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
 
         <defaultGoal>clean install</defaultGoal>
 

@@ -12,8 +12,8 @@ import java.util.List;
  */
 public class CompanyCli {
 
-    private static CompanyService companyService;
-    private static ComputerService computerService;
+    private CompanyService companyService;
+    private ComputerService computerService;
 
     /**
      * List and print all companies.
@@ -57,5 +57,8 @@ public class CompanyCli {
     public void delete(int id) {
         Company c = companyService.findById(Long.valueOf(id));
         companyService.delete(c);
+    }
+
+    public void setCompanyService(CompanyService companyService) {
     }
 }

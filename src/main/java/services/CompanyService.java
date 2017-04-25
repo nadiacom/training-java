@@ -56,7 +56,7 @@ public class CompanyService {
      */
     public Company findById(Long id) {
         Company company = companyDao.findById(id);
-        daoFactory.close();
+        //daoFactory.close();
         return company;
     }
 
