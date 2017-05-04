@@ -72,7 +72,7 @@
 </section>
 <jsp:include page="partials/scripts.jsp"></jsp:include>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/form-validation.js"></script>
+<!-- <script src="${pageContext.request.contextPath}/js/form-validation.js"></script> -->
 <script>
     $(function() {
         $('#introduced').datepicker({

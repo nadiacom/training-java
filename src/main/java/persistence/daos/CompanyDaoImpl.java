@@ -4,14 +4,15 @@ import exceptions.daos.DAOException;
 import models.Company;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.transaction.annotation.Transactional;
 import persistence.DAOFactory;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by ebiz on 14/03/17.
@@ -43,69 +44,59 @@ public class CompanyDaoImpl implements CompanyDao {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    /**
-     * Map list of companies
-     *
-     * @param rows list of companies (List<Map<String, Object>>)
-     * @return list of companies (ArrayList)
-     */
-    public List<Company> map(List<Map<String, Object>> rows) {
-        List<Company> companies = new ArrayList<>();
-
-        for (Map<String, Object> map : rows) {
-            Company company = new Company();
-            company.setId((Long) rows.get(0).get("id"));
-            company.setName((String) rows.get(0).get("name"));
-            companies.add(company);
-        }
-        return companies;
-    }
-
-    /**
-     * Map company method.
-     *
-     * @param id   company id.
-     * @param name company name.
-     * @return commany.
-     * @throws SQLException SQLException.
-     */
-
-    public static Company map(Long id, String name) throws SQLException {
-        Company company = new Company();
-        company.setId(id);
-        company.setName(name);
-        return company;
-    }
-
-
     @Override
     public Company findById(Long id) throws DAOException {
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_SELECT_BY_ID, id);
-        return map(rows).get(0);
+        Company company = new Company();
+        try {
+            company = jdbcTemplate.queryForObject(SQL_SELECT_BY_NAME, new Object[]{id}, new CompanyMapper());
+        } catch (Exception e) {
+            LOGGER.debug("Error retrieving company with ID : " + id + e.getMessage() + e.getStackTrace());
+        }
+        return company;
     }
 
     @Override
     public List<Company> findByName(String name, int page, int nbComputerByPage) throws DAOException {
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_SELECT_BY_NAME, "%" + name + "%", PAGE_SIZE, (page - 1) * PAGE_SIZE);
-        return map(rows);
+        List<Company> listCompanies = new ArrayList<>();
+        try {
+            listCompanies = jdbcTemplate.query(SQL_SELECT_BY_NAME, new Object[]{"%" + name + "%", PAGE_SIZE, (page - 1) * PAGE_SIZE}, new CompanyMapper());
+        } catch (Exception e) {
+            LOGGER.debug("Error retrieving company with name like : " + name + e.getMessage() + e.getStackTrace());
+        }
+        return listCompanies;
     }
 
     @Override
     public List<Company> getAll() throws DAOException {
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_SELECT_ALL);
-        return map(rows);
+        List<Company> listCompanies = new ArrayList<>();
+        try {
+            listCompanies = jdbcTemplate.query(SQL_SELECT_ALL, new CompanyMapper());
+        } catch (Exception e) {
+            LOGGER.debug("Error retrieving all companies : " + e.getMessage() + e.getStackTrace());
+        }
+        return listCompanies;
     }
 
     @Override
     public List<Company> getPageList(int page) throws DAOException {
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_SELECT_PAGE);
-        return map(rows);
+        List<Company> listCompanies = new ArrayList<>();
+        try {
+            listCompanies = jdbcTemplate.query(SQL_SELECT_PAGE, new Object[]{PAGE_SIZE, (page - 1) * PAGE_SIZE}, new CompanyMapper());
+        } catch (Exception e) {
+            LOGGER.debug("Error retrieving companies for page : " + page + "and page size :" + PAGE_SIZE + e.getMessage() + e.getStackTrace());
+        }
+        return listCompanies;
     }
 
     @Override
     public Long delete(Company company) throws DAOException {
-        jdbcTemplate.update(SQL_DELETE, company.getId());
-        return company.getId();
+        Long id = company.getId();
+        try {
+            jdbcTemplate.update(SQL_DELETE, id);
+        } catch (Exception e) {
+            LOGGER.debug("Error deleting company with ID : " + id + e.getMessage() + e.getStackTrace());
+        }
+        return id;
     }
 
     public void setDaoFactory(DAOFactory daoFactory) {
@@ -114,5 +105,23 @@ public class CompanyDaoImpl implements CompanyDao {
 
     public DAOFactory getDaoFactory() {
         return daoFactory;
+    }
+
+    class CompanyMapper implements RowMapper<Company> {
+
+        /**
+         * Utilitary method to map one row returned from JDBCTemplate row to company bean.
+         *
+         * @param resultSet (required) ResultSet from database request.
+         * @param rowNum    row number.
+         * @return mapped company.
+         * @throws SQLException SQL exception.
+         */
+        public Company mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+            Company company = new Company();
+            company.setId(resultSet.getLong("id"));
+            company.setName(resultSet.getString("name"));
+            return company;
+        }
     }
 }
