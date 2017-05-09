@@ -9,18 +9,32 @@
     <version>5.0.BUILD-SNAPSHOT</version>
     <packaging>war</packaging>
 
+    <name>wapbapp</name>
+    <description>Training java project</description>
+
     <properties>
+        <!--project properties-->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+
+        <!--dependencies versions-->
         <slf4j.version>1.7.24</slf4j.version>
         <logback-core.version>1.2.1</logback-core.version>
         <logback-classic.version>1.2.1</logback-classic.version>
+
         <mysql-connector.version>6.0.6</mysql-connector.version>
         <hikari.version>2.6.1</hikari.version>
+
         <junit.version>4.12</junit.version>
         <mockito-core.version>1.10.19</mockito-core.version>
+        <selelium.version>3.3.1</selelium.version>
+
         <javax.servlet.version>3.1.0</javax.servlet.version>
         <javax.servlet.jsp.version>2.3.1</javax.servlet.jsp.version>
         <jstl.version>1.2</jstl.version>
-        <selelium.version>3.3.1</selelium.version>
+
+
         <guava.version>21.0</guava.version>
         <org.springframework.version>4.3.7.RELEASE</org.springframework.version>
         <maven-compiler.version>3.6.1</maven-compiler.version>
@@ -203,9 +217,20 @@
             <version>${guava.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- Core utilities used by other modules.
-    Define this if you use Spring Utility APIs
-    (org.springframework.core.*/org.springframework.util.*)-->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -218,9 +243,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- Bean Factory and JavaBeans utilities (depends on spring-core)
-            Define this if you use Spring Bean APIs
-            (org.springframework.beans.*)-->
+        <!-- Bean Factory and JavaBeans utilities (depends on spring-core) (org.springframework.beans.*)-->
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-beans -->
         <dependency>
             <groupId>org.springframework</groupId>

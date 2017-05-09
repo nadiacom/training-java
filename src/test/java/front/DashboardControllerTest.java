@@ -8,13 +8,11 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
@@ -26,7 +24,7 @@ import static org.junit.Assert.assertEquals;
  */
 
 @Ignore
-public class DashboardTest {
+public class DashboardControllerTest {
 
     private WebDriver driver;
     private String baseUrl = "http://127.0.0.1:8080/dashboard";
@@ -68,7 +66,7 @@ public class DashboardTest {
 
     //Create, edit and delete tests are interdependent, they are done in the same test/thread
     @Test
-    public void testCreateEditDelete () {
+    public void testCreateEditDelete() {
 
         driver.get("http://localhost:8080/add");
 
