@@ -9,9 +9,18 @@ import persistence.daos.ComputerDaoImpl;
  */
 public class ComputerEditUrlValidator {
 
-    @Autowired
-    private ComputerDaoImpl computerDao;
+    private final ComputerDaoImpl computerDao;
     public StringBuilder error;
+
+    /**
+     * ComputerEditUrlValidator constructor.
+     *
+     * @param computerDao autowired computerDao
+     */
+    @Autowired
+    public ComputerEditUrlValidator(ComputerDaoImpl computerDao) {
+        this.computerDao = computerDao;
+    }
 
     /**
      * @param urlParameters urlParameters.
@@ -33,7 +42,7 @@ public class ComputerEditUrlValidator {
      * @return boolean : exists or not.
      */
     public boolean computerExists(String id) {
-        long computerDbId =  computerDao.findById(Long.valueOf(id)).getId();
+        long computerDbId = computerDao.findById(Long.valueOf(id)).getId();
         long computerFrontId = Long.parseLong(id);
         return (computerDbId == computerFrontId ? true : false);
     }
@@ -56,6 +65,7 @@ public class ComputerEditUrlValidator {
 
     /**
      * Get errors from ComputerEditUrlValidator.
+     *
      * @return error string from StringBuilder.
      */
     public String getError() {

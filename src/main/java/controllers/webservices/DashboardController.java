@@ -28,6 +28,7 @@ public class DashboardController {
 
     /**
      * Dashboard constructor.
+     *
      * @param computerService autowired computerService
      * @param computerDTOService autowired computerDTOService
      */

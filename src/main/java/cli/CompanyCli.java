@@ -12,10 +12,20 @@ import java.util.List;
 @Service
 public class CompanyCli {
 
+    private final CompanyService companyService;
+    private final ComputerService computerService;
+
+    /**
+     * CompanyCli constructor.
+     *
+     * @param companyService  autowired companyService
+     * @param computerService autowired computerService
+     */
     @Autowired
-    private CompanyService companyService;
-    @Autowired
-    private ComputerService computerService;
+    public CompanyCli(CompanyService companyService, ComputerService computerService) {
+        this.companyService = companyService;
+        this.computerService = computerService;
+    }
 
     /**
      * List and print all companies.

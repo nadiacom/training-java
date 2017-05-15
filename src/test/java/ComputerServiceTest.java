@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"/applicationContext.xml"})
 public class ComputerServiceTest {
-
+/*
     @Resource
     protected ComputerService computerService;
     protected Computer computer, computer11;
@@ -68,7 +68,7 @@ public class ComputerServiceTest {
         assertEquals(computer11.toString(), computers.get(0).toString());
     }
 
-
+*/
 
 
 }

@@ -15,8 +15,17 @@ public class PageRequestService {
 
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("services.PageRequestService");
     private PageRequest pageRequest;
+    private final ComputerDTOServiceImpl computerDTOService;
+
+    /**
+     * PageRequest constructor.
+     *
+     * @param computerDTOService autowired computerDTOService
+     */
     @Autowired
-    private ComputerDTOServiceImpl computerDTOService;
+    public PageRequestService(ComputerDTOServiceImpl computerDTOService) {
+        this.computerDTOService = computerDTOService;
+    }
 
     /**
      * .

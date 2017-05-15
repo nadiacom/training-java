@@ -15,17 +15,22 @@ import java.util.List;
 public class CompanyService {
 
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("services.CompanyService");
-    @Autowired
-    private CompanyDao companyDao;
-    @Autowired
-    private ComputerDao computerDao;
-    @Autowired
-    private DAOFactory daoFactory;
+    private final CompanyDao companyDao;
+    private final ComputerDao computerDao;
+    private final DAOFactory daoFactory;
 
     /**
-     * Default constructor.
+     * CompanyService constructor.
+     *
+     * @param companyDao  autowired companyDao
+     * @param computerDao autowired computerDao
+     * @param daoFactory  autowired daoFactory
      */
-    public CompanyService() {
+    @Autowired
+    public CompanyService(CompanyDao companyDao, ComputerDao computerDao, DAOFactory daoFactory) {
+        this.companyDao = companyDao;
+        this.computerDao = computerDao;
+        this.daoFactory = daoFactory;
     }
 
     /**

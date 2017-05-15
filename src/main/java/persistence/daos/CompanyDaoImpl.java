@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import persistence.DAOFactory;
 
-import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -30,20 +29,19 @@ public class CompanyDaoImpl implements CompanyDao {
 
     private static final int PAGE_SIZE = 10;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-    @Autowired
-    private DAOFactory daoFactory;
+    private final JdbcTemplate jdbcTemplate;
+    private final DAOFactory daoFactory;
 
     /**
-     * Default constructor.
+     * CompanyDaoImpl constructor.
+     *
+     * @param jdbcTemplate autowired jdbcTemplate.
+     * @param daoFactory   autowired daoFactory
      */
-    CompanyDaoImpl() {
-    }
-
-
-    public void setDataSource(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+    @Autowired
+    public CompanyDaoImpl(JdbcTemplate jdbcTemplate, DAOFactory daoFactory) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.daoFactory = daoFactory;
     }
 
     @Override

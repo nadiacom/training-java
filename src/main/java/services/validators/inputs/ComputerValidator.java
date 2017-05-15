@@ -10,10 +10,19 @@ import java.time.LocalDate;
 public class ComputerValidator {
 
     private Input input = new Input();
-    @Autowired
-    private CompanyDaoImpl companyDaoIml;
+    private final CompanyDaoImpl companyDaoIml;
     public StringBuilder error;
     private boolean first = true;
+
+    /**
+     * ComputerValidator constructor.
+     *
+     * @param companyDaoIml autowired companyDaoIml
+     */
+    @Autowired
+    public ComputerValidator(CompanyDaoImpl companyDaoIml) {
+        this.companyDaoIml = companyDaoIml;
+    }
 
     /**
      * Check if computer input fields are valid or not and throw specified exceptions.

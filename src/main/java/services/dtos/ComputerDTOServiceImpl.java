@@ -12,16 +12,18 @@ import java.util.List;
 @Service
 public class ComputerDTOServiceImpl implements ComputerDTOService {
 
-    @Autowired
-    private ComputerService computerService;
+    private final ComputerService computerService;
     private ComputerMapper computerMapper = new ComputerMapper();
 
     /**
-     * Default constructor.
+     * ComputerDTOServiceImpl constructor.
+     *
+     * @param computerService autowired computerService
      */
-    ComputerDTOServiceImpl() {
+    @Autowired
+    public ComputerDTOServiceImpl(ComputerService computerService) {
+        this.computerService = computerService;
     }
-
 
     @Override
     public List<ComputerDTO> getAll() {

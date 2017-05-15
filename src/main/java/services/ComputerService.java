@@ -15,17 +15,22 @@ import java.util.List;
 public class ComputerService {
 
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("services.ComputerService");
-    @Autowired
-    private ComputerDao computerDao;
-    @Autowired
-    private CompanyDao companyDao;
-    @Autowired
-    private DAOFactory daoFactory;
+    private final ComputerDao computerDao;
+    private final CompanyDao companyDao;
+    private final DAOFactory daoFactory;
 
     /**
-     * Default constructor.
+     * ComputerService constructor.
+     *
+     * @param computerDao autowired computerDao
+     * @param companyDao  autowired companyDao
+     * @param daoFactory  autowired daoFactory
      */
-    public ComputerService() {
+    @Autowired
+    public ComputerService(ComputerDao computerDao, CompanyDao companyDao, DAOFactory daoFactory) {
+        this.computerDao = computerDao;
+        this.companyDao = companyDao;
+        this.daoFactory = daoFactory;
     }
 
     /**
@@ -47,7 +52,7 @@ public class ComputerService {
      * @return computer list by page.
      */
     public List<Computer> getByPage(int page, int nbComputerByPage) {
-         List<Computer> computers = computerDao.getPageList(page, nbComputerByPage);
+        List<Computer> computers = computerDao.getPageList(page, nbComputerByPage);
         daoFactory.close();
         return computers;
     }

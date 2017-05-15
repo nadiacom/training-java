@@ -8,21 +8,23 @@ import org.springframework.stereotype.Service;
 import services.CompanyService;
 import services.validators.inputs.Input;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class CompanyDTOServiceImpl implements CompanyDTOService {
 
     private Input input = new Input();
-    @Autowired
-    private CompanyService companyService;
+    private final CompanyService companyService;
     private CompanyMapper companyMapper = new CompanyMapper();
 
     /**
-     * Default constructor.
+     * CompanyDTOServiceImpl constructor.
+     *
+     * @param companyService autowired companyService
      */
-    CompanyDTOServiceImpl() {
+    @Autowired
+    CompanyDTOServiceImpl(CompanyService companyService) {
+        this.companyService = companyService;
     }
 
     @Override

@@ -12,8 +12,17 @@ public class ComputerUtils {
     private boolean isOrderAsC = false;
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.ComputerUtils");
+    private final ComputerDTOServiceImpl computerDTOService;
+
+    /**
+     * ComputerUtils constructor.
+     *
+     * @param computerDTOService autowired computerDTOService
+     */
     @Autowired
-    private ComputerDTOServiceImpl computerDTOService;
+    public ComputerUtils(ComputerDTOServiceImpl computerDTOService) {
+        this.computerDTOService = computerDTOService;
+    }
 
     /**
      * Get computers list for current pagination from request.

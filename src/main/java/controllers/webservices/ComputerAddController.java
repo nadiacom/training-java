@@ -21,10 +21,20 @@ import java.util.List;
 public class ComputerAddController extends HttpServlet {
 
     private static Input inputValidator = new Input();
+    private final CompanyService companyService;
+    private final ComputerService computerService;
+
+    /**
+     * ComputerAddController constructor.
+     *
+     * @param companyService  autowired companyService
+     * @param computerService autowired computerService
+     */
     @Autowired
-    private CompanyService companyService;
-    @Autowired
-    private ComputerService computerService;
+    public ComputerAddController(CompanyService companyService, ComputerService computerService) {
+        this.companyService = companyService;
+        this.computerService = computerService;
+    }
 
     /**
      * Get the add computer page.
@@ -53,10 +63,10 @@ public class ComputerAddController extends HttpServlet {
      */
     @PostMapping()
     public String add(@RequestParam(value = "name") String name,
-                              @RequestParam(value = "introduced") String introduced,
-                              @RequestParam(value = "discontinued") String discontinued,
-                              @RequestParam(value = "companyId") String companyId,
-                              Model model
+                      @RequestParam(value = "introduced") String introduced,
+                      @RequestParam(value = "discontinued") String discontinued,
+                      @RequestParam(value = "companyId") String companyId,
+                      Model model
     ) {
         ComputerValidator computerValidator = new ComputerValidator();
         computerService.create(name, inputValidator.getLocalDate(introduced), inputValidator.getLocalDate(discontinued), computerValidator.getValidCompanyId(companyId));

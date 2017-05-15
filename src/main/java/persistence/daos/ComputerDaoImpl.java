@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import persistence.DAOFactory;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,8 +25,6 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ComputerDaoImpl implements ComputerDao {
 
-    @Autowired
-    private DAOFactory daoFactory;
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.ComputerDaoImpl");
 
     private static final String SQL_INSERT = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
@@ -43,17 +40,19 @@ public class ComputerDaoImpl implements ComputerDao {
     private static final String SQL_SELECT_BY_COMPANY = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id AS company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE company_id = ?";
     private static final String SQL_ORDER_BY = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id AS company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.name LIKE ? OR company.name LIKE ? ORDER BY ? ? LIMIT ? OFFSET ?";
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private final DAOFactory daoFactory;
+    private final JdbcTemplate jdbcTemplate;
 
     /**
-     * Default constructor.
+     * ComputerDaoImpl constructor.
+     *
+     * @param daoFactory   autowired daoFactory
+     * @param jdbcTemplate autowired jdbcTemplate
      */
-    ComputerDaoImpl() {
-    }
-
-    public void setDataSource(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+    @Autowired
+    public ComputerDaoImpl(DAOFactory daoFactory, JdbcTemplate jdbcTemplate) {
+        this.daoFactory = daoFactory;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override

@@ -26,13 +26,24 @@ import java.util.List;
 public class ComputerEditController extends HttpServlet {
 
     private static Input inputValidator = new Input();
-    @Autowired
-    private ComputerService computerService;
-    @Autowired
-    private CompanyDTOServiceImpl companyDTOService;
-    @Autowired
-    private ComputerDTOServiceImpl computerDTOService;
+    private final ComputerService computerService;
+    private final CompanyDTOServiceImpl companyDTOService;
+    private final ComputerDTOServiceImpl computerDTOService;
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.webservices.ComputerEditController");
+
+    /**
+     * ComputerEditController constructor.
+     *
+     * @param computerService    autowired computerService
+     * @param companyDTOService  autowired companyDTOService
+     * @param computerDTOService autowired computerDTOService
+     */
+    @Autowired
+    public ComputerEditController(ComputerService computerService, CompanyDTOServiceImpl companyDTOService, ComputerDTOServiceImpl computerDTOService) {
+        this.computerService = computerService;
+        this.companyDTOService = companyDTOService;
+        this.computerDTOService = computerDTOService;
+    }
 
     /**
      * Get edit page.

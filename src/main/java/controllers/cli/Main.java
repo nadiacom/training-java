@@ -5,32 +5,31 @@ import cli.ComputerCli;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import services.validators.inputs.Input;
 
 import java.sql.SQLException;
 import java.util.Scanner;
+
 
 public class Main {
 
     public static Logger logger = LoggerFactory.getLogger(Main.class);
     static Scanner input = new Scanner(System.in);
     static int itemNum;
-    @Autowired
     private static CompanyCli companyService;
-    @Autowired
     private static ComputerCli computerService;
     private static Input inputCli;
 
     /**
-     * Main method.
+     * Main constructor.
      *
-     * @param companyService  companyService.
-     * @param computerService computerService.
+     * @param companyService  autowired companyService
+     * @param computerService autowired computerService
      */
-    private Main(CompanyCli companyService, ComputerCli computerService) {
-        Main.companyService = companyService;
-        Main.computerService = computerService;
+    @Autowired
+    public Main(CompanyCli companyService, ComputerCli computerService) {
+        this.companyService = companyService;
+        this.computerService = computerService;
     }
 
     /**

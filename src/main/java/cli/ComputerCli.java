@@ -10,8 +10,17 @@ import java.util.List;
 
 @Service
 public class ComputerCli {
+    private final ComputerService computerService;
+
+    /**
+     * ComputerCli constructor.
+     *
+     * @param computerService autowired computerService
+     */
     @Autowired
-    private ComputerService computerService;
+    public ComputerCli(ComputerService computerService) {
+        this.computerService = computerService;
+    }
 
     /**
      * List and print all computers.
