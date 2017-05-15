@@ -4,17 +4,14 @@ import models.Computer;
 import models.dtos.ComputerDTO;
 import services.validators.inputs.Input;
 
-/**
- * Created by ebiz on 22/03/17.
- */
 public class ComputerMapper implements Mapper<Computer, ComputerDTO> {
 
-    private static CompanyMapper companyMapper;
+    public CompanyMapper companyMapper = new CompanyMapper();
 
     /**
      * Default constructor.
      */
-    ComputerMapper() {
+    public ComputerMapper() {
     }
 
     static Input input = new Input();

@@ -1,16 +1,16 @@
 package cli;
 
 import models.Computer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import services.ComputerService;
 
 import java.time.LocalDate;
 import java.util.List;
 
-/**
- * Created by ebiz on 15/03/17.
- */
+@Service
 public class ComputerCli {
-
+    @Autowired
     private ComputerService computerService;
 
     /**
@@ -87,11 +87,5 @@ public class ComputerCli {
         } else {
             System.out.println("No computer exists with the given id. Try another one.");
         }
-    }
-
-    public void setComputerService(ComputerService computerService) {
-    }
-
-    public void setCompanyService(services.CompanyService companyService) {
     }
 }

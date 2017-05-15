@@ -5,9 +5,6 @@ import models.Computer;
 
 import java.util.List;
 
-/**
- * Created by ebiz on 14/03/17.
- */
 public interface ComputerDao {
 
     /**

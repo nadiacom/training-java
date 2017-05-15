@@ -2,19 +2,18 @@ package utils;
 
 import models.dtos.ComputerDTO;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import services.dtos.ComputerDTOServiceImpl;
 
 import java.util.List;
 
-/**
- * Created by ebiz on 22/03/17.
- */
 public class ComputerUtils {
 
-    private static boolean isOrderAsC = false;
+    private boolean isOrderAsC = false;
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.ComputerUtils");
-    private static ComputerDTOServiceImpl computerDTOService;
+    @Autowired
+    private ComputerDTOServiceImpl computerDTOService;
 
     /**
      * Get computers list for current pagination from request.
@@ -24,7 +23,7 @@ public class ComputerUtils {
      * @param nbComputerByPage number of computers listed by page.
      * @return list of computers.
      */
-    public static List<ComputerDTO> getPageList(javax.servlet.http.HttpServletRequest request, int currentPage, int nbComputerByPage) {
+    public List<ComputerDTO> getPageList(javax.servlet.http.HttpServletRequest request, int currentPage, int nbComputerByPage) {
         String order = "";
         List<ComputerDTO> listComputer = null;
 
@@ -55,7 +54,7 @@ public class ComputerUtils {
      * @param request http request.
      * @return list of computers.
      */
-    public static int getNumberComputers(javax.servlet.http.HttpServletRequest request) {
+    public int getNumberComputers(javax.servlet.http.HttpServletRequest request) {
         int nb = 0;
         if (request.getParameter("search") != null) {
             nb = computerDTOService.countByName(request.getParameter("search"));
@@ -63,13 +62,5 @@ public class ComputerUtils {
             nb = computerDTOService.count();
         }
         return nb;
-    }
-
-    public void setComputerDTOService(ComputerDTOServiceImpl computerDTOService) {
-        this.computerDTOService = computerDTOService;
-    }
-
-    public ComputerDTOServiceImpl getComputerDTOService() {
-        return computerDTOService;
     }
 }

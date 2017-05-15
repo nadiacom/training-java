@@ -3,15 +3,12 @@ package mappers;
 import models.Company;
 import models.dtos.CompanyDTO;
 
-/**
- * Created by ebiz on 22/03/17.
- */
 public class CompanyMapper implements Mapper<Company, CompanyDTO> {
 
     /**
      * Default constructor.
      */
-    CompanyMapper() {
+    public CompanyMapper() {
     }
 
     /**

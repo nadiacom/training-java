@@ -4,14 +4,12 @@ import models.dtos.CompanyDTO;
 import models.dtos.ComputerDTO;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.WebApplicationContext;
 import services.ComputerService;
 import services.dtos.CompanyDTOServiceImpl;
 import services.dtos.ComputerDTOServiceImpl;
@@ -19,8 +17,6 @@ import services.validators.inputs.ComputerValidator;
 import services.validators.inputs.Input;
 import services.validators.urls.ComputerEditUrlValidator;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import java.util.List;
 
@@ -37,15 +33,6 @@ public class ComputerEditController extends HttpServlet {
     @Autowired
     private ComputerDTOServiceImpl computerDTOService;
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.webservices.ComputerEditController");
-
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        ApplicationContext ac = (ApplicationContext) config.getServletContext().getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
-        computerService = (ComputerService) ac.getBean("computerService");
-        companyDTOService = (CompanyDTOServiceImpl) ac.getBean("companyDTOService");
-        computerDTOService = (ComputerDTOServiceImpl) ac.getBean("computerDTOService");
-    }
 
     /**
      * Get edit page.
@@ -76,7 +63,7 @@ public class ComputerEditController extends HttpServlet {
         } else {
             model.addAttribute("errorMsg", error);
             //Dispatch view
-            return "redirect:/";
+            return "redirect:/dashboard";
         }
     }
 
@@ -101,6 +88,6 @@ public class ComputerEditController extends HttpServlet {
     ) {
         ComputerValidator computerValidator = new ComputerValidator();
         computerService.update(Integer.valueOf(id), name, inputValidator.getLocalDate(introduced), inputValidator.getLocalDate(discontinued), computerValidator.getValidCompanyId(companyId));
-        return "redirect:/";
+        return "redirect:/dashboard";
     }
 }

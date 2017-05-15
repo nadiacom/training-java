@@ -3,18 +3,18 @@ package services.dtos;
 import mappers.ComputerMapper;
 import models.Computer;
 import models.dtos.ComputerDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import services.ComputerService;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by ebiz on 22/03/17.
- */
+@Service
 public class ComputerDTOServiceImpl implements ComputerDTOService {
 
+    @Autowired
     private ComputerService computerService;
-    private ComputerMapper computerMapper;
+    private ComputerMapper computerMapper = new ComputerMapper();
 
     /**
      * Default constructor.
@@ -61,7 +61,7 @@ public class ComputerDTOServiceImpl implements ComputerDTOService {
     public List<ComputerDTO> findByName(String name, int page, int nbComputerByPage) {
         //Get all companies (from DAO)
         List<Computer> computers = computerService.findByName(name, page, nbComputerByPage);
-        List<ComputerDTO>  companiesDTO = computerMapper.fromList(computers);
+        List<ComputerDTO> companiesDTO = computerMapper.fromList(computers);
         //Return Computer DTO list
         return companiesDTO;
     }
@@ -70,24 +70,8 @@ public class ComputerDTOServiceImpl implements ComputerDTOService {
     public List<ComputerDTO> findByNameAndOrder(String name, String columnName, String orderBy, int page, int nbComputerByPage) {
         //Get all companies (from DAO)
         List<Computer> computers = computerService.findByNameAndOrder(name, columnName, orderBy, page, nbComputerByPage);
-        List<ComputerDTO>  companiesDTO = computerMapper.fromList(computers);
+        List<ComputerDTO> companiesDTO = computerMapper.fromList(computers);
         //Return Computer DTO list
         return companiesDTO;
-    }
-
-    public void setComputerMapper(ComputerMapper computerMapper) {
-        this.computerMapper = computerMapper;
-    }
-
-    public ComputerMapper getComputerMapper() {
-        return computerMapper;
-    }
-
-    public void setComputerService(ComputerService computerService) {
-        this.computerService = computerService;
-    }
-
-    public ComputerService getComputerService() {
-        return computerService;
     }
 }

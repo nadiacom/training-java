@@ -1,21 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
-    http://www.springframework.org/schema/context
-    http://www.springframework.org/schema/context/spring-context-4.1.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-
-    <!-- ANNOTATIONS POUR L'INJECTION DE DEPENDANCES -->
-    <context:annotation-config />
-
-    <!-- ANNOTATIONS POUR LA CREATION DE BEANS -->
-    <context:component-scan base-package="controllers" />
-
-    <!-- ANNOTATIONS POUR AOP -->
-    <!-- <aop:aspectj-autoproxy /> -->
+       http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
 
     <!-- Data Source -->
     <bean name="propertyPlaceholder" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -46,82 +33,13 @@
         </property>
     </bean>
 
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
     <bean id="transactionManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
     </bean>
 
-    <!-- DAO Factory -->
-    <bean id="daoFactory" class="persistence.DAOFactory">
-    </bean>
-
-    <!-- DAOS -->
-    <bean id="companyDao" class="persistence.daos.CompanyDaoImpl">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="daoFactory" ref="daoFactory"/>
-    </bean>
-
-    <bean id="computerDao" class="persistence.daos.ComputerDaoImpl">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="daoFactory" ref="daoFactory"/>
-    </bean>
-
-    <!-- SERVICES -->
-    <bean id="companyService" class="services.CompanyService">
-        <property name="companyDao" ref="companyDao"/>
-        <property name="computerDao" ref="computerDao"/>
-        <property name="daoFactory" ref="daoFactory"/>
-    </bean>
-
-    <bean id="computerService" class="services.ComputerService">
-        <property name="companyDao" ref="companyDao"/>
-        <property name="computerDao" ref="computerDao"/>
-        <property name="daoFactory" ref="daoFactory"/>
-    </bean>
-
-    <!-- MAPPERS -->
-    <bean id="companyMapper" class="mappers.CompanyMapper">
-    </bean>
-
-    <bean id="computerMapper" class="mappers.ComputerMapper">
-        <property name="companyMapper" ref="companyMapper"/>
-    </bean>
-
-    <!-- DTO SERVICES -->
-    <bean id="companyDTOService" class="services.dtos.CompanyDTOServiceImpl">
-        <property name="companyService" ref="companyService"/>
-        <property name="companyMapper" ref="companyMapper"/>
-    </bean>
-
-    <bean id="computerDTOService" class="services.dtos.ComputerDTOServiceImpl">
-        <property name="computerService" ref="computerService"/>
-        <property name="computerMapper" ref="computerMapper"/>
-    </bean>
-
-    <!-- UTILS -->
-    <bean id="computerUtils" class="utils.ComputerUtils">
-        <property name="computerDTOService" ref="computerDTOService"/>
-    </bean>
-
-    <!-- VALIDATORS -->
-    <bean id="computerValidator" class="services.validators.urls.ComputerEditUrlValidator">
-        <property name="computerDao" ref="computerDao"/>
-    </bean>
-
-    <!-- CLI SERVICES -->
-    <bean id="companyCliService" class="cli.CompanyCli">
-        <property name="companyService" ref="companyService"/>
-    </bean>
-
-    <bean id="computerCliService" class="cli.ComputerCli">
-        <property name="computerService" ref="computerService"/>
-        <property name="companyService" ref="companyService"/>
-    </bean>
-
-    <!-- MVC -->
-    <mvc:annotation-driven/>
-    <mvc:resources mapping="/js/**" location="js/"/>
-    <mvc:resources mapping="/css/**" location="css/"/>
-    <mvc:resources mapping="/fonts/**" location="fonts/"/>
-    <mvc:resources mapping="/resources/**" location="/"/>
 </beans>

@@ -3,20 +3,21 @@ package services.dtos;
 import mappers.CompanyMapper;
 import models.Company;
 import models.dtos.CompanyDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import services.CompanyService;
 import services.validators.inputs.Input;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by ebiz on 22/03/17.
- */
+@Service
 public class CompanyDTOServiceImpl implements CompanyDTOService {
 
-    static Input input = new Input();
+    private Input input = new Input();
+    @Autowired
     private CompanyService companyService;
-    private CompanyMapper companyMapper;
+    private CompanyMapper companyMapper = new CompanyMapper();
 
     /**
      * Default constructor.
@@ -55,22 +56,5 @@ public class CompanyDTOServiceImpl implements CompanyDTOService {
         List<CompanyDTO> companiesDTO = companyMapper.fromList(companies);
         //Return company DTO list
         return companiesDTO;
-    }
-
-
-    public void setCompanyService(CompanyService companyService) {
-        this.companyService = companyService;
-    }
-
-    public CompanyService getCompanyService() {
-        return companyService;
-    }
-
-    public void setCompanyMapper(CompanyMapper companyMapper) {
-        this.companyMapper = companyMapper;
-    }
-
-    public CompanyMapper getCompanyMapper() {
-        return companyMapper;
     }
 }

@@ -3,6 +3,7 @@ package persistence;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -10,9 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- * Created by ebiz on 14/03/17.
- */
+@Repository
 public class DAOFactory {
 
     private final String PROPERTIES_FILE = "/hikari.properties";

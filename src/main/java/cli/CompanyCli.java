@@ -2,17 +2,19 @@ package cli;
 
 
 import models.Company;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import services.CompanyService;
 import services.ComputerService;
 
 import java.util.List;
 
-/**
- * Created by ebiz on 15/03/17.
- */
+@Service
 public class CompanyCli {
 
+    @Autowired
     private CompanyService companyService;
+    @Autowired
     private ComputerService computerService;
 
     /**
@@ -57,8 +59,5 @@ public class CompanyCli {
     public void delete(int id) {
         Company c = companyService.findById(Long.valueOf(id));
         companyService.delete(c);
-    }
-
-    public void setCompanyService(CompanyService companyService) {
     }
 }

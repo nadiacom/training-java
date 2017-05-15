@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import services.ComputerService;
@@ -17,15 +18,24 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/dashboard")
 public class DashboardController {
 
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controllers.webservices..DashboardController");
 
+    private final ComputerService computerService;
+    private final ComputerDTOService computerDTOService;
+
+    /**
+     * Dashboard constructor.
+     * @param computerService autowired computerService
+     * @param computerDTOService autowired computerDTOService
+     */
     @Autowired
-    private ComputerService computerService;
-    @Autowired
-    private ComputerDTOService computerDTOService;
+    public DashboardController(ComputerService computerService, ComputerDTOService computerDTOService) {
+        this.computerService = computerService;
+        this.computerDTOService = computerDTOService;
+    }
 
     /**
      * Get the dashboard page.
@@ -117,6 +127,7 @@ public class DashboardController {
                 .search(search != null ? search : null)
                 .islastPage(Pagination.isLastPage())
                 .build();
+        //PageRequest pageRequest = new PageRequestService().buildPage(session, currentPage, search, order, limit, click);
 
         //SET PARAMETERS TO VIEW
         model.addAttribute("pageRequest", pageRequest);
@@ -127,41 +138,23 @@ public class DashboardController {
         return "dashboard";
     }
 
-
     /**
-     * @param request  request
-     * @param response response
-     * @throws javax.servlet.ServletException javax servlet exception
-     * @throws IOException                    IOException
+     * Delete computer selection.
+     *
+     * @param selection selection
+     * @param model     model
+     * @return dashboard view
      */
-    /*
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        DashboardUtils dashboard = new DashboardUtils();
-        request = dashboard.setRequest(request);
-
-        //Dispatch view
-        RequestDispatcher rd = request.getRequestDispatcher("views/dashboard.jsp");
-        rd.include(request, response);
-    } */
-
-
-    /**
-     * @param request  request.
-     * @param response response.
-     * @throws javax.servlet.ServletException ServletException.
-     * @throws IOException                    IOException.
-     */
-    /*
-    protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
-        if (request.getParameter("selection") != null) {
-            //Get computer selected
-            String[] selected = request.getParameter("selection").split(",");
-            for (int i = 0; i < selected.length; i++) {
-                //And delete computer from id
-                computerService.delete(Integer.valueOf(selected[i]));
-                doGet(request, response);
-            }
+    @PostMapping()
+    public String add(@RequestParam(value = "selection") String selection,
+                      Model model
+    ) {
+        //Get computer selected
+        String[] selected = selection.split(",");
+        for (int i = 0; i < selected.length; i++) {
+            //And delete computer from id
+            computerService.delete(Integer.valueOf(selected[i]));
         }
-    } */
+        return "dashboard";
+    }
 }

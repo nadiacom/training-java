@@ -3,8 +3,10 @@ package persistence.daos;
 import exceptions.daos.DAOException;
 import models.Company;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import persistence.DAOFactory;
 
@@ -14,9 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by ebiz on 14/03/17.
- */
+@Repository
 @Transactional(readOnly = true)
 public class CompanyDaoImpl implements CompanyDao {
 
@@ -30,8 +30,10 @@ public class CompanyDaoImpl implements CompanyDao {
 
     private static final int PAGE_SIZE = 10;
 
+    @Autowired
     private JdbcTemplate jdbcTemplate;
-    private static DAOFactory daoFactory;
+    @Autowired
+    private DAOFactory daoFactory;
 
     /**
      * Default constructor.
@@ -97,14 +99,6 @@ public class CompanyDaoImpl implements CompanyDao {
             LOGGER.debug("Error deleting company with ID : " + id + e.getMessage() + e.getStackTrace());
         }
         return id;
-    }
-
-    public void setDaoFactory(DAOFactory daoFactory) {
-        this.daoFactory = daoFactory;
-    }
-
-    public DAOFactory getDaoFactory() {
-        return daoFactory;
     }
 
     class CompanyMapper implements RowMapper<Company> {

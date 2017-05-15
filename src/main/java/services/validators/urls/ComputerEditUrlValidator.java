@@ -1,6 +1,7 @@
 package services.validators.urls;
 
 import exceptions.validators.urls.ComputerEditUrlValidatorException;
+import org.springframework.beans.factory.annotation.Autowired;
 import persistence.daos.ComputerDaoImpl;
 
 /**
@@ -8,7 +9,8 @@ import persistence.daos.ComputerDaoImpl;
  */
 public class ComputerEditUrlValidator {
 
-    private static ComputerDaoImpl computerDao;
+    @Autowired
+    private ComputerDaoImpl computerDao;
     public StringBuilder error;
 
     /**
@@ -50,14 +52,6 @@ public class ComputerEditUrlValidator {
         } catch (NumberFormatException e) {
         }
         return valid;
-    }
-
-    public void setComputerDao(ComputerDaoImpl computerDao) {
-        this.computerDao = computerDao;
-    }
-
-    public ComputerDaoImpl getComputerDao() {
-        return computerDao;
     }
 
     /**

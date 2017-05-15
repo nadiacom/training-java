@@ -5,9 +5,6 @@ import models.Company;
 
 import java.util.List;
 
-/**
- * Created by ebiz on 14/03/17.
- */
 public interface CompanyDao {
 
     /**

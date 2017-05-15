@@ -4,11 +4,13 @@ import exceptions.daos.DAOException;
 import models.Company;
 import models.Computer;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import persistence.DAOFactory;
 
@@ -20,11 +22,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 @Transactional(readOnly = true)
 public class ComputerDaoImpl implements ComputerDao {
 
-
-    private static DAOFactory daoFactory;
+    @Autowired
+    private DAOFactory daoFactory;
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.ComputerDaoImpl");
 
     private static final String SQL_INSERT = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
@@ -40,6 +43,7 @@ public class ComputerDaoImpl implements ComputerDao {
     private static final String SQL_SELECT_BY_COMPANY = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id AS company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE company_id = ?";
     private static final String SQL_ORDER_BY = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id AS company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.name LIKE ? OR company.name LIKE ? ORDER BY ? ? LIMIT ? OFFSET ?";
 
+    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     /**
@@ -211,15 +215,6 @@ public class ComputerDaoImpl implements ComputerDao {
         }
         return listComputers;
     }
-
-    public void setDaoFactory(DAOFactory daoFactory) {
-        this.daoFactory = daoFactory;
-    }
-
-    public DAOFactory getDaoFactory() {
-        return daoFactory;
-    }
-
 
     class ComputerMapper implements RowMapper<Computer> {
 

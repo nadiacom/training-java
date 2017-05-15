@@ -1,17 +1,16 @@
 package services.validators.inputs;
 
 import exceptions.validators.FormException;
+import org.springframework.beans.factory.annotation.Autowired;
 import persistence.daos.CompanyDaoImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 
-/**
- * Created by ebiz on 21/03/17.
- */
 public class ComputerValidator {
 
     private Input input = new Input();
+    @Autowired
     private CompanyDaoImpl companyDaoIml;
     public StringBuilder error;
     private boolean first = true;

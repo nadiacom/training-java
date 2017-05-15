@@ -3,21 +3,24 @@ package services;
 import models.Company;
 import models.Computer;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import persistence.DAOFactory;
 import persistence.daos.CompanyDao;
 import persistence.daos.ComputerDao;
 
 import java.util.List;
 
-/**
- * Created by ebiz on 20/03/17.
- */
+@Service
 public class CompanyService {
 
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("services.CompanyService");
-    private static CompanyDao companyDao;
-    private static ComputerDao computerDao;
-    private static DAOFactory daoFactory;
+    @Autowired
+    private CompanyDao companyDao;
+    @Autowired
+    private ComputerDao computerDao;
+    @Autowired
+    private DAOFactory daoFactory;
 
     /**
      * Default constructor.
@@ -115,31 +118,6 @@ public class CompanyService {
         daoFactory.commit();
         daoFactory.close();
         return companyId;
-    }
-
-    public void setCompanyDao(CompanyDao companyDao) {
-        this.companyDao = companyDao;
-    }
-
-    public CompanyDao getCompanyDao() {
-        return companyDao;
-    }
-
-
-    public void setComputerDao(ComputerDao computerDao) {
-        this.computerDao = computerDao;
-    }
-
-    public ComputerDao getComputerDao() {
-        return computerDao;
-    }
-
-    public void setDaoFactory(DAOFactory daoFactory) {
-        this.daoFactory = daoFactory;
-    }
-
-    public DAOFactory getDaoFactory() {
-        return daoFactory;
     }
 }
 

@@ -2,24 +2,25 @@ package services;
 
 import models.Computer;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import persistence.DAOFactory;
 import persistence.daos.CompanyDao;
-import persistence.daos.CompanyDaoImpl;
 import persistence.daos.ComputerDao;
-import persistence.daos.ComputerDaoImpl;
 
 import java.time.LocalDate;
 import java.util.List;
 
-/**
- * Created by ebiz on 20/03/17.
- */
+@Service
 public class ComputerService {
 
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("services.ComputerService");
-    private static ComputerDao computerDao;
-    private static CompanyDao companyDao;
-    private static DAOFactory daoFactory;
+    @Autowired
+    private ComputerDao computerDao;
+    @Autowired
+    private CompanyDao companyDao;
+    @Autowired
+    private DAOFactory daoFactory;
 
     /**
      * Default constructor.
@@ -46,7 +47,7 @@ public class ComputerService {
      * @return computer list by page.
      */
     public List<Computer> getByPage(int page, int nbComputerByPage) {
-        List<Computer> computers = computerDao.getPageList(page, nbComputerByPage);
+         List<Computer> computers = computerDao.getPageList(page, nbComputerByPage);
         daoFactory.close();
         return computers;
     }
@@ -215,29 +216,5 @@ public class ComputerService {
         int count = computerDao.countByName(name);
         daoFactory.close();
         return count;
-    }
-
-    public void setCompanyDao(CompanyDao companyDao) {
-        this.companyDao = companyDao;
-    }
-
-    public CompanyDao getCompanyDao() {
-        return companyDao;
-    }
-
-    public void setComputerDao(ComputerDao computerDao) {
-        this.computerDao = computerDao;
-    }
-
-    public ComputerDao getComputerDao() {
-        return computerDao;
-    }
-
-    public void setDaoFactory(DAOFactory daoFactory) {
-        this.daoFactory = daoFactory;
-    }
-
-    public DAOFactory getDaoFactory() {
-        return daoFactory;
     }
 }

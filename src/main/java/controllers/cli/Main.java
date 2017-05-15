@@ -11,21 +11,23 @@ import services.validators.inputs.Input;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-
-/**
- * Created by ebiz on 14/03/17.
- */
-@Component
 public class Main {
 
     public static Logger logger = LoggerFactory.getLogger(Main.class);
     static Scanner input = new Scanner(System.in);
     static int itemNum;
+    @Autowired
     private static CompanyCli companyService;
+    @Autowired
     private static ComputerCli computerService;
     private static Input inputCli;
 
-    @Autowired
+    /**
+     * Main method.
+     *
+     * @param companyService  companyService.
+     * @param computerService computerService.
+     */
     private Main(CompanyCli companyService, ComputerCli computerService) {
         Main.companyService = companyService;
         Main.computerService = computerService;
