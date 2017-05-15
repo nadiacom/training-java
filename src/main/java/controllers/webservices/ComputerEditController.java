@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import persistence.daos.CompanyDao;
+import persistence.daos.CompanyDaoImpl;
+import persistence.daos.ComputerDao;
+import persistence.daos.ComputerDaoImpl;
 import services.ComputerService;
 import services.dtos.CompanyDTOServiceImpl;
 import services.dtos.ComputerDTOServiceImpl;
@@ -29,6 +33,8 @@ public class ComputerEditController extends HttpServlet {
     private final ComputerService computerService;
     private final CompanyDTOServiceImpl companyDTOService;
     private final ComputerDTOServiceImpl computerDTOService;
+    private final ComputerDao computerDao;
+    private final CompanyDao companyDao;
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.webservices.ComputerEditController");
 
     /**
@@ -37,12 +43,15 @@ public class ComputerEditController extends HttpServlet {
      * @param computerService    autowired computerService
      * @param companyDTOService  autowired companyDTOService
      * @param computerDTOService autowired computerDTOService
+     * @param computerDao        autowired computerDao
      */
     @Autowired
-    public ComputerEditController(ComputerService computerService, CompanyDTOServiceImpl companyDTOService, ComputerDTOServiceImpl computerDTOService) {
+    public ComputerEditController(ComputerService computerService, CompanyDTOServiceImpl companyDTOService, ComputerDTOServiceImpl computerDTOService, ComputerDao computerDao, CompanyDao companyDao) {
         this.computerService = computerService;
         this.companyDTOService = companyDTOService;
         this.computerDTOService = computerDTOService;
+        this.computerDao = computerDao;
+        this.companyDao = companyDao;
     }
 
     /**
@@ -55,7 +64,7 @@ public class ComputerEditController extends HttpServlet {
     @GetMapping()
     public String get(@RequestParam String id,
                       Model model) {
-        ComputerEditUrlValidator computerEditUrlValidator = new ComputerEditUrlValidator();
+        ComputerEditUrlValidator computerEditUrlValidator = new ComputerEditUrlValidator((ComputerDaoImpl) computerDao);
         computerEditUrlValidator.isUrlValid(id);
         String error = computerEditUrlValidator.getError();
 
@@ -97,7 +106,7 @@ public class ComputerEditController extends HttpServlet {
                        @RequestParam(value = "companyId") String companyId,
                        Model model
     ) {
-        ComputerValidator computerValidator = new ComputerValidator();
+        ComputerValidator computerValidator = new ComputerValidator((CompanyDaoImpl) companyDao);
         computerService.update(Integer.valueOf(id), name, inputValidator.getLocalDate(introduced), inputValidator.getLocalDate(discontinued), computerValidator.getValidCompanyId(companyId));
         return "redirect:/dashboard";
     }

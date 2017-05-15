@@ -1,75 +1,99 @@
 import models.Company;
 import models.Computer;
-import org.junit.Ignore;
-import org.junit.runner.RunWith;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import services.ComputerService;
-
-import javax.annotation.Resource;
+import org.junit.runner.RunWith;
+import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+import persistence.DAOFactory;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
 
-/**
- * Created by ebiz on 17/03/17.
- */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/applicationContext.xml"})
+import persistence.daos.CompanyDao;
+import persistence.daos.ComputerDao;
+import services.CompanyService;
+import services.ComputerService;
+import services.dtos.CompanyDTOServiceImpl;
+
+@RunWith(SpringRunner.class)
 public class ComputerServiceTest {
-/*
-    @Resource
-    protected ComputerService computerService;
-    protected Computer computer, computer11;
-    protected Company company, company2, companyNull;
+
+    private ComputerService computerService;
+
+    @MockBean
+    DAOFactory daoFactory;
+    @MockBean
+    ComputerDao computerDao;
+    @MockBean
+    CompanyDao companyDao;
 
     @Before
-    public void setUp() {
-        computerService = new ComputerService();
-        company = new Company( (long) 1, "Apple Inc.");
-        company2 = new Company((long)2, "Thinking Machines");
-        companyNull = null;
+    public void setupMock() {
+        computerService = new ComputerService(computerDao, companyDao, daoFactory);
+        MockitoAnnotations.initMocks(this);
+    }
 
-        computer = new
+    @Test
+    public void getAll() {
+        computerService = new ComputerService(computerDao, companyDao, daoFactory);
+        MockitoAnnotations.initMocks(this);
+
+        //CREATE 2 COMPUTERS
+        Company company1 = new Company( 1L, "Apple Inc.");
+        Company company2 = new Company(2L, "Thinking Machines");
+
+        Computer computer1 = new
                 Computer.ComputerBuilder()
                 .id(1L)
                 .name("MacBook Pro 15.4 inch")
-                .company(company)
+                .company(company1)
                 .build();
 
-        computer11 = new
+        Computer computer11 = new
                 Computer.ComputerBuilder()
                 .id(11L)
                 .name("Apple II Plus")
-                .company(companyNull)
+                .company(company2)
                 .build();
 
+        //Computer 1 :
+        //Write expected behaviors
+        when(computerDao.create(computer1)).thenReturn(1L);
+        //Act
+        computerDao.create(computer1);
+        //Check
+        verify(computerDao).create(computer1);
+
+        //computer 2:
+        /* when(computerDao.create(computer11)).thenReturn(11L);
+        computerDao.create(computer1);
+        verify(computerDao).create(computer1); */
+
+        //Get computers
+        Computer computer = mock(Computer.class);
+        List<Computer> expectedComputerList = new ArrayList<>();
+        expectedComputerList.add(computer1);
+       /* expectedComputerList.add(computer11); */
+
+        when(computerDao.getAll()).thenReturn(expectedComputerList);
+        expectedComputerList = computerDao.getAll();
+        verify(computerDao).getAll();
+
+        //SET DAOS IN COMPUTER SERVICE
+        computerService.setCompanyDao(companyDao);
+        computerService.setComputerDao(computerDao);
+        computerService.setDaoFactory(daoFactory);
+
+        //CHECK
+        List<Computer> actualComputerList = computerService.getAll();
+        assertEquals(expectedComputerList.get(0), actualComputerList.get(0));
+        /* assertEquals(expectedComputerList.get(10), actualComputerList.get(10)); */
     }
-
-    @After
-    public void tearDown() {
-    }
-
-    @Test
-    public void testGetAllComputer() throws Exception {
-        List<Computer> computers = computerService.getAll();
-        assertEquals(computer.toString(), computers.get(0).toString());
-        assertEquals(computer11.toString(), computers.get(10).toString());
-    }
-
-    @Test
-    public void testGetComputerByPage() throws Exception {
-        int page = 2;
-        int nbComputerByPage = 10;
-        List<Computer> computers = computerService.getByPage(page, nbComputerByPage);
-        assertEquals(computer11.toString(), computers.get(0).toString());
-    }
-
-*/
-
 
 }
 

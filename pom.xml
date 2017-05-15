@@ -27,15 +27,15 @@
         <hikari.version>2.6.1</hikari.version>
 
         <junit.version>4.12</junit.version>
-        <mockito-core.version>1.10.19</mockito-core.version>
+        <mockito.version>2.7.22</mockito.version>
         <selelium.version>3.3.1</selelium.version>
 
         <javax.servlet.version>3.1.0</javax.servlet.version>
         <javax.servlet.jsp.version>2.3.1</javax.servlet.jsp.version>
         <jstl.version>1.2</jstl.version>
 
-
         <guava.version>21.0</guava.version>
+        <spring-boot-starter.version>1.5.3.RELEASE</spring-boot-starter.version>
         <org.springframework.version>4.3.7.RELEASE</org.springframework.version>
         <maven-compiler.version>3.6.1</maven-compiler.version>
         <maven-compiler-conf.version>1.8</maven-compiler-conf.version>
@@ -43,7 +43,6 @@
     </properties>
 
     <build>
-
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -87,8 +86,6 @@
                 </executions>
             </plugin>
         </plugins>
-
-
     </build>
 
     <profiles>
@@ -124,8 +121,8 @@
         </profile>
     </profiles>
 
-
     <dependencies>
+        <!-- LOGGER -->
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -153,6 +150,8 @@
             <version>${slf4j.version}</version>
             <scope>runtime</scope>
         </dependency>
+
+        <!-- DATABASE -->
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
             <groupId>mysql</groupId>
@@ -166,6 +165,8 @@
             <artifactId>HikariCP</artifactId>
             <version>${hikari.version}</version>
         </dependency>
+
+        <!-- TEST -->
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
             <groupId>junit</groupId>
@@ -177,9 +178,21 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>${mockito-core.version}</version>
-            <scope>test</scope>
+            <version>${mockito.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selelium.version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -198,18 +211,6 @@
             <version>${jstl.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>${selelium.version}</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -218,19 +219,30 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- SPRING BOOT -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
+            <version>${spring-boot-starter.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring-boot-starter.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
+            <version>${spring-boot-starter.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring-boot-starter.version}</version>
         </dependency>
 
+        <!-- SPRING -->
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
         <dependency>
             <groupId>org.springframework</groupId>

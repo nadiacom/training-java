@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import persistence.daos.CompanyDao;
+import persistence.daos.CompanyDaoImpl;
 import services.CompanyService;
 import services.ComputerService;
 import services.validators.inputs.ComputerValidator;
@@ -23,17 +25,20 @@ public class ComputerAddController extends HttpServlet {
     private static Input inputValidator = new Input();
     private final CompanyService companyService;
     private final ComputerService computerService;
+    private final CompanyDao companyDao;
 
     /**
      * ComputerAddController constructor.
      *
      * @param companyService  autowired companyService
      * @param computerService autowired computerService
+     * @param companyDao      autowired companyDao
      */
     @Autowired
-    public ComputerAddController(CompanyService companyService, ComputerService computerService) {
+    public ComputerAddController(CompanyService companyService, ComputerService computerService, CompanyDao companyDao) {
         this.companyService = companyService;
         this.computerService = computerService;
+        this.companyDao = companyDao;
     }
 
     /**
@@ -68,7 +73,7 @@ public class ComputerAddController extends HttpServlet {
                       @RequestParam(value = "companyId") String companyId,
                       Model model
     ) {
-        ComputerValidator computerValidator = new ComputerValidator();
+        ComputerValidator computerValidator = new ComputerValidator((CompanyDaoImpl) companyDao);
         computerService.create(name, inputValidator.getLocalDate(introduced), inputValidator.getLocalDate(discontinued), computerValidator.getValidCompanyId(companyId));
         return "redirect:/";
     }

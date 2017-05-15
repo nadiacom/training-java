@@ -15,9 +15,9 @@ import java.util.List;
 public class CompanyService {
 
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("services.CompanyService");
-    private final CompanyDao companyDao;
-    private final ComputerDao computerDao;
-    private final DAOFactory daoFactory;
+    private CompanyDao companyDao;
+    private ComputerDao computerDao;
+    private DAOFactory daoFactory;
 
     /**
      * CompanyService constructor.
@@ -123,6 +123,18 @@ public class CompanyService {
         daoFactory.commit();
         daoFactory.close();
         return companyId;
+    }
+
+    public void setCompanyDao(CompanyDao companyDao) {
+        this.companyDao = companyDao;
+    }
+
+    public void setComputerDao(ComputerDao computerDao) {
+        this.computerDao = computerDao;
+    }
+
+    public void setDaoFactory(DAOFactory daoFactory) {
+        this.daoFactory = daoFactory;
     }
 }
 
