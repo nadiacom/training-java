@@ -29,9 +29,9 @@
 
 <section id="main">
     <div class="container">
-        <c:if test="${not empty errorMsg}">
-            <div class="alert alert-warning">
-                <strong>Error : </strong>${errorMsg}
+        <c:if test="${not empty message}">
+            <div class="alert alert-success">
+                ${message}
             </div>
         </c:if>
         <h1 id="homeTitle">

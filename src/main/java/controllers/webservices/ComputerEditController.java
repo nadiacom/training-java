@@ -79,6 +79,7 @@ public class ComputerEditController extends HttpServlet {
         if (result.hasErrors()) {
             return "editComputer";
         } else {
+            redirectAttributes.addFlashAttribute("message", "Computer successfully updated.");
             computerService.update(computerMapper.to(computerDTO));
             return "redirect:/dashboard";
         }
