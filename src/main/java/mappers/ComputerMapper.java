@@ -1,10 +1,13 @@
 package mappers;
 
+import models.Company;
 import models.Computer;
 import models.dtos.ComputerDTO;
-import services.validators.inputs.Input;
+import org.springframework.stereotype.Service;
+import utils.DatePatternUtils;
 
-public class ComputerMapper implements Mapper<Computer, ComputerDTO> {
+@Service("CompanyMapper")
+public class ComputerMapper implements GenericMapper<Computer, ComputerDTO> {
 
     public CompanyMapper companyMapper = new CompanyMapper();
 
@@ -14,7 +17,7 @@ public class ComputerMapper implements Mapper<Computer, ComputerDTO> {
     public ComputerMapper() {
     }
 
-    static Input input = new Input();
+    static DatePatternUtils datePatternUtils = new DatePatternUtils();
 
     /**
      * Map computerDTO to computer.
@@ -25,12 +28,12 @@ public class ComputerMapper implements Mapper<Computer, ComputerDTO> {
     public Computer to(ComputerDTO computerDTO) {
         Computer computer = new
                 Computer.ComputerBuilder()
-                .id(Long.valueOf(computerDTO.getId()))
+                .id(computerDTO.getId() != null ? Long.valueOf(computerDTO.getId()) : null)
                 .name(computerDTO.getName())
-                .introduced(computerDTO.getIntroduced() != null ? input.getLocalDate(computerDTO.getIntroduced()) : null)
-                .discontinued(computerDTO.getDiscontinued() != null ? input.getLocalDate(computerDTO.getDiscontinued()) : null)
+                .introduced(computerDTO.getIntroduced() != null ? datePatternUtils.getLocalDate(computerDTO.getIntroduced()) : null)
+                .discontinued(computerDTO.getDiscontinued() != null ? datePatternUtils.getLocalDate(computerDTO.getDiscontinued()) : null)
                 //Get companyDTO and map it to company
-                .company(companyMapper.to(computerDTO.getCompanyDTO()))
+                .company(new Company(computerDTO.getCompanyId(), computerDTO.getCompanyName()))
                 .build();
         return computer;
     }
@@ -49,7 +52,8 @@ public class ComputerMapper implements Mapper<Computer, ComputerDTO> {
                 .introduced(computer.getDiscontinued() != null ? computer.getIntroduced().toString() : "")
                 .discontinued(computer.getDiscontinued() != null ? computer.getDiscontinued().toString() : "")
                 //Get companyDTO and map it to company
-                .company(companyMapper.from(computer.getCompany()))
+                .companyId(computer.getCompany() != null ? computer.getCompany().getId() : null)
+                .companyName(computer.getCompany() != null ? computer.getCompany().getName() : null)
                 .build();
         return computerDTO;
     }

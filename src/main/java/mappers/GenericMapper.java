@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by ebiz on 24/04/17.
  */
-public interface Mapper<U, T> {
+public interface GenericMapper<U, T> {
 
     T from(U u);
 

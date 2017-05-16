@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import services.dtos.ComputerDTOServiceImpl;
-import utils.Pagination;
+import utils.PaginationUtils;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -46,13 +46,13 @@ public class PageRequestService {
         if (limit != null) {
             session.setAttribute(
                     "paginateLimit",
-                    Pagination.Limit.getLimitNb(
+                    PaginationUtils.Limit.getLimitNb(
                             Short.valueOf(limit)
                     )
             );
             //Else initiate to 10
         } else if (session.getAttribute("paginateLimit") == null) {
-            session.setAttribute("paginateLimit", Pagination.Limit.getLimitNb(0));
+            session.setAttribute("paginateLimit", PaginationUtils.Limit.getLimitNb(0));
         }
         int nbComputerByPage = (Integer) session.getAttribute("paginateLimit");
 
@@ -91,8 +91,8 @@ public class PageRequestService {
         } else {
             nbComputer = computerDTOService.count();
         }
-        //Call Pagination method
-        int[] values = Pagination.getPagination(nbComputerByPage, theCurrentPage, nbComputer);
+        //Call PaginationUtils method
+        int[] values = PaginationUtils.getPagination(nbComputerByPage, theCurrentPage, nbComputer);
 
         pageRequest = new
                 PageRequest.PageRequestBuilder()
@@ -105,7 +105,7 @@ public class PageRequestService {
                 .totalPages(values[0])
                 .order(order != null ? order : null)
                 .search(search != null ? search : null)
-                .islastPage(Pagination.isLastPage())
+                .islastPage(PaginationUtils.isLastPage())
                 .build();
 
         return pageRequest;

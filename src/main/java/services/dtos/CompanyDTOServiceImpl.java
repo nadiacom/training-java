@@ -6,14 +6,14 @@ import models.dtos.CompanyDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import services.CompanyService;
-import services.validators.inputs.Input;
+import utils.DatePatternUtils;
 
 import java.util.List;
 
 @Service
 public class CompanyDTOServiceImpl implements CompanyDTOService {
 
-    private Input input = new Input();
+    private DatePatternUtils datePatternUtils = new DatePatternUtils();
     private final CompanyService companyService;
     private CompanyMapper companyMapper = new CompanyMapper();
 

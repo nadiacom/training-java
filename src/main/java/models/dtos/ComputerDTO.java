@@ -9,7 +9,8 @@ public class ComputerDTO {
     private String name;
     private String introduced;
     private String discontinued;
-    private CompanyDTO companyDTO;
+    private Long companyId;
+    private String companyName;
 
     /**
      * Default constructor.
@@ -50,12 +51,20 @@ public class ComputerDTO {
         this.discontinued = discontinued;
     }
 
-    public CompanyDTO getCompanyDTO() {
-        return companyDTO;
+    public Long getCompanyId() {
+        return this.companyId;
     }
 
-    public void setCompanyDTO(CompanyDTO companyDTO) {
-        this.companyDTO = companyDTO;
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getCompanyName() {
+        return this.companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     /**
@@ -124,13 +133,24 @@ public class ComputerDTO {
         }
 
         /**
-         * Set computerDTO company to builder.
+         * Set computerDTO company id to builder.
          *
-         * @param company (required) companyDTO computerDTO belongs to.
+         * @param companyId (required) companyId.
          * @return computerDTO builder.
          */
-        public ComputerDTOBuilder company(CompanyDTO company) {
-            c.setCompanyDTO(company);
+        public ComputerDTOBuilder companyId(Long companyId) {
+            c.setCompanyId(companyId);
+            return this;
+        }
+
+        /**
+         * Set computerDTO company name to builder.
+         *
+         * @param companyName (required) companyName.
+         * @return computerDTO builder.
+         */
+        public ComputerDTOBuilder companyName(String companyName) {
+            c.setCompanyName(companyName);
             return this;
         }
 

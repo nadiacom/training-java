@@ -19,6 +19,15 @@ public class Company {
     /**
      * Overloaded constructor.
      *
+     * @param id (required) company id.
+     */
+    public Company(Long id) {
+        this.id = id;
+    }
+
+    /**
+     * Overloaded constructor.
+     *
      * @param name (required) company name.
      */
     public Company(String name) {
@@ -28,7 +37,7 @@ public class Company {
     /**
      * Overloaded constructor.
      *
-     * @param id (required) company id.
+     * @param id   (required) company id.
      * @param name (required) company name.
      */
     public Company(Long id, String name) {

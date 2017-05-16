@@ -2,8 +2,11 @@ package mappers;
 
 import models.Company;
 import models.dtos.CompanyDTO;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-public class CompanyMapper implements Mapper<Company, CompanyDTO> {
+@Service("ComputerMapper")
+public class CompanyMapper implements GenericMapper<Company, CompanyDTO> {
 
     /**
      * Default constructor.
@@ -18,7 +21,7 @@ public class CompanyMapper implements Mapper<Company, CompanyDTO> {
      * @return mapped company from companyDTO.
      */
     public Company to(CompanyDTO companyDTO) {
-        Company company = new Company(Long.valueOf(companyDTO.getId()), companyDTO.getName());
+        Company company = new Company(Long.valueOf(companyDTO.getId() != null ? Long.valueOf(companyDTO.getId()) : null), companyDTO.getName());
         return company;
     }
 

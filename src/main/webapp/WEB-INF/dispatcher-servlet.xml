@@ -12,7 +12,7 @@
     <context:annotation-config />
 
     <!-- ANNOTATIONS POUR LA CREATION DE BEANS -->
-    <context:component-scan base-package="models, persistence, services, controllers" />
+    <context:component-scan base-package="models, persistence, services, controllers, mappers" />
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix">
@@ -21,6 +21,10 @@
         <property name="suffix">
             <value>.jsp</value>
         </property>
+    </bean>
+
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="messages"/>
     </bean>
 
     <!-- MVC -->

@@ -1,44 +1,48 @@
 package controllers.webservices;
 
-import models.Company;
+import mappers.ComputerMapper;
+import models.dtos.ComputerDTO;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import persistence.daos.CompanyDao;
-import persistence.daos.CompanyDaoImpl;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import services.CompanyService;
 import services.ComputerService;
-import services.validators.inputs.ComputerValidator;
-import services.validators.inputs.Input;
+import services.validators.ComputerDTOValidator;
 
 import javax.servlet.http.HttpServlet;
-import java.util.List;
 
 @Controller
 @RequestMapping("/add")
 public class ComputerAddController extends HttpServlet {
 
-    private static Input inputValidator = new Input();
+    private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controllers.webservices.ComputerAddController");
     private final CompanyService companyService;
     private final ComputerService computerService;
-    private final CompanyDao companyDao;
+    private final ComputerDTOValidator computerDTOValidator;
+    private final ComputerMapper computerMapper;
 
     /**
      * ComputerAddController constructor.
      *
-     * @param companyService  autowired companyService
-     * @param computerService autowired computerService
-     * @param companyDao      autowired companyDao
+     * @param companyService       autowired companyService
+     * @param computerService      autowired computerService
+     * @param computerDTOValidator autowired computerDTOValidator
+     * @param computerMapper       autowired computerMapper
      */
     @Autowired
-    public ComputerAddController(CompanyService companyService, ComputerService computerService, CompanyDao companyDao) {
+    public ComputerAddController(CompanyService companyService, ComputerService computerService, ComputerDTOValidator computerDTOValidator, ComputerMapper computerMapper) {
         this.companyService = companyService;
         this.computerService = computerService;
-        this.companyDao = companyDao;
+        this.computerDTOValidator = computerDTOValidator;
+        this.computerMapper = computerMapper;
     }
 
     /**
@@ -49,32 +53,29 @@ public class ComputerAddController extends HttpServlet {
      */
     @GetMapping()
     public String get(Model model) {
-        //Get companies ids and names
-        List<Company> companies = companyService.getAll();
-        model.addAttribute("companies", companies);
+        model.addAttribute("computerDTO", new ComputerDTO.ComputerDTOBuilder().build());
+        model.addAttribute("companies", companyService.getAll());
         return "addComputer";
-
     }
 
     /**
      * Add computer post method.
      *
-     * @param name         computer name
-     * @param introduced   date when computer was introduced
-     * @param discontinued date when computer was discontinued
-     * @param companyId    company id of computer
-     * @param model        model
-     * @return dashboard view redirection
+     * @param computerDTO        computerDTO
+     * @param result             result
+     * @param model              model
+     * @param redirectAttributes redirectAttributes
+     * @return view redirection
      */
     @PostMapping()
-    public String add(@RequestParam(value = "name") String name,
-                      @RequestParam(value = "introduced") String introduced,
-                      @RequestParam(value = "discontinued") String discontinued,
-                      @RequestParam(value = "companyId") String companyId,
-                      Model model
-    ) {
-        ComputerValidator computerValidator = new ComputerValidator((CompanyDaoImpl) companyDao);
-        computerService.create(name, inputValidator.getLocalDate(introduced), inputValidator.getLocalDate(discontinued), computerValidator.getValidCompanyId(companyId));
-        return "redirect:/";
+    public String add(Model model, @ModelAttribute("computerDTO") @Validated ComputerDTO computerDTO, BindingResult result, final RedirectAttributes redirectAttributes) {
+        //TODO validators
+        computerDTOValidator.validate(computerDTO, result);
+        if (result.hasErrors()) {
+            return "addComputer";
+        } else {
+            computerService.create(computerMapper.to(computerDTO));
+            return "redirect:/dashboard";
+        }
     }
 }

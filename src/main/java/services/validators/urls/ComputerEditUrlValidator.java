@@ -1,6 +1,5 @@
 package services.validators.urls;
 
-import exceptions.validators.urls.ComputerEditUrlValidatorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import persistence.daos.ComputerDaoImpl;
 
@@ -24,7 +23,6 @@ public class ComputerEditUrlValidator {
 
     /**
      * @param urlParameters urlParameters.
-     * @throws ComputerEditUrlValidatorException ComputerEditUrlValidatorException.
      */
     public void isUrlValid(String urlParameters) {
         error = new StringBuilder();

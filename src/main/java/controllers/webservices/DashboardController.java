@@ -61,13 +61,8 @@ public class DashboardController {
                             Model model) {
 
         PageRequest pageRequest = new PageRequestService((ComputerDTOServiceImpl) computerDTOService).buildPage(session, currentPage, search, order, limit, click);
-
         //SET PARAMETERS TO VIEW
         model.addAttribute("pageRequest", pageRequest);
-
-        if (error != null && !error.isEmpty()) {
-            model.addAttribute("errorMsg", error);
-        }
         return "dashboard";
     }
 

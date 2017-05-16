@@ -3,7 +3,7 @@ package utils;
 /**
  * Created by ebiz on 22/03/17.
  */
-public class Pagination {
+public class PaginationUtils {
 
     private static final int NB_PAGINATION = 10;
     private static boolean lastPage;

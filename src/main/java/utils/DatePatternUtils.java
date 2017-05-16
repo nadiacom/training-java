@@ -1,13 +1,10 @@
-package services.validators.inputs;
+package utils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-/**
- * Created by ebiz on 15/03/17.
- */
-public class Input {
+public class DatePatternUtils {
 
     /**
      * Check if date input is valid (expected pattern : yyyy-MM-dd).
@@ -15,7 +12,7 @@ public class Input {
      * @param inputString (required) input string.
      * @return true if input string pattern is valid, false otherwise.
      */
-    public static boolean isDatePatternValid(String inputString) {
+    public static boolean isPatternValid(String inputString) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date;
         try {

@@ -60,35 +60,10 @@ public class ComputerService {
     /**
      * Update computer.
      *
-     * @param id           (required) computer id.
-     * @param name         (required) computer name
-     * @param introduced   (required) date when computer was introduced.
-     * @param discontinued (required) date when computer was discontinued.
-     * @param companyId    (required) company id of the computer.
+     * @param computer (required) computer.
      * @return computer id.
      */
-    public Long update(int id, String name, LocalDate introduced, LocalDate discontinued, Integer companyId) {
-        /* Retieve */
-        Computer c1 = computerDao.findById(Long.valueOf(id));
-        /* Update */
-        c1.setName(name);
-        c1.setIntroduced(introduced);
-        c1.setDiscontinued(discontinued);
-         /* Get and set company */
-        c1.setCompany(companyId != null ? companyDao.findById(Long.valueOf(companyId)) : null);
-        /* Update and return computer id */
-        Long computerId = computerDao.update(c1);
-        daoFactory.close();
-        return computerId;
-    }
-
-    /**
-     * Update computer.
-     *
-     * @param computer          (required) computer.
-     * @return computer id.
-     */
-    public Long update1(Computer computer) {
+    public Long update(Computer computer) {
         Long computerId = computerDao.update(computer);
         daoFactory.close();
         return computerId;
@@ -173,27 +148,13 @@ public class ComputerService {
         return computers;
     }
 
-
     /**
      * Create computer.
      *
-     * @param name         (required) computer name.
-     * @param introduced   (required) date when computer was introduced.
-     * @param discontinued (required) date when computer was discontinued.
-     * @param companyId    (required) company id of the computer.
+     * @param computer (required) computer.
      * @return computer id.
      */
-    public Long create(String name, LocalDate introduced, LocalDate discontinued, Integer companyId) {
-        /* Build a new computer from model builder */
-        Computer computer = new
-                Computer.ComputerBuilder()
-                .name(name)
-                .introduced(introduced)
-                .discontinued(discontinued)
-                /* Get and set company from input company_id */
-                .company(companyId != null ? companyDao.findById(Long.valueOf(companyId)) : null)
-                .build();
-        /* Create computer */
+    public Long create(Computer computer) {
         Long id = computerDao.create(computer);
         daoFactory.close();
         /* Return computer */

@@ -42,3 +42,7 @@ label.error{
 i[name='sort'] {
     float: right;
 }
+.alert{
+    display: block !important;
+    margin: 10px !important;
+}

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import services.ComputerService;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -56,9 +55,11 @@ public class ComputerCli {
      * @param discontinued (required) date when computer was discontinued.
      * @param companyId    (required) company id of the computer.
      */
+    //TODO update cli for create method
+    /*
     public void updateComputer(int id, String name, LocalDate introduced, LocalDate discontinued, int companyId) {
         System.out.println("Updated computer: id = " + computerService.update(id, name, introduced, discontinued, companyId));
-    }
+    } */
 
     /**
      * Delete computer.
@@ -81,9 +82,11 @@ public class ComputerCli {
      * @param discontinued (required) date when computer was discontinued.
      * @param companyId    (required) company id of the computer.
      */
+    //TODO update cli for create method
+    /*
     public void createComputer(String name, LocalDate introduced, LocalDate discontinued, int companyId) {
         System.out.println("You created computer : " + computerService.create(name, introduced, discontinued, companyId));
-    }
+    } */
 
     /**
      * Display computer details.

@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%--
   Created by IntelliJ IDEA.
   User: ebiz
@@ -40,29 +42,30 @@
                     </div>
                 </c:if>
 
-                <form id="computer_form" action="${pageContext.request.contextPath}/edit" method="POST">
+                <form:form id="computer_form" modelAttribute="computerDTO" action="${pageContext.request.contextPath}/edit" method="POST">
                     <fieldset>
-                        <input type="hidden" name="id" id="id" value="${computer.id}"/>
+                        <form:input path="id" type="hidden" name="id" id="id" value="${computer.id}"/>
                         <div class="form-group">
                             <label for="name">Computer name</label>
-                            <input type="text" class="form-control" name="name" id="name" placeholder="Computer name" value="${computer.name}">
+                            <form:input path="name" type="text" class="form-control" name="name" id="name" placeholder="Computer name" value="${computer.name}"/>
+                            <form:errors class="alert alert-warning" path="name" />
                         </div>
                         <div class="form-group">
                             <label for="introduced">Introduced date</label>
-                            <input type="date" class="form-control" name="introduced" id="introduced" placeholder="Introduced date" value="${computer.introduced}">
+                            <form:input path="introduced" type="date" class="form-control" name="introduced" id="introduced" placeholder="Introduced date" value="${computer.introduced}"/>
+                            <form:errors class="alert alert-warning" path="introduced" />
                         </div>
                         <div class="form-group">
                             <label for="discontinued">Discontinued date</label>
-                            <input type="date" class="form-control" name="discontinued" id="discontinued" placeholder="Discontinued date" value="${computer.discontinued}">
+                            <form:input path="discontinued" type="date" class="form-control" name="discontinued" id="discontinued" placeholder="Discontinued date" value="${computer.discontinued}"/>
+                            <form:errors class="alert alert-warning" path="discontinued" />
                         </div>
                         <div class="form-group">
                             <label for="companyId">Company</label>
-                            <select class="form-control" name="companyId" id="companyId">
-                                <option value="null">- None -</option>
-                                <c:forEach var="company" items="${companies}">
-                                    <option value="${company.id}"  ${company.id == computer.companyDTO.id ? 'selected="selected"' : ''}>${company.id} - ${company.name}</option>
-                                </c:forEach>
-                            </select>
+                            <form:select class="form-control" path="companyId">
+                                <form:option label="--" value="0"/>
+                                <form:options items="${companies}" itemValue="id" itemLabel="name" />
+                            </form:select>
                         </div>
                     </fieldset>
                     <div class="actions pull-right">
@@ -70,7 +73,7 @@
                         or
                         <a href=<my_tags:link url="${pageContext.request.contextPath}/dashboard"/> class="btn btn-default">Cancel</a>
                     </div>
-                </form>
+                </form:form>
             </div>
         </div>
     </div>

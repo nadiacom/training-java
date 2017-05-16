@@ -5,7 +5,7 @@ import cli.ComputerCli;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import services.validators.inputs.Input;
+import utils.DatePatternUtils;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -18,7 +18,7 @@ public class Main {
     static int itemNum;
     private static CompanyCli companyService;
     private static ComputerCli computerService;
-    private static Input inputCli;
+    private static DatePatternUtils datePatternUtilsCli;
 
     /**
      * Main constructor.
@@ -41,7 +41,7 @@ public class Main {
     public static void main(String[] args) throws SQLException {
 
 
-        inputCli = new Input();
+        datePatternUtilsCli = new DatePatternUtils();
 
         do {
             System.out.println("What do you want to do ?");
@@ -95,19 +95,20 @@ public class Main {
                     String name = input.nextLine();
                     System.out.print("Please enter the date where computer was introduced with the following format : YYYY-MM-DD:");
                     String introduced;
-                    while (!inputCli.isDatePatternValid(introduced = input.nextLine())) {
+                    while (!datePatternUtilsCli.isPatternValid(introduced = input.nextLine())) {
                         System.out.print("Please enter a date with the following format : YYYY-MM-DD:");
                     }
                     System.out.print("Please enter the date where computer was discontinued with the following format : YYYY-MM-DD:");
                     String discontinued;
-                    while (!inputCli.isDatePatternValid(discontinued = input.nextLine())) {
+                    while (!datePatternUtilsCli.isPatternValid(discontinued = input.nextLine())) {
                         System.out.print("Please enter a date with the following format : YYYY-MM-DD:");
                     }
 
                     System.out.print("Please enter the id of the company:");
                     int companyId = input.nextInt();
                     input.nextLine();
-                    computerService.createComputer(name, inputCli.getLocalDate(introduced), inputCli.getLocalDate(discontinued), companyId);
+                    //TODO call updated create method cli
+                    //computerService.createComputer(name, datePatternUtilsCli.getLocalDate(introduced), datePatternUtilsCli.getLocalDate(discontinued), companyId);
                     break;
                 case 5:
                     System.out.println("You choose to update a computer:");
@@ -117,16 +118,17 @@ public class Main {
                     System.out.print("Please enter the new name of the computer:");
                     name = input.nextLine();
                     System.out.print("Please enter the date where computer was introduced with the following format : YYYY-MM-DD:");
-                    while (!inputCli.isDatePatternValid(introduced = input.nextLine())) {
+                    while (!datePatternUtilsCli.isPatternValid(introduced = input.nextLine())) {
                         System.out.print("Please enter a date with the following format : YYYY-MM-DD:");
                     }
                     System.out.print("Please enter the date where computer was discontinued with the following format : YYYY-MM-DD:");
-                    while (!inputCli.isDatePatternValid(discontinued = input.nextLine())) {
+                    while (!datePatternUtilsCli.isPatternValid(discontinued = input.nextLine())) {
                         System.out.print("Please enter a date with the following format : YYYY-MM-DD:");
                     }
                     System.out.print("Please enter the id of the company:");
                     companyId = input.nextInt();
-                    computerService.updateComputer(id, name, inputCli.getLocalDate(introduced), inputCli.getLocalDate(discontinued), companyId);
+                    //TODO call updated update method cli
+                    //computerService.updateComputer(id, name, datePatternUtilsCli.getLocalDate(introduced), datePatternUtilsCli.getLocalDate(discontinued), companyId);
                     break;
                 case 6:
                     System.out.println("You choose to delete a computer:");
