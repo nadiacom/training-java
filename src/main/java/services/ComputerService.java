@@ -83,6 +83,18 @@ public class ComputerService {
     }
 
     /**
+     * Update computer.
+     *
+     * @param computer          (required) computer.
+     * @return computer id.
+     */
+    public Long update1(Computer computer) {
+        Long computerId = computerDao.update(computer);
+        daoFactory.close();
+        return computerId;
+    }
+
+    /**
      * Delete computer.
      *
      * @param id (required) computer id.
