@@ -136,10 +136,9 @@ public class ComputerServiceTest {
 
         //Create computer :
         //Write expected behaviors
-
         when(computerDao.create(computer)).thenReturn(computerId);
         //Act
-        computerDao.create(computer);
+        computerId = computerDao.create(computer);
         //Check
         verify(computerDao).create(computer);
 
@@ -150,7 +149,7 @@ public class ComputerServiceTest {
 
         //Retrieve computer :
         when(computerDao.findById(computerId)).thenReturn(updatedComputer);
-        Computer expectedComputer = computerDao.findById(computerId);
+        updatedComputer = computerDao.findById(computerId);
         verify(computerDao).findById(computerId);
 
         //SET DAOS IN COMPUTER SERVICE
@@ -159,9 +158,8 @@ public class ComputerServiceTest {
         computerService.setDaoFactory(daoFactory);
 
         //CHECK
-        Long id = computerService.update1(updatedComputer);
-        Computer actualComputer = computerService.findById(id);
-        assertEquals(expectedComputer, actualComputer);
+        Computer actualComputer = computerService.findById(computerId);
+        assertEquals(updatedComputer, actualComputer);
     }
 
 }
