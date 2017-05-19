@@ -110,11 +110,23 @@ public interface ComputerDao {
      *
      * @param page             (required) page number.
      * @param nbComputerByPage number of computers displayed by page.
+     * @param columnName       colmun name in db.
+     * @param orderBy          order by "ASC" or "DESC".
+     * @return list of computers.
+     * @throws DAOException exception dao.
+     */
+    List<Computer> getPageListOrderBy(int page, int nbComputerByPage, String columnName, String orderBy) throws DAOException;
+
+    /**
+     * Get all computers by page, order by column name.
+     *
+     * @param page             (required) page number.
+     * @param nbComputerByPage number of computers displayed by page.
      * @param name             search filter: company or computer name.
      * @param columnName       colmun name in db.
      * @param orderBy          order by "ASC" or "DESC".
      * @return list of computers.
      * @throws DAOException exception dao.
      */
-    List<Computer> getPageListOrderBy(int page, int nbComputerByPage, String name, String columnName, String orderBy) throws DAOException;
+    List<Computer> getPageListNameOrderBy(int page, int nbComputerByPage, String name, String columnName, String orderBy) throws DAOException;
 }

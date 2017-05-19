@@ -1,6 +1,5 @@
 package services.validators;
 
-import models.dtos.CompanyDTO;
 import models.dtos.ComputerDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -8,7 +7,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import utils.DatePatternUtils;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Component
 public class ComputerDTOValidator implements Validator {
@@ -76,8 +75,8 @@ public class ComputerDTOValidator implements Validator {
      * @return boolean : interval valid or not.
      */
     public boolean isValidIntervalDate(String introduced, String discontinued) {
-        LocalDate intro = dateUtils.getLocalDate(introduced);
-        LocalDate discon = dateUtils.getLocalDate(discontinued);
+        LocalDateTime intro = dateUtils.getLocalDateTime(introduced);
+        LocalDateTime discon = dateUtils.getLocalDateTime(discontinued);
         return discon.isAfter(intro);
     }
 }

@@ -74,19 +74,19 @@ public class PageRequestService {
             //Get current page
             theCurrentPage = Integer.parseInt(currentPage);
         }
-        if (search != null && order != null && !order.isEmpty()) {
-            listComputer = computerDTOService.findByNameAndOrder(search, order, order, theCurrentPage, nbComputerByPage);
-        } else if (search != null) {
+        if (search != null && !search.isEmpty() && order != null && !order.isEmpty()) {
+            listComputer = computerDTOService.findByNameAndOrder(search, order, theOrder, theCurrentPage, nbComputerByPage);
+        } else if (search != null && !search.isEmpty()) {
             listComputer = computerDTOService.findByName(search, theCurrentPage, nbComputerByPage);
         } else if (order != null && !order.isEmpty()) {
-            listComputer = computerDTOService.findByNameAndOrder("", order, theOrder, theCurrentPage, nbComputerByPage);
+            listComputer = computerDTOService.findByOrder(order, theOrder, theCurrentPage, nbComputerByPage);
         } else {
             listComputer = computerDTOService.getPageList(theCurrentPage, nbComputerByPage);
         }
         //PAGINATION
         //Get total number of computers
         int nbComputer = 0;
-        if (search != null) {
+        if (search != null && !search.isEmpty()) {
             nbComputer = computerDTOService.countByName(search);
         } else {
             nbComputer = computerDTOService.count();

@@ -1,24 +1,22 @@
 package models;
 
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-/**
- * Created by ebiz on 14/03/17.
- */
+@Entity
+@Table(name = "computer")
 public class Computer {
 
+    @Id
+    @GeneratedValue
     private Long id;
     private String name;
-    private LocalDate introduced;
-    private LocalDate discontinued;
+
+    private LocalDateTime introduced;
+    private LocalDateTime discontinued;
+    @ManyToOne
     private Company company;
-
-    /**
-     * Default constructor.
-     */
-    private Computer() {
-
-    }
 
     public Long getId() {
         return id;
@@ -36,19 +34,19 @@ public class Computer {
         this.name = name;
     }
 
-    public LocalDate getIntroduced() {
+    public LocalDateTime getIntroduced() {
         return introduced;
     }
 
-    public void setIntroduced(LocalDate introduced) {
+    public void setIntroduced(LocalDateTime introduced) {
         this.introduced = introduced;
     }
 
-    public LocalDate getDiscontinued() {
+    public LocalDateTime getDiscontinued() {
         return discontinued;
     }
 
-    public void setDiscontinued(LocalDate discontinued) {
+    public void setDiscontinued(LocalDateTime discontinued) {
         this.discontinued = discontinued;
     }
 
@@ -112,7 +110,7 @@ public class Computer {
          * @param introduced (required) date when computer was introduced.
          * @return computer builder.
          */
-        public ComputerBuilder introduced(LocalDate introduced) {
+        public ComputerBuilder introduced(LocalDateTime introduced) {
             if (introduced != null) {
                 c.setIntroduced(introduced);
             } else {
@@ -127,7 +125,7 @@ public class Computer {
          * @param discontinued (required) date when computer was discontinued.
          * @return computer builder.
          */
-        public ComputerBuilder discontinued(LocalDate discontinued) {
+        public ComputerBuilder discontinued(LocalDateTime discontinued) {
             if (discontinued != null) {
                 c.setDiscontinued(discontinued);
             } else {

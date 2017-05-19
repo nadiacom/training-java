@@ -30,8 +30,8 @@ public class ComputerMapper implements GenericMapper<Computer, ComputerDTO> {
                 Computer.ComputerBuilder()
                 .id(computerDTO.getId() != null ? Long.valueOf(computerDTO.getId()) : null)
                 .name(computerDTO.getName())
-                .introduced(computerDTO.getIntroduced() != null ? datePatternUtils.getLocalDate(computerDTO.getIntroduced()) : null)
-                .discontinued(computerDTO.getDiscontinued() != null ? datePatternUtils.getLocalDate(computerDTO.getDiscontinued()) : null)
+                .introduced(computerDTO.getIntroduced() != null ? datePatternUtils.getLocalDateTime(computerDTO.getIntroduced()) : null)
+                .discontinued(computerDTO.getDiscontinued() != null ? datePatternUtils.getLocalDateTime(computerDTO.getDiscontinued()) : null)
                 //Get companyDTO and map it to company
                 .company(new Company(computerDTO.getCompanyId(), computerDTO.getCompanyName()))
                 .build();

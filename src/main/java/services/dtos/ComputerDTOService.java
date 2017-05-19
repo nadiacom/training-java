@@ -56,6 +56,17 @@ public interface ComputerDTOService {
     List<ComputerDTO> findByNameAndOrder(String name, String columnName, String orderBy, int page, int nbComputerByPage);
 
     /**
+     * Get ComputerDTO by page and order by column.
+     *
+     * @param columnName       column name.
+     * @param orderBy          order by: "ASC" or "DESC".
+     * @param page             page number.
+     * @param nbComputerByPage number of computers DTO displayed by page.
+     * @return list of computers DTO.
+     */
+    List<ComputerDTO> findByOrder(String columnName, String orderBy, int page, int nbComputerByPage);
+
+    /**
      * Count number of ComputerDTO.
      *
      * @return number of ComputerDTO.

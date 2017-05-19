@@ -1,6 +1,7 @@
 package utils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -29,11 +30,11 @@ public class DatePatternUtils {
      * @param date (required) input string, pattern must be valid.
      * @return LocalDateTime.
      */
-    public static LocalDate getLocalDate(String date) {
+    public static LocalDateTime getLocalDateTime(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDate;
+        LocalDateTime localDate;
         try {
-            localDate = LocalDate.parse(date, formatter);
+            localDate = LocalDateTime.parse(date, formatter);
         } catch (DateTimeParseException e) {
             return null;
         }

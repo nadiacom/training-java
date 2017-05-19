@@ -76,4 +76,13 @@ public class ComputerDTOServiceImpl implements ComputerDTOService {
         //Return Computer DTO list
         return companiesDTO;
     }
+
+    @Override
+    public List<ComputerDTO> findByOrder(String columnName, String orderBy, int page, int nbComputerByPage) {
+        //Get all companies (from DAO)
+        List<Computer> computers = computerService.findByOrder(columnName, orderBy, page, nbComputerByPage);
+        List<ComputerDTO> companiesDTO = computerMapper.fromList(computers);
+        //Return Computer DTO list
+        return companiesDTO;
+    }
 }

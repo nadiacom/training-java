@@ -74,7 +74,7 @@ public class ComputerAddController extends HttpServlet {
         if (result.hasErrors()) {
             return "addComputer";
         } else {
-            redirectAttributes.addFlashAttribute("message", "Computer successfully created.");
+            redirectAttributes.addFlashAttribute("message", "success.computer.created");
             computerService.create(computerMapper.to(computerDTO));
             return "redirect:/dashboard";
         }

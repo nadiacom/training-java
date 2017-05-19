@@ -1,11 +1,14 @@
 package models;
 
-/**
- * Created by ebiz on 14/03/17.
- */
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Table(name = "company")
 public class Company {
 
-
+    @Id
+    @GeneratedValue
     public Long id;
     public String name;
 

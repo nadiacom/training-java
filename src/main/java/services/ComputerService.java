@@ -4,6 +4,7 @@ import models.Computer;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import persistence.DAOFactory;
 import persistence.daos.CompanyDao;
 import persistence.daos.ComputerDao;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class ComputerService {
 
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("services.ComputerService");
@@ -131,7 +133,22 @@ public class ComputerService {
      * @return list of computers.
      */
     public List<Computer> findByNameAndOrder(String name, String colmunName, String orderBy, int page, int nbComputerByPage) {
-        List<Computer> computers = computerDao.getPageListOrderBy(page, nbComputerByPage, name, colmunName, orderBy);
+        List<Computer> computers = computerDao.getPageListNameOrderBy(page, nbComputerByPage, name, colmunName, orderBy);
+        daoFactory.close();
+        return computers;
+    }
+
+    /**
+     * Find computers by page and order by column.
+     *
+     * @param colmunName       column name.
+     * @param orderBy          order by : "ASC" or "DESC".
+     * @param page             page number.
+     * @param nbComputerByPage number of computers displayed by page.
+     * @return list of computers.
+     */
+    public List<Computer> findByOrder(String colmunName, String orderBy, int page, int nbComputerByPage) {
+        List<Computer> computers = computerDao.getPageListOrderBy(page, nbComputerByPage, colmunName, orderBy);
         daoFactory.close();
         return computers;
     }

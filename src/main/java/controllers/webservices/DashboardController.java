@@ -40,7 +40,6 @@ public class DashboardController {
     /**
      * Get the dashboard page.
      *
-     * @param error       error msg.
      * @param order       order .
      * @param search      search
      * @param currentPage currentPage
@@ -51,8 +50,7 @@ public class DashboardController {
      * @return dashboard view
      */
     @GetMapping()
-    public String dashboard(@RequestParam(required = false) String error,
-                            @RequestParam(required = false) String order,
+    public String dashboard(@RequestParam(required = false) String order,
                             @RequestParam(required = false) String search,
                             @RequestParam(required = false) String currentPage,
                             @RequestParam(required = false) String click,
