@@ -1,0 +1,41 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.e-biz.ncomptier</groupId>
+    <artifactId>training-java-binding</artifactId>
+
+    <parent>
+        <groupId>com.e-biz.ncomptier</groupId>
+        <artifactId>training-java</artifactId>
+        <version>5.0.BUILD-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+        <!-- Modules -->
+        <dependency>
+            <groupId>com.e-biz.ncomptier</groupId>
+            <artifactId>training-java-service</artifactId>
+        </dependency>
+
+        <!-- Servlet API -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/javax.servlet.jsp/javax.servlet.jsp-api -->
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>javax.servlet.jsp-api</artifactId>
+            <version>${javax.servlet.jsp.version}</version>
+        </dependency>
+
+    </dependencies>
+</project>
