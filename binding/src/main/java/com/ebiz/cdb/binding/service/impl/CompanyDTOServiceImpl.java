@@ -1,7 +1,8 @@
-package com.ebiz.cdb.binding.service;
+package com.ebiz.cdb.binding.service.impl;
 
 import com.ebiz.cdb.binding.dto.CompanyDTO;
 import com.ebiz.cdb.binding.mapper.CompanyMapper;
+import com.ebiz.cdb.binding.service.CompanyDTOService;
 import com.ebiz.cdb.binding.utils.DatePatternUtils;
 import com.ebiz.cdb.core.models.Company;
 import com.ebiz.cdb.service.CompanyService;
@@ -20,11 +21,11 @@ public class CompanyDTOServiceImpl implements CompanyDTOService {
     /**
      * CompanyDTOServiceImpl constructor.
      *
-     * @param companyService autowired companyService
+     * @param companyServiceImpl autowired companyService
      */
     @Autowired
-    CompanyDTOServiceImpl(CompanyService companyService) {
-        this.companyService = companyService;
+    CompanyDTOServiceImpl(CompanyService companyServiceImpl) {
+        this.companyService = companyServiceImpl;
     }
 
     @Override

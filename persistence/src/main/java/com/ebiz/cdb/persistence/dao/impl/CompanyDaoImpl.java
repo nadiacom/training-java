@@ -1,6 +1,7 @@
-package com.ebiz.cdb.persistence.dao;
+package com.ebiz.cdb.persistence.dao.impl;
 
 import com.ebiz.cdb.core.models.Company;
+import com.ebiz.cdb.persistence.dao.CompanyDao;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;

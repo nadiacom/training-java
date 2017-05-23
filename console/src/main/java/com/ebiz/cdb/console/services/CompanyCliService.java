@@ -2,8 +2,8 @@ package com.ebiz.cdb.console.services;
 
 
 import com.ebiz.cdb.core.models.Company;
-import com.ebiz.cdb.service.CompanyService;
-import com.ebiz.cdb.service.ComputerService;
+import com.ebiz.cdb.service.impl.CompanyServiceImpl;
+import com.ebiz.cdb.service.impl.ComputerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,19 +12,19 @@ import java.util.List;
 @Service
 public class CompanyCliService {
 
-    private final CompanyService companyService;
-    private final ComputerService computerService;
+    private final CompanyServiceImpl companyServiceImpl;
+    private final ComputerServiceImpl computerServiceImpl;
 
     /**
      * CompanyCliService constructor.
      *
-     * @param companyService  autowired companyService
-     * @param computerService autowired computerService
+     * @param companyServiceImpl  autowired companyService
+     * @param computerServiceImpl autowired computerService
      */
     @Autowired
-    public CompanyCliService(CompanyService companyService, ComputerService computerService) {
-        this.companyService = companyService;
-        this.computerService = computerService;
+    public CompanyCliService(CompanyServiceImpl companyServiceImpl, ComputerServiceImpl computerServiceImpl) {
+        this.companyServiceImpl = companyServiceImpl;
+        this.computerServiceImpl = computerServiceImpl;
     }
 
     /**
@@ -32,7 +32,7 @@ public class CompanyCliService {
      */
     public void printAllCompanies() {
         System.out.println("List of the companies :");
-        List<Company> listCompanies = companyService.getAll();
+        List<Company> listCompanies = companyServiceImpl.getAll();
         for (int i = 0; i < listCompanies.size(); i++) {
             System.out.println(listCompanies.get(i));
         }
@@ -45,7 +45,7 @@ public class CompanyCliService {
      */
     public void printCompaniesByPage(int page) {
         System.out.println("Here is the list of the registered companies :");
-        List<Company> listCompanies = companyService.getPageList(page);
+        List<Company> listCompanies = companyServiceImpl.getPageList(page);
         for (int i = 0; i < listCompanies.size(); i++) {
             System.out.println(listCompanies.get(i));
         }
@@ -58,7 +58,7 @@ public class CompanyCliService {
      * @return company
      */
     public Company getCompanyById(Long id) {
-        return companyService.findById(id);
+        return companyServiceImpl.findById(id);
     }
 
     /**
@@ -67,7 +67,7 @@ public class CompanyCliService {
      * @param id (required) company id.
      */
     public void delete(int id) {
-        Company c = companyService.findById(Long.valueOf(id));
-        companyService.delete(c);
+        Company c = companyServiceImpl.findById(Long.valueOf(id));
+        companyServiceImpl.delete(c);
     }
 }

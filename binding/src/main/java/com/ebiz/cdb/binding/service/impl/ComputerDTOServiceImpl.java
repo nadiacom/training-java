@@ -1,7 +1,8 @@
-package com.ebiz.cdb.binding.service;
+package com.ebiz.cdb.binding.service.impl;
 
 import com.ebiz.cdb.binding.dto.ComputerDTO;
 import com.ebiz.cdb.binding.mapper.ComputerMapper;
+import com.ebiz.cdb.binding.service.ComputerDTOService;
 import com.ebiz.cdb.core.models.Computer;
 import com.ebiz.cdb.service.ComputerService;
 import org.springframework.beans.factory.annotation.Autowired;

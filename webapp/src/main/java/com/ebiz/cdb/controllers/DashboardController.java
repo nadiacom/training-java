@@ -1,9 +1,9 @@
 package com.ebiz.cdb.controllers;
 
 import com.ebiz.cdb.binding.service.ComputerDTOService;
-import com.ebiz.cdb.binding.service.ComputerDTOServiceImpl;
+import com.ebiz.cdb.binding.service.impl.ComputerDTOServiceImpl;
+import com.ebiz.cdb.binding.service.impl.PageRequestServiceImpl;
 import com.ebiz.cdb.core.models.PageRequest;
-import com.ebiz.cdb.binding.service.PageRequestService;
 import com.ebiz.cdb.service.ComputerService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +58,7 @@ public class DashboardController {
                             HttpSession session,
                             Model model) {
 
-        PageRequest pageRequest = new PageRequestService((ComputerDTOServiceImpl) computerDTOService).buildPage(session, currentPage, search, order, limit, click);
+        PageRequest pageRequest = new PageRequestServiceImpl((ComputerDTOServiceImpl) computerDTOService).buildPage(session, currentPage, search, order, limit, click);
         //SET PARAMETERS TO VIEW
         model.addAttribute("pageRequest", pageRequest);
         return "dashboard";

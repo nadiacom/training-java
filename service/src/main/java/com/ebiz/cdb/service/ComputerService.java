@@ -1,43 +1,17 @@
 package com.ebiz.cdb.service;
+
 import com.ebiz.cdb.core.models.Computer;
-import com.ebiz.cdb.persistence.dao.CompanyDao;
-import com.ebiz.cdb.persistence.dao.ComputerDao;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
-@Transactional(readOnly = true)
-public class ComputerService {
-
-    private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("service.ComputerService");
-    private ComputerDao computerDao;
-    private CompanyDao companyDao;
-
-    /**
-     * ComputerService constructor.
-     *
-     * @param computerDao autowired computerDao
-     * @param companyDao  autowired companyDao
-     */
-    @Autowired
-    public ComputerService(ComputerDao computerDao, CompanyDao companyDao) {
-        this.computerDao = computerDao;
-        this.companyDao = companyDao;
-    }
+public interface ComputerService {
 
     /**
      * Get all computers.
      *
      * @return all computers.s
      */
-    public List<Computer> getAll() {
-        List<Computer> computers = computerDao.getAll();
-        return computers;
-    }
+    List<Computer> getAll();
 
     /**
      * Get all computers by page.
@@ -46,10 +20,7 @@ public class ComputerService {
      * @param nbComputerByPage number of computers displayed by page.
      * @return computer list by page.
      */
-    public List<Computer> getByPage(int page, int nbComputerByPage) {
-        List<Computer> computers = computerDao.getPageList(page, nbComputerByPage);
-        return computers;
-    }
+    List<Computer> getByPage(int page, int nbComputerByPage);
 
     /**
      * Update computer.
@@ -57,10 +28,7 @@ public class ComputerService {
      * @param computer (required) computer.
      * @return computer id.
      */
-    public Long update(Computer computer) {
-        Long computerId = computerDao.update(computer);
-        return computerId;
-    }
+    Long update(Computer computer);
 
     /**
      * Delete computer.
@@ -68,22 +36,14 @@ public class ComputerService {
      * @param id (required) computer id.
      * @return computer id.
      */
-    public Long delete(int id) {
-        /* Retieve */
-        Computer c1 = computerDao.findById(Long.valueOf(id));
-        /* Delete and return id */
-        Long computerId = computerDao.remove(c1);
-        return computerId;
-    }
+    Long delete(int id);
 
     /**
      * Delete all computers that belong to one given company.
      *
      * @param id company id.
      */
-    public void deleteByCompanyId(int id) {
-        computerDao.deleteByCompanyId(Long.valueOf(id));
-    }
+    void deleteByCompanyId(int id);
 
     /**
      * Find computer by id.
@@ -91,10 +51,7 @@ public class ComputerService {
      * @param id computer id.
      * @return computer.
      */
-    public Computer findById(Long id) {
-        Computer c = computerDao.findById(id);
-        return c;
-    }
+    Computer findById(Long id);
 
     /**
      * Find computers by name.
@@ -104,10 +61,7 @@ public class ComputerService {
      * @param nbComputerByPage number of computers displayed by page.
      * @return list of computers.
      */
-    public List<Computer> findByName(String name, int page, int nbComputerByPage) {
-        List<Computer> computers = computerDao.findByName(name, page, nbComputerByPage);
-        return computers;
-    }
+    List<Computer> findByName(String name, int page, int nbComputerByPage);
 
     /**
      * Find computers by name, page and order by column.
@@ -119,10 +73,7 @@ public class ComputerService {
      * @param nbComputerByPage number of computers displayed by page.
      * @return list of computers.
      */
-    public List<Computer> findByNameAndOrder(String name, String colmunName, String orderBy, int page, int nbComputerByPage) {
-        List<Computer> computers = computerDao.getPageListNameOrderBy(page, nbComputerByPage, name, colmunName, orderBy);
-        return computers;
-    }
+    List<Computer> findByNameAndOrder(String name, String colmunName, String orderBy, int page, int nbComputerByPage);
 
     /**
      * Find computers by page and order by column.
@@ -133,10 +84,7 @@ public class ComputerService {
      * @param nbComputerByPage number of computers displayed by page.
      * @return list of computers.
      */
-    public List<Computer> findByOrder(String colmunName, String orderBy, int page, int nbComputerByPage) {
-        List<Computer> computers = computerDao.getPageListOrderBy(page, nbComputerByPage, colmunName, orderBy);
-        return computers;
-    }
+    List<Computer> findByOrder(String colmunName, String orderBy, int page, int nbComputerByPage);
 
     /**
      * Retrieve all computers that belong to a given company.
@@ -144,10 +92,7 @@ public class ComputerService {
      * @param id company id.
      * @return list of computers.
      */
-    public List<Computer> findByCompanyId(int id) {
-        List<Computer> computers = computerDao.findByCompanyId(Long.valueOf(id));
-        return computers;
-    }
+    List<Computer> findByCompanyId(int id);
 
     /**
      * Create computer.
@@ -155,11 +100,7 @@ public class ComputerService {
      * @param computer (required) computer.
      * @return computer id.
      */
-    public Long create(Computer computer) {
-        Long id = computerDao.create(computer);
-        /* Return computer */
-        return id;
-    }
+    Long create(Computer computer);
 
     /**
      * Display computer details.
@@ -167,20 +108,14 @@ public class ComputerService {
      * @param id (required) computer id.
      * @return computer.
      */
-    public Computer get(int id) {
-        Computer c = computerDao.findById(Long.valueOf(id));
-        return c;
-    }
+    Computer get(int id);
 
     /**
      * Count all computers.
      *
      * @return nb of computers.
      */
-    public int count() {
-        int count = computerDao.count();
-        return count;
-    }
+    int count();
 
     /**
      * Count computers by name.
@@ -188,17 +123,5 @@ public class ComputerService {
      * @param name computer name.
      * @return nb of computers.
      */
-    public int countByName(String name) {
-        int count = computerDao.countByName(name);
-        return count;
-    }
-
-
-    public void setCompanyDao(CompanyDao companyDao) {
-        this.companyDao = companyDao;
-    }
-
-    public void setComputerDao(ComputerDao computerDao) {
-        this.computerDao = computerDao;
-    }
+    int countByName(String name);
 }

@@ -5,11 +5,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "computer")
 @Table(name = "computer")
-public class Computer {
+public class Computer implements Serializable {
 
     @Id
     @GeneratedValue

@@ -1,9 +1,10 @@
-package com.ebiz.cdb.persistence.dao;
+package com.ebiz.cdb.persistence.dao.impl;
 
 
 import com.ebiz.cdb.core.models.Company;
 import com.ebiz.cdb.core.models.Computer;
 import com.ebiz.cdb.core.models.Computer_;
+import com.ebiz.cdb.persistence.dao.ComputerDao;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -11,7 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

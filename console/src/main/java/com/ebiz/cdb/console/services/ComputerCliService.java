@@ -1,7 +1,7 @@
 package com.ebiz.cdb.console.services;
 
 import com.ebiz.cdb.core.models.Computer;
-import com.ebiz.cdb.service.ComputerService;
+import com.ebiz.cdb.service.impl.ComputerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,16 +9,16 @@ import java.util.List;
 
 @Service
 public class ComputerCliService {
-    private final ComputerService computerService;
+    private final ComputerServiceImpl computerServiceImpl;
 
     /**
      * ComputerCliService constructor.
      *
-     * @param computerService autowired computerService
+     * @param computerServiceImpl autowired computerService
      */
     @Autowired
-    public ComputerCliService(ComputerService computerService) {
-        this.computerService = computerService;
+    public ComputerCliService(ComputerServiceImpl computerServiceImpl) {
+        this.computerServiceImpl = computerServiceImpl;
     }
 
     /**
@@ -26,7 +26,7 @@ public class ComputerCliService {
      */
     public void printAllComputers() {
         System.out.println("Here is the list of the registered computers :");
-        List<Computer> listComputers = computerService.getAll();
+        List<Computer> listComputers = computerServiceImpl.getAll();
         for (int i = 0; i < listComputers.size(); i++) {
             System.out.println(listComputers.get(i));
         }
@@ -40,7 +40,7 @@ public class ComputerCliService {
      */
     public void printComputersByPage(int page, int nbComputerByPage) {
         System.out.println("Here is the list of the registered computers :");
-        List<Computer> listComputers = computerService.getByPage(page, nbComputerByPage);
+        List<Computer> listComputers = computerServiceImpl.getByPage(page, nbComputerByPage);
         for (int i = 0; i < listComputers.size(); i++) {
             System.out.println(listComputers.get(i));
         }
@@ -67,8 +67,8 @@ public class ComputerCliService {
      * @param id (required) computer id.
      */
     public void deleteComputer(int id) {
-        if (computerService.get(id) != null) {
-            System.out.println("Removed computer with id: " + computerService.delete(id));
+        if (computerServiceImpl.get(id) != null) {
+            System.out.println("Removed computer with id: " + computerServiceImpl.delete(id));
         } else {
             System.out.println("No computer exists with the given id. Try another one.");
         }
@@ -94,8 +94,8 @@ public class ComputerCliService {
      * @param id (required) computer id.
      */
     public void showComputerDetails(int id) {
-        if (computerService.get(id) != null) {
-            System.out.println("Computer: " + computerService.get(id));
+        if (computerServiceImpl.get(id) != null) {
+            System.out.println("Computer: " + computerServiceImpl.get(id));
         } else {
             System.out.println("No computer exists with the given id. Try another one.");
         }

@@ -9,6 +9,6 @@
     <import resource="classpath:/persistence-context.xml"/>
 
     <!-- Package scanning -->
-    <context:component-scan base-package="com.ebiz.cdb.service" />
+    <context:component-scan base-package="com.ebiz.cdb.service, com.ebiz.cdb.service.impl" />
 
 </beans>

@@ -10,6 +10,6 @@
     <import resource="classpath:/db-management.xml"/>
 
     <!-- Package scanning -->
-    <context:component-scan base-package="com.ebiz.cdb.persistence.dao"/>
+    <context:component-scan base-package="com.ebiz.cdb.persistence.dao, com.ebiz.cdb.persistence.dao.impl"/>
 
 </beans>

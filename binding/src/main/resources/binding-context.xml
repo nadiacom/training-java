@@ -9,7 +9,7 @@
     <import resource="classpath:/service-context.xml"/>
 
     <!-- Package scanning -->
-    <context:component-scan base-package="com.ebiz.cdb.binding.dto, com.ebiz.cdb.binding.mapper, com.ebiz.cdb.binding.service, com.ebiz.cdb.binding.validator"/>
+    <context:component-scan base-package="com.ebiz.cdb.binding.dto, com.ebiz.cdb.binding.mapper, com.ebiz.cdb.binding.service, com.ebiz.cdb.binding.service.*, com.ebiz.cdb.binding.validator"/>
 
     <!-- MessageSource for localization -->
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
