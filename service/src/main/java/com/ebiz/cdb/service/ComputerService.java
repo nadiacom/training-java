@@ -115,7 +115,7 @@ public interface ComputerService {
      *
      * @return nb of computers.
      */
-    int count();
+    Long count();
 
     /**
      * Count computers by name.
@@ -123,5 +123,5 @@ public interface ComputerService {
      * @param name computer name.
      * @return nb of computers.
      */
-    int countByName(String name);
+    Long countByName(String name);
 }

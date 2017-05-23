@@ -68,7 +68,7 @@ public interface ComputerDTOService {
      *
      * @return number of ComputerDTO.
      */
-    int count();
+    Long count();
 
     /**
      * Count computers DTO with given name.
@@ -76,5 +76,5 @@ public interface ComputerDTOService {
      * @param name computer DTO name.
      * @return list of computers DTO.
      */
-    int countByName(String name);
+    Long countByName(String name);
 }

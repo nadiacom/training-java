@@ -46,7 +46,7 @@ public class PageRequestServiceImpl implements PageRequestService {
         } else if (session.getAttribute("paginateLimit") == null) {
             session.setAttribute("paginateLimit", PaginationUtils.Limit.getLimitNb(0));
         }
-        int nbComputerByPage = (Integer) session.getAttribute("paginateLimit");
+        long nbComputerByPage = (long) session.getAttribute("paginateLimit");
 
         //GET COMPUTERS LIST
         List<ComputerDTO> listComputer = null;
@@ -67,34 +67,34 @@ public class PageRequestServiceImpl implements PageRequestService {
             theCurrentPage = Integer.parseInt(currentPage);
         }
         if (search != null && !search.isEmpty() && order != null && !order.isEmpty()) {
-            listComputer = computerDTOService.findByNameAndOrder(search, order, theOrder, theCurrentPage, nbComputerByPage);
+            listComputer = computerDTOService.findByNameAndOrder(search, order, theOrder, theCurrentPage, (int) nbComputerByPage);
         } else if (search != null && !search.isEmpty()) {
-            listComputer = computerDTOService.findByName(search, theCurrentPage, nbComputerByPage);
+            listComputer = computerDTOService.findByName(search, theCurrentPage, (int) nbComputerByPage);
         } else if (order != null && !order.isEmpty()) {
-            listComputer = computerDTOService.findByOrder(order, theOrder, theCurrentPage, nbComputerByPage);
+            listComputer = computerDTOService.findByOrder(order, theOrder, theCurrentPage, (int) nbComputerByPage);
         } else {
-            listComputer = computerDTOService.getPageList(theCurrentPage, nbComputerByPage);
+            listComputer = computerDTOService.getPageList(theCurrentPage, (int) nbComputerByPage);
         }
         //PAGINATION
         //Get total number of computers
-        int nbComputer = 0;
+        Long nbComputer = 0L;
         if (search != null && !search.isEmpty()) {
             nbComputer = computerDTOService.countByName(search);
         } else {
             nbComputer = computerDTOService.count();
         }
         //Call PaginationUtils method
-        int[] values = PaginationUtils.getPagination(nbComputerByPage, theCurrentPage, nbComputer);
+        long[] values = PaginationUtils.getPagination( (int) nbComputerByPage, theCurrentPage, nbComputer);
 
         pageRequest = new
                 PageRequest.PageRequestBuilder()
-                .nbComputerByPage(nbComputerByPage)
+                .nbComputerByPage((int) nbComputerByPage)
                 .nbComputers(nbComputer)
                 .currentPage(theCurrentPage)
                 .listComputers(listComputer)
-                .pgStart(values[1])
-                .pgEnd(values[2])
-                .totalPages(values[0])
+                .pgStart((int) values[1])
+                .pgEnd((int) values[2])
+                .totalPages((int) values[0])
                 .order(order != null ? order : null)
                 .search(search != null ? search : null)
                 .islastPage(PaginationUtils.isLastPage())

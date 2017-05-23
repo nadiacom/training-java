@@ -71,7 +71,7 @@ public interface ComputerDao {
      *
      * @return number of computers.
      */
-    int count();
+    Long count();
 
     /**
      * Count computer with given name.
@@ -79,7 +79,7 @@ public interface ComputerDao {
      * @param name computer name.
      * @return list of computers.
      */
-    int countByName(String name);
+    Long countByName(String name);
 
     /**
      * Delete all computers that belong to one given company.

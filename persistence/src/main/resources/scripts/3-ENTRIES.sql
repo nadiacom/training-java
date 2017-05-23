@@ -616,5 +616,8 @@ insert into computer (id,name,introduced,discontinued,company_id) values (572,'D
 insert into computer (id,name,introduced,discontinued,company_id) values (573,'Gateway LT3103U','2008-01-01',null,null);
 insert into computer (id,name,introduced,discontinued,company_id) values (574,'iPhone 4S','2011-10-14',null,1);
 
-insert into user (id, username, password) values (1, 'nadiacom', 'admin');
-insert into user (id, username, password) values (2, 'user', 'password');
+insert into user (username, password) values ('nadiacom', 'admin');
+insert into user (username, password) values ('user', 'password');
+
+insert into user_role (id, username, role) values (1, 'nadiacom', 'admin');
+insert into user_role (id, username, role) values (2, 'user', 'user');

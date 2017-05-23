@@ -6,13 +6,15 @@
 
     <b:bean id="digestFilter"
                 class="org.springframework.security.web.authentication.www.DigestAuthenticationFilter">
-        <b:property name="userDetailsService" ref="userService" />
+        <b:property name="userDetailsService" ref="userServiceImpl" />
         <b:property name="authenticationEntryPoint" ref="digestEntryPoint" />
+        <b:property name="passwordAlreadyEncoded" value="true" />
     </b:bean>
     <b:bean id="digestEntryPoint"
                 class="org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint">
         <b:property name="realmName" value="Contacts Realm via Digest Authentication" />
         <b:property name="key" value="acegi" />
+        <b:property name="nonceValiditySeconds" value="10"/>
     </b:bean>
 
     <!-- the security namespace configuration -->
@@ -22,14 +24,5 @@
         <http-basic />
         <custom-filter ref="digestFilter" after="BASIC_AUTH_FILTER" />
     </http>
-
-    <authentication-manager>
-        <authentication-provider>
-            <user-service id="userService">
-                <user name="eparaschiv" password="eparaschiv" authorities="ROLE_ADMIN" />
-                <user name="user" password="user" authorities="ROLE_USER" />
-            </user-service>
-        </authentication-provider>
-    </authentication-manager>
 
 </b:beans>

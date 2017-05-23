@@ -17,10 +17,9 @@ public interface UserDao {
      * Returns a user according to username and password.
      *
      * @param username of the user to retrieve
-     * @param password of the user to retrieve
      * @return retrieved user
      */
-    User get(String username, String password);
+    User get(String username);
 
     /**
      * Create a new user.
@@ -28,12 +27,13 @@ public interface UserDao {
      * @param u user
      * @return the id of the newly created user
      */
-    Long create(User u);
+    User create(User u);
 
     /**
      * Update an existing user.
      *
      * @param u updated user with immutable id.
+     * @return the id of the updated user
      */
     void update(User u);
 
@@ -41,6 +41,7 @@ public interface UserDao {
      * Delete a user.
      *
      * @param u user
+     * @return the id of the deleted user
      */
     void delete(User u);
 }

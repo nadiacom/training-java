@@ -1,25 +1,22 @@
 package com.ebiz.cdb.binding.utils;
 
-/**
- * Created by ebiz on 22/03/17.
- */
 public class PaginationUtils {
 
-    private static final int NB_PAGINATION = 10;
+    private static final long NB_PAGINATION = 10L;
     private static boolean lastPage;
 
     public enum Limit {
-        SHORT(10),
-        MEDIUM(50),
-        BIG(100);
-        private int nb;
+        SHORT(10L),
+        MEDIUM(50L),
+        BIG(100L);
+        private long nb;
 
         /**
          * Create a Limit.
          *
          * @param nb int
          */
-        Limit(int nb) {
+        Limit(long nb) {
             this.nb = nb;
         }
 
@@ -28,7 +25,7 @@ public class PaginationUtils {
          *
          * @return int
          */
-        public int getNb() {
+        public long getNb() {
             return nb;
         }
 
@@ -38,7 +35,7 @@ public class PaginationUtils {
          * @param choice int
          * @return int
          */
-        public static int getLimitNb(int choice) {
+        public static long getLimitNb(int choice) {
             return values()[choice] != null ? values()[choice].getNb() : values()[0].getNb();
         }
     }
@@ -51,29 +48,29 @@ public class PaginationUtils {
      * @param nbComputer total number of computers.
      * @return array : total number of pagination, pgStart and pgEnd for current pagination.
      */
-    public static int[] getPagination(int nbComputerByPage, int currentPage, int nbComputer) {
+    public static long[] getPagination(int nbComputerByPage, int currentPage, long nbComputer) {
 
-        int[] values = new int[3];
+        long[] values = new long[3];
         //CALCULATE NUMBER OF PAGINATION
-        int totalPages = 1, reste = 0, quotient = 0;
+        long totalPages = 1L, reste = 0L, quotient = 0L;
         if (nbComputer > nbComputerByPage) {
             //number of pagination to display employee list
             reste = nbComputer % nbComputerByPage;
-            quotient = reste != 0
-                    ? nbComputer / nbComputerByPage + 1
+            quotient = reste != 0L
+                    ? nbComputer / nbComputerByPage + 1L
                     : nbComputer / nbComputerByPage;
             totalPages = quotient;
         }
 
         //DISPLAYED PAGINATIONS
         lastPage = currentPage == totalPages;
-        int pgStart = Math.max(currentPage - NB_PAGINATION / 2, 1);
-        int pgEnd = pgStart + NB_PAGINATION;
-        if (pgEnd > totalPages + 1) {
-            int diff = pgEnd - totalPages;
-            pgStart -= diff - 1;
-            if (pgStart < 1) {
-                pgStart = 1;
+        long pgStart = Math.max(currentPage - NB_PAGINATION / 2L, 1L);
+        long pgEnd = pgStart + NB_PAGINATION;
+        if (pgEnd > totalPages + 1L) {
+            long diff = pgEnd - totalPages;
+            pgStart -= diff - 1L;
+            if (pgStart < 1L) {
+                pgStart = 1L;
             }
             pgEnd = totalPages + 1;
         }
@@ -85,20 +82,5 @@ public class PaginationUtils {
 
     public static boolean isLastPage() {
         return lastPage;
-    }
-
-    /**
-     * Get current page.
-     *
-     * @param request HttpServletRequest request.
-     * @return current page.
-     */
-    public static int getCurrentPage(javax.servlet.http.HttpServletRequest request) {
-        int currentPage = 1; //pagination 1 displayed by default
-        if (request.getParameter("currentPage") != null) {
-            //Get current page
-            currentPage = Integer.parseInt(request.getParameter("currentPage"));
-        }
-        return currentPage;
     }
 }

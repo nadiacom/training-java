@@ -8,7 +8,7 @@ import java.util.List;
 public class PageRequest<T> {
 
     public int nbComputerByPage; // number of computers displayed by page
-    public int nbComputers; // total number of computers for current search
+    public Long nbComputers; // total number of computers for current search
     public int currentPage; // current page number
     public List<T> listComputers; // generic type list
     public int pgStart; // pagination first visible number
@@ -40,11 +40,11 @@ public class PageRequest<T> {
         this.nbComputerByPage = nbComputerByPage;
     }
 
-    public int getNbComputers() {
+    public Long getNbComputers() {
         return this.nbComputers;
     }
 
-    public void setNbComputers(int nbComputers) {
+    public void setNbComputers(Long nbComputers) {
         this.nbComputers = nbComputers;
     }
 
@@ -135,7 +135,7 @@ public class PageRequest<T> {
          * @param nbComputers (required) PageRequest total number of computers by page.
          * @return PageRequest builder.
          */
-        public PageRequestBuilder nbComputers(int nbComputers) {
+        public PageRequestBuilder nbComputers(Long nbComputers) {
             pageRequest.setNbComputers(nbComputers);
             return this;
         }

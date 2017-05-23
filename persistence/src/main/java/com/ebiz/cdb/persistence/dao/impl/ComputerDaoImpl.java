@@ -12,12 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Root;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,20 +23,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ComputerDaoImpl implements ComputerDao {
 
-    private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("controller.ComputerDaoImpl");
-
-    private static final String SQL_INSERT = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
-    private static final String SQL_SELECT_BY_ID = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id AS company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.id = ?";
-    private static final String SQL_SELECT_BY_NAME = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id AS company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.name LIKE ? OR company.name LIKE ? LIMIT ? OFFSET ?";
-    private static final String SQL_COUNT_BY_NAME = "SELECT COUNT(*) as total FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.name LIKE ? OR company.name LIKE ?";
-    private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id =? WHERE id = ?";
-    private static final String SQL_DELETE = "DELETE FROM computer WHERE id = ?";
-    private static final String SQL_SELECT_ALL = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id AS company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id";
-    private static final String SQL_COUNT = "SELECT COUNT(*) as total FROM computer";
-    private static final String SQL_SELECT_PAGE = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id AS company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id LIMIT ? OFFSET ?";
-    private static final String SQL_DELETE_BY_COMPANY = "DELETE FROM computer WHERE company_id = ?";
-    private static final String SQL_SELECT_BY_COMPANY = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id AS company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE company_id = ?";
-    private static final String SQL_ORDER_BY = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id AS company_id, company.name AS company_name FROM computer AS c LEFT JOIN company ON c.company_id = company.id WHERE c.name LIKE ? OR company.name LIKE ? ORDER BY ? ? LIMIT ? OFFSET ?";
+    private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("com.ebiz.cdb.persistence.dao.impl.ComputerDaoImpl");
 
     @PersistenceContext
     private EntityManager em;
@@ -73,15 +56,12 @@ public class ComputerDaoImpl implements ComputerDao {
 
     @Override
     public Computer findById(Long id) {
-
-        Computer computer = null;
-        /*
-        try {
-            computer = jdbcTemplate.queryForObject(SQL_SELECT_BY_ID, new Object[]{id}, new ComputerMapper());
-        } catch (Exception e) {
-            LOGGER.debug("Error retrieving computer with ID : " + id + e.getMessage() + e.getStackTrace());
-        } */
-        return computer;
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Computer> cq = cb.createQuery(Computer.class);
+        Root<Computer> computerRoot = cq.from(Computer.class);
+        cq.where(cb.equal(computerRoot.get("id"), id));
+        TypedQuery<Computer> q = em.createQuery(cq);
+        return q.getSingleResult();
     }
 
     @Override
@@ -111,39 +91,44 @@ public class ComputerDaoImpl implements ComputerDao {
     }
 
     @Override
-    public int countByName(String name) {
-
-        int count = 0;
-        /*
-        try {
-            count = jdbcTemplate.queryForObject(SQL_COUNT_BY_NAME, new Object[]{"%" + name + "%", "%" + name + "%"}, Integer.class);
-        } catch (Exception e) {
-            LOGGER.debug("Error counting computers with computer or company like : " + name + e.getMessage() + e.getStackTrace());
-        }*/
-        return count;
+    public Long countByName(String name) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        cq.select(cb.count(cq.from(Computer.class)));
+        Root<Computer> computerRoot = cq.from(Computer.class);
+        Root<Company> companyRoot = cq.from(Company.class);
+        //Left join on computer.company = company
+        Join<Computer, Company> company = computerRoot.join("company", JoinType.LEFT);
+        company.on(
+                cb.equal(company, cb.parameter(Company.class, "company"))
+        );
+        //Where computer or company name like
+        cq.where(
+                cb.or(
+                        cb.like(computerRoot.get("name"), "%" + name + "%"),
+                        cb.like(companyRoot.get("name"), "%" + name + "%")
+                )
+        );
+        return em.createQuery(cq).getSingleResult();
     }
 
     @Override
     public Long update(Computer computer) {
-
         Long id = computer.getId();
-         /*
-        try {
-            jdbcTemplate.update(
-                    new PreparedStatementCreator() {
-                        public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                            PreparedStatement ps = connection.prepareStatement(SQL_UPDATE);
-                            ps.setString(1, computer.getName());
-                            ps.setString(2, computer.getIntroduced() != null ? computer.getIntroduced().toString() : null);
-                            ps.setString(3, computer.getDiscontinued() != null ? computer.getDiscontinued().toString() : null);
-                            ps.setString(4, computer.getCompany() != null ? computer.getCompany().getId().toString() : null);
-                            ps.setString(5, id.toString());
-                            return ps;
-                        }
-                    });
-        } catch (Exception e) {
-            LOGGER.debug("Error updating computer with ID : " + id + e.getMessage() + e.getStackTrace());
-        } */
+        CriteriaBuilder cb = this.em.getCriteriaBuilder();
+        // create update
+        CriteriaUpdate<Computer> update = cb.
+                createCriteriaUpdate(Computer.class);
+        // set the root class
+        Root e = update.from(Computer.class);
+        // set update and where clause
+        update.set("name", computer.getName());
+        update.set("introduced", computer.getIntroduced());
+        update.set("discontinued", computer.getDiscontinued());
+        update.set("company", computer.getCompany());
+        update.where(cb.equal(e.get("id"), computer.getId()));
+        // perform update
+        this.em.createQuery(update).executeUpdate();
         return id;
     }
 
@@ -152,17 +137,13 @@ public class ComputerDaoImpl implements ComputerDao {
     public Long remove(Computer computer) {
         Long id = computer.getId();
         CriteriaBuilder cb = em.getCriteriaBuilder();
-
         // create delete
         CriteriaDelete<Computer> delete = cb.
                 createCriteriaDelete(Computer.class);
-
         // set the root class
         Root e = delete.from(Computer.class);
-
         // set where clause
         delete.where(cb.equal(e.get("id"), computer.getId()));
-
         // perform update
         em.createQuery(delete).executeUpdate();
         return id;
@@ -200,15 +181,11 @@ public class ComputerDaoImpl implements ComputerDao {
     }
 
     @Override
-    public int count() {
-        int count = 0;
-        /*
-        try {
-            count = jdbcTemplate.queryForObject(SQL_COUNT, Integer.class);
-        } catch (Exception e) {
-            LOGGER.debug("Error counting computers " + e.getMessage() + e.getStackTrace());
-        }*/
-        return count;
+    public Long count() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        cq.select(cb.count(cq.from(Computer.class)));
+        return em.createQuery(cq).getSingleResult();
     }
 
     @Override

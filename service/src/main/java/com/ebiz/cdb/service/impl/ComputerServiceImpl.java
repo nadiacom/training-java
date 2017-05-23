@@ -107,14 +107,14 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     @Override
-    public int count() {
-        int count = computerDao.count();
+    public Long count() {
+        Long count = computerDao.count();
         return count;
     }
 
     @Override
-    public int countByName(String name) {
-        int count = computerDao.countByName(name);
+    public Long countByName(String name) {
+        Long count = computerDao.countByName(name);
         return count;
     }
 

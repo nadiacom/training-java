@@ -14,13 +14,12 @@ public interface UserService {
     List<User> getAll();
 
     /**
-     * Returns a user according to username and password.
+     * Returns a user according to username.
      *
      * @param username of the user to retrieve
-     * @param password of the user to retrieve
      * @return retrieved user
      */
-    User get(String username, String password);
+    User get(String username);
 
     /**
      * Create a new user.
@@ -28,7 +27,7 @@ public interface UserService {
      * @param u user
      * @return the id of the newly created user
      */
-    Long create(User u);
+    User create(User u);
 
     /**
      * Update an existing user.
