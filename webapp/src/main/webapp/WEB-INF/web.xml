@@ -6,11 +6,17 @@
 
     <display-name>Archetype Created Web Application</display-name>
 
+    <!-- Location of the XML file that defines the root application context - Applied by ContextLoaderListener. -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:applicationContext.xml WEB-INF/dispatcher-servlet.xml</param-value>
+        <param-value>classpath:applicationContext.xml WEB-INF/dispatcher-servlet.xml WEB-INF/web-security-config.xml</param-value>
     </context-param>
 
+    <!--
+	  - Loads the root application context of this web app at startup.
+	  - The application context is then available via
+	  - WebApplicationContextUtils.getWebApplicationContext(servletContext).
+	-->
     <listener>
         <listener-class>
             org.springframework.web.context.ContextLoaderListener
@@ -47,5 +53,14 @@
         <location>/WEB-INF/views/500.html</location>
     </error-page!-->
 
+    <!-- Spring Security, server filter to intercept any incoming requests  -->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
 </web-app>

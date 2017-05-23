@@ -49,7 +49,8 @@
         <jstl.version>1.2</jstl.version>
         <!-- spring -->
         <spring-boot-starter.version>1.5.3.RELEASE</spring-boot-starter.version>
-        <org.springframework.version>4.3.7.RELEASE</org.springframework.version>
+        <springframework.version>4.3.7.RELEASE</springframework.version>
+        <spring-security.version>4.2.2.RELEASE</spring-security.version>
         <!-- mvn -->
         <maven-compiler.version>3.6.1</maven-compiler.version>
         <maven-compiler-conf.version>1.8</maven-compiler-conf.version>
@@ -87,13 +88,6 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- OK -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <version>${spring-boot-starter.version}</version>
-        </dependency>
-
         <!-- TEST -->
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
@@ -120,14 +114,18 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- Spring boot test -->
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${springframework.version}</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <version>${spring-boot-starter.version}</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -141,7 +139,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>${org.springframework.version}</version>
+            <version>${springframework.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-logging</groupId>
@@ -149,13 +147,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
         <!-- Bean Factory and JavaBeans utilities (depends on spring-core) (org.springframework.beans.*)-->
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-beans -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
-            <version>${org.springframework.version}</version>
+            <version>${springframework.version}</version>
         </dependency>
         <!-- The spring-webmvc module (also known as the Web-Servlet module) contains
 			Spring’s model-view-controller (MVC) and REST Web Services implementation
@@ -163,7 +160,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>${org.springframework.version}</version>
+            <version>${springframework.version}</version>
         </dependency>
         <!-- The spring-web module provides basic web-oriented integration features
             such as multipart file upload functionality and the initialization of the
@@ -171,20 +168,25 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>${org.springframework.version}</version>
+            <version>${springframework.version}</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>${org.springframework.version}</version>
+            <version>${springframework.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+
+        <!-- SPRING SECURITY -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>${org.springframework.version}</version>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring-security.version}</version>
         </dependency>
 
     </dependencies>
@@ -276,37 +278,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>test</id>
-            <properties>
-                <db.url>jdbc:mysql://mysql-test:3307/computer-database-db</db.url>
-                <db.driver>com.mysql.cj.jdbc.MysqlDataSource</db.driver>
-                <db.username>root</db.username>
-                <db.password>root</db.password>
-            </properties>
-        </profile>
-        <profile>
-            <id>local</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <db.url>jdbc:mysql://localhost:3306/computer-database-db</db.url>
-                <db.driver>com.mysql.cj.jdbc.MysqlDataSource</db.driver>
-                <db.username>root</db.username>
-                <db.password>root</db.password>
-            </properties>
-        </profile>
-        <profile>
-            <id>dev</id>
-            <properties>
-                <db.url>jdbc:mysql://mysql-prod:3306/computer-database-db</db.url>
-                <db.driver>com.mysql.cj.jdbc.MysqlDataSource</db.driver>
-                <db.username>root</db.username>
-                <db.password>root</db.password>
-            </properties>
-        </profile>
-    </profiles>
 </project>
