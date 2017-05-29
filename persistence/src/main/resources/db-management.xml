@@ -36,8 +36,16 @@
         <constructor-arg ref="hikariConfig"/>
     </bean>
 
-    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-        <property name="dataSource" ref="dataSource"/>
+    <bean id="templates" class="com.querydsl.sql.MySQLTemplates">
+    </bean>
+
+    <bean id="configuration" class="com.querydsl.sql.Configuration">
+        <constructor-arg ref="templates"/>
+    </bean>
+
+    <bean id="SQLQueryFactory" class="com.querydsl.sql.SQLQueryFactory">
+        <constructor-arg ref="configuration"/>
+        <constructor-arg ref="dataSource"/>
     </bean>
 
     <!-- This produces a container-managed EntityManagerFactory;

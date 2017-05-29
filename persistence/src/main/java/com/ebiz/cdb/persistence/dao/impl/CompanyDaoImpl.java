@@ -3,7 +3,6 @@ package com.ebiz.cdb.persistence.dao.impl;
 import com.ebiz.cdb.core.models.Company;
 import com.ebiz.cdb.persistence.dao.CompanyDao;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,8 +12,6 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,23 +99,5 @@ public class CompanyDaoImpl implements CompanyDao {
             LOGGER.debug("Error deleting company with ID : " + id + e.getMessage() + e.getStackTrace());
         }*/
         return id;
-    }
-
-    class CompanyMapper implements RowMapper<Company> {
-
-        /**
-         * Utilitary method to map one row returned from JDBCTemplate row to company bean.
-         *
-         * @param resultSet (required) ResultSet from database request.
-         * @param rowNum    row number.
-         * @return mapped company.
-         * @throws SQLException SQL exception.
-         */
-        public Company mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            Company company = new Company();
-            company.setId(resultSet.getLong("id"));
-            company.setName(resultSet.getString("name"));
-            return company;
-        }
     }
 }

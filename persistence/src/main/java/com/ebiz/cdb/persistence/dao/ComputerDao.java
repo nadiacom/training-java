@@ -2,7 +2,7 @@ package com.ebiz.cdb.persistence.dao;
 
 
 
-import com.ebiz.cdb.core.models.Computer;
+import com.ebiz.cdb.persistence.Computer;
 
 import java.util.List;
 

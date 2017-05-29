@@ -1,21 +1,20 @@
 package com.ebiz.cdb.persistence.dao.impl;
 
-
-import com.ebiz.cdb.core.models.Company;
-import com.ebiz.cdb.core.models.Computer;
-import com.ebiz.cdb.core.models.Computer_;
+import com.ebiz.cdb.persistence.Computer;
+import com.ebiz.cdb.persistence.Computer;
+import com.ebiz.cdb.persistence.QCompany;
+import com.ebiz.cdb.persistence.QComputer;
 import com.ebiz.cdb.persistence.dao.ComputerDao;
+import com.querydsl.sql.H2Templates;
+import com.querydsl.sql.SQLQueryFactory;
+import com.querydsl.sql.SQLTemplates;
+import com.querydsl.sql.dml.SQLInsertClause;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,74 +24,41 @@ public class ComputerDaoImpl implements ComputerDao {
 
     private org.slf4j.Logger LOGGER = LoggerFactory.getLogger("com.ebiz.cdb.persistence.dao.impl.ComputerDaoImpl");
 
-    @PersistenceContext
-    private EntityManager em;
+    @Autowired
+    private SQLQueryFactory query;
 
     @Override
     public Long create(Computer computer) {
-        Long generatedComputerId = 0L;
-        /*
-        try {
-            KeyHolder keyHolder = new GeneratedKeyHolder();
-            jdbcTemplate.update(
-                    new PreparedStatementCreator() {
-                        public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                            PreparedStatement ps = connection.prepareStatement(SQL_INSERT, new String[]{"id"});
-                            ps.setString(1, computer.getName());
-                            ps.setString(2, computer.getIntroduced() != null ? computer.getIntroduced().toString() : null);
-                            ps.setString(3, computer.getDiscontinued() != null ? computer.getDiscontinued().toString() : null);
-                            ps.setString(4, computer.getCompany() != null ? computer.getCompany().getId().toString() : null);
-                            return ps;
-                        }
-                    },
-                    keyHolder);
-            generatedComputerId = (Long) keyHolder.getKey();
-        } catch (Exception e) {
-            LOGGER.debug("Error creating computer : " + e.getMessage() + e.getStackTrace());
-        }*/
-
-        return generatedComputerId;
+        QComputer c = QComputer.computer;
+        return query.insert(c)
+                .set(c.name, computer.getName())
+                .set(c.introduced, computer.getIntroduced())
+                .set(c.discontinued, computer.getDiscontinued())
+                .set(c.companyId, computer.getCompanyId()).executeWithKeys(c.id).get(0);
     }
 
     @Override
     public Computer findById(Long id) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
+        SQLTemplates templates = new H2Templates();
+        /* CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Computer> cq = cb.createQuery(Computer.class);
         Root<Computer> computerRoot = cq.from(Computer.class);
         cq.where(cb.equal(computerRoot.get("id"), id));
-        TypedQuery<Computer> q = em.createQuery(cq);
-        return q.getSingleResult();
+        TypedQuery<Computer> q = em.createQuery(cq);*/
+        return null;
     }
 
     @Override
     public List<Computer> findByName(String name, int page, int nbComputerByPage) {
-        List<Computer> listComputers = new ArrayList<>();
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<Computer> criteria = builder.createQuery(Computer.class);
-
-        Root<Computer> computerRoot = criteria.from(Computer.class);
-
-        //Left join on computer.company = company
-        Join<Company, Computer> computerCompany = computerRoot.join("company");
-
-        criteria.where(
-                builder.or(
-                        builder.like(computerRoot.get("name"), "%" + name + "%"),
-                        builder.like(computerCompany.get("name"), "%" + name + "%")
-                )
-        );
-        criteria.select(computerRoot);
-
-        List<Computer> computers = em.createQuery(criteria).setFirstResult((page - 1) * nbComputerByPage).setMaxResults(nbComputerByPage).getResultList();
-        for (Computer computer : computers) {
-            listComputers.add(computer);
-        }
-        return listComputers;
+        QComputer c = QComputer.computer;
+        QCompany company = QCompany.company;
+        return query.selectFrom(c).innerJoin(c.computerCompany1Fk, company).where(c.name.like(name).or(company.name.like(name)))
+                .fetch();
     }
 
     @Override
     public Long countByName(String name) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
+        /* CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
         cq.select(cb.count(cq.from(Computer.class)));
         Root<Computer> computerRoot = cq.from(Computer.class);
@@ -108,84 +74,54 @@ public class ComputerDaoImpl implements ComputerDao {
                         cb.like(computerRoot.get("name"), "%" + name + "%"),
                         cb.like(companyRoot.get("name"), "%" + name + "%")
                 )
-        );
-        return em.createQuery(cq).getSingleResult();
+        ); */
+        return null;
     }
 
     @Override
     public Long update(Computer computer) {
-        Long id = computer.getId();
-        CriteriaBuilder cb = this.em.getCriteriaBuilder();
-        // create update
-        CriteriaUpdate<Computer> update = cb.
-                createCriteriaUpdate(Computer.class);
-        // set the root class
-        Root e = update.from(Computer.class);
-        // set update and where clause
-        update.set("name", computer.getName());
-        update.set("introduced", computer.getIntroduced());
-        update.set("discontinued", computer.getDiscontinued());
-        update.set("company", computer.getCompany());
-        update.where(cb.equal(e.get("id"), computer.getId()));
-        // perform update
-        this.em.createQuery(update).executeUpdate();
-        return id;
+        QComputer c = QComputer.computer;
+        query.update(c)
+                .where(c.id.eq(computer.getId()))
+                .set(c.name, computer.getName())
+                .set(c.introduced, computer.getIntroduced())
+                .set(c.discontinued, computer.getDiscontinued())
+                .set(c.companyId, computer.getCompanyId())
+                .execute();
+        return computer.getId();
     }
 
     @Override
-    @Transactional
     public Long remove(Computer computer) {
-        Long id = computer.getId();
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        // create delete
-        CriteriaDelete<Computer> delete = cb.
-                createCriteriaDelete(Computer.class);
-        // set the root class
-        Root e = delete.from(Computer.class);
-        // set where clause
-        delete.where(cb.equal(e.get("id"), computer.getId()));
-        // perform update
-        em.createQuery(delete).executeUpdate();
-        return id;
+        QComputer c = QComputer.computer;
+        query.delete(c)
+                .where(c.id.eq(computer.getId()))
+                .execute();
+        return computer.getId();
     }
 
     @Override
     public List<Computer> getAll() {
-        List<Computer> listComputers = new ArrayList<>();
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<Computer> criteria = builder.createQuery(Computer.class);
-        Root<Computer> computerRoot = criteria.from(Computer.class);
-        criteria.select(computerRoot);
-        List<Computer> computers = em.createQuery(criteria).getResultList();
-        for (Computer computer : computers) {
-            listComputers.add(computer);
-        }
-        return listComputers;
+        QComputer c = QComputer.computer;
+        QCompany company = QCompany.company;
+        return query.selectFrom(c).innerJoin(c.computerCompany1Fk, company)
+                .fetch();
     }
 
     @Override
     public List<Computer> getPageList(int page, int nbComputerByPage) {
-        List<Computer> listComputers = new ArrayList<>();
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<Computer> criteria = builder.createQuery(Computer.class);
-
-        Root<Computer> computerRoot = criteria.from(Computer.class);
-
-        Join<Computer, Company> company = computerRoot.join(Computer_.company);
-        criteria.select(computerRoot);
-        List<Computer> computers = em.createQuery(criteria).setFirstResult((page - 1) * nbComputerByPage).setMaxResults(nbComputerByPage).getResultList();
-        for (Computer computer : computers) {
-            listComputers.add(computer);
-        }
-        return listComputers;
+        QComputer c = QComputer.computer;
+        QCompany company = QCompany.company;
+        return query.selectFrom(c).innerJoin(c.computerCompany1Fk, company).limit(nbComputerByPage).offset(page)
+                .fetch();
     }
 
     @Override
     public Long count() {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
+        /* CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-        cq.select(cb.count(cq.from(Computer.class)));
-        return em.createQuery(cq).getSingleResult();
+        cq.select(cb.count(cq.from(Computer.class))); */
+        return null;
     }
 
     @Override
@@ -200,32 +136,16 @@ public class ComputerDaoImpl implements ComputerDao {
 
     @Override
     public List<Computer> findByCompanyId(Long companyId) {
-        List<Computer> listComputers = new ArrayList<>();
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<Computer> criteria = builder.createQuery(Computer.class);
-
-        Root<Computer> computerRoot = criteria.from(Computer.class);
-
-        //Left join on computer.company = company
-        Join<Company, Computer> computerCompany = computerRoot.join("company");
-
-        criteria.where(
-                builder.equal(computerCompany.get("id"), companyId)
-        );
-        criteria.select(computerRoot);
-
-        List<Computer> computers = em.createQuery(criteria).getResultList();
-        for (Computer computer : computers) {
-            listComputers.add(computer);
-        }
-        return listComputers;
+        QComputer c = QComputer.computer;
+        return query.selectFrom(c).where(c.companyId.eq(companyId))
+                .fetch();
     }
 
     @Override
     public List<Computer> getPageListNameOrderBy(int page, int nbComputerByPage, String name, String columnName, String orderBy) {
 
         List<Computer> listComputers = new ArrayList<>();
-        CriteriaBuilder builder = em.getCriteriaBuilder();
+       /* CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Computer> criteria = builder.createQuery(Computer.class);
 
         Root<Computer> computerRoot = criteria.from(Computer.class);
@@ -257,7 +177,7 @@ public class ComputerDaoImpl implements ComputerDao {
         List<Computer> computers = em.createQuery(criteria).setFirstResult((page - 1) * nbComputerByPage).setMaxResults(nbComputerByPage).getResultList();
         for (Computer computer : computers) {
             listComputers.add(computer);
-        }
+        } */
         return listComputers;
     }
 
@@ -265,7 +185,7 @@ public class ComputerDaoImpl implements ComputerDao {
     public List<Computer> getPageListOrderBy(int page, int nbComputerByPage, String columnName, String orderBy) {
 
         List<Computer> listComputers = new ArrayList<>();
-        CriteriaBuilder builder = em.getCriteriaBuilder();
+        /* CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Computer> criteria = builder.createQuery(Computer.class);
 
         Root<Computer> computerRoot = criteria.from(Computer.class);
@@ -291,34 +211,8 @@ public class ComputerDaoImpl implements ComputerDao {
         List<Computer> computers = em.createQuery(criteria).setFirstResult((page - 1) * nbComputerByPage).setMaxResults(nbComputerByPage).getResultList();
         for (Computer computer : computers) {
             listComputers.add(computer);
-        }
+        } */
         return listComputers;
-    }
-
-    class ComputerMapper implements RowMapper<Computer> {
-
-        /**
-         * Utilitary method to map one row returned from JDBCTemplate row to computer bean.
-         *
-         * @param resultSet (required) ResultSet from database request.
-         * @param rowNum    row number.
-         * @return mapped computer.
-         * @throws SQLException SQL exception.
-         */
-        public Computer mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            Company company = new Company();
-            company.setId(resultSet.getLong("company_id"));
-            company.setName(resultSet.getString("company_name"));
-            Computer computer = new
-                    Computer.ComputerBuilder()
-                    .id(resultSet.getLong("id"))
-                    .name(resultSet.getString("name"))
-                    .introduced(resultSet.getTimestamp("introduced") != null ? resultSet.getTimestamp("introduced").toLocalDateTime() : null)
-                    .discontinued(resultSet.getTimestamp("discontinued") != null ? resultSet.getTimestamp("discontinued").toLocalDateTime() : null)
-                    .company(company)
-                    .build();
-            return computer;
-        }
     }
 
 }
