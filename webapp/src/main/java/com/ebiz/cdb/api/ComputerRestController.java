@@ -101,7 +101,7 @@ public class ComputerRestController {
      * @return number of computers.
      */
     @GetMapping("/count")
-    public Long count() {
+    public int count() {
         LOGGER.info("[GET rest] count computers");
         return computerService.count();
     }
@@ -113,7 +113,7 @@ public class ComputerRestController {
      * @return number of computers.
      */
     @GetMapping("/count/{name}")
-    public Long countByName(@PathVariable("name") String name) {
+    public int countByName(@PathVariable("name") String name) {
         LOGGER.info("[GET rest] count computers ny name");
         return computerService.countByName(name);
     }
@@ -147,7 +147,7 @@ public class ComputerRestController {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setLocation(uri);
         if (!result.hasErrors()) {
-            return new ResponseEntity<Long>(computerService.create(computerMapper.to(computerDTO)), responseHeaders, HttpStatus.CREATED);
+            return new ResponseEntity<Computer>(computerService.create(computerMapper.to(computerDTO)), responseHeaders, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<Integer>(HttpStatus.BAD_REQUEST);
         }
@@ -171,7 +171,7 @@ public class ComputerRestController {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setLocation(uri);
         if (!result.hasErrors()) {
-            return new ResponseEntity<Long>(computerService.update(computerMapper.to(computerDTO)), responseHeaders, HttpStatus.CREATED);
+            return new ResponseEntity<Computer>(computerService.update(computerMapper.to(computerDTO)), responseHeaders, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<Integer>(HttpStatus.BAD_REQUEST);
         }

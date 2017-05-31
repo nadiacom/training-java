@@ -13,13 +13,6 @@
     <!-- Retrieve database properties -->
     <context:property-placeholder location="classpath:db.properties"/>
 
-    <!-- Enable Annotation based Declarative Transaction Management -->
-    <tx:annotation-driven transaction-manager="transactionManager" />
-
-    <!-- Transaction manager configuration -->
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
     <!-- DataSource configuration -->
     <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
         <property name="dataSourceProperties">
@@ -32,24 +25,14 @@
         <property name="dataSourceClassName" value="${dataSourceClassName}"/>
         <property name="maximumPoolSize" value="${maximumPoolSize}"/>
     </bean>
+
+    <!-- Datasource -->
     <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
         <constructor-arg ref="hikariConfig"/>
     </bean>
 
-    <bean id="templates" class="com.querydsl.sql.MySQLTemplates">
-    </bean>
-
-    <bean id="configuration" class="com.querydsl.sql.Configuration">
-        <constructor-arg ref="templates"/>
-    </bean>
-
-    <bean id="SQLQueryFactory" class="com.querydsl.sql.SQLQueryFactory">
-        <constructor-arg ref="configuration"/>
-        <constructor-arg ref="dataSource"/>
-    </bean>
-
     <!-- This produces a container-managed EntityManagerFactory;
-        rather than application-managed EntityManagerFactory as in case of LocalEntityManagerFactoryBean-->
+    rather than application-managed EntityManagerFactory as in case of LocalEntityManagerFactoryBean-->
     <bean id="entityManagerFactoryBean" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <!-- This makes /META-INF/persistence.xml is no longer necessary -->

@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity(name = "user")
+@Entity(name = "User")
 @Table(name = "user")
 public class User implements Serializable, UserDetails {
 

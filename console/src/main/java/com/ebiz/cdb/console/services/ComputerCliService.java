@@ -67,7 +67,7 @@ public class ComputerCliService {
      * @param id (required) computer id.
      */
     public void deleteComputer(int id) {
-        if (computerServiceImpl.get(id) != null) {
+        if (computerServiceImpl.findById(Long.valueOf(id)) != null) {
             System.out.println("Removed computer with id: " + computerServiceImpl.delete(id));
         } else {
             System.out.println("No computer exists with the given id. Try another one.");
@@ -94,8 +94,8 @@ public class ComputerCliService {
      * @param id (required) computer id.
      */
     public void showComputerDetails(int id) {
-        if (computerServiceImpl.get(id) != null) {
-            System.out.println("Computer: " + computerServiceImpl.get(id));
+        if (computerServiceImpl.findById(Long.valueOf(id)) != null) {
+            System.out.println("Computer: " + computerServiceImpl.findById(Long.valueOf(id)));
         } else {
             System.out.println("No computer exists with the given id. Try another one.");
         }

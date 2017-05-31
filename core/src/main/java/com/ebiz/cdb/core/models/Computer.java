@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Entity(name = "computer")
+@Entity(name = "Computer")
 @Table(name = "computer")
 public class Computer implements Serializable {
 

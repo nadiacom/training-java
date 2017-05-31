@@ -20,33 +20,31 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class UserDaoImpl implements UserDao {
 
-    @PersistenceContext
-    private EntityManager em;
 
     @Override
     public List<User> getAll() {
         List<User> userList = new ArrayList<>();
-        CriteriaBuilder builder = em.getCriteriaBuilder();
+        /*CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<User> criteria = builder.createQuery(User.class);
         Root<User> computerRoot = criteria.from(User.class);
         criteria.select(computerRoot);
         List<User> users = em.createQuery(criteria).getResultList();
         for (User user : users) {
             userList.add(user);
-        }
+        } */
         return userList;
     }
 
     @Override
     public User get(String username) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
+        /* CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<User> cq = cb.createQuery(User.class);
         Root<User> userRoot = cq.from(User.class);
         cq.where(
                 cb.equal(userRoot.get("username"), username)
         );
-        TypedQuery<User> q = em.createQuery(cq);
-        return q.getSingleResult();
+        TypedQuery<User> q = em.createQuery(cq); */
+        return null;
     }
 
     @Override
@@ -56,7 +54,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void update(User u) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
+        /* CriteriaBuilder cb = em.getCriteriaBuilder();
         // create update
         CriteriaUpdate<User> update = cb.
                 createCriteriaUpdate(User.class);
@@ -66,12 +64,12 @@ public class UserDaoImpl implements UserDao {
         update.set("password", u.getPassword());
         update.where(cb.equal(e.get("username"), u.getUsername()));
         // perform update
-        em.createQuery(update).executeUpdate();
+        em.createQuery(update).executeUpdate(); */
     }
 
     @Override
     public void delete(User u) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
+      /* CriteriaBuilder cb = em.getCriteriaBuilder();
         // create delete
         CriteriaDelete<User> delete = cb.
                 createCriteriaDelete(User.class);
@@ -80,6 +78,6 @@ public class UserDaoImpl implements UserDao {
         // set where clause
         delete.where(cb.equal(e.get("username"), u.getUsername()));
         // perform update
-        em.createQuery(delete).executeUpdate();
+        em.createQuery(delete).executeUpdate();*/
     }
 }

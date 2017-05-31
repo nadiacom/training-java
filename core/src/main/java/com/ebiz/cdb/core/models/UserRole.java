@@ -5,7 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity(name = "role")
+@Entity(name = "Role")
 @Table(name = "user_role")
 public class UserRole implements Serializable, GrantedAuthority {
 

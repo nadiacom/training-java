@@ -45,12 +45,12 @@ public class ComputerDTOServiceImpl implements ComputerDTOService {
     }
 
     @Override
-    public Long count() {
+    public int count() {
         return computerService.count();
     }
 
     @Override
-    public Long countByName(String name) {
+    public int countByName(String name) {
         return computerService.countByName(name);
     }
 

@@ -2,13 +2,10 @@ package com.ebiz.cdb.core.models;
 
 import java.util.List;
 
-/**
- * Created by ebiz on 24/04/17.
- */
 public class PageRequest<T> {
 
     public int nbComputerByPage; // number of computers displayed by page
-    public Long nbComputers; // total number of computers for current search
+    public int nbComputers; // total number of computers for current search
     public int currentPage; // current page number
     public List<T> listComputers; // generic type list
     public int pgStart; // pagination first visible number
@@ -40,11 +37,11 @@ public class PageRequest<T> {
         this.nbComputerByPage = nbComputerByPage;
     }
 
-    public Long getNbComputers() {
+    public int getNbComputers() {
         return this.nbComputers;
     }
 
-    public void setNbComputers(Long nbComputers) {
+    public void setNbComputers(int nbComputers) {
         this.nbComputers = nbComputers;
     }
 
@@ -135,7 +132,7 @@ public class PageRequest<T> {
          * @param nbComputers (required) PageRequest total number of computers by page.
          * @return PageRequest builder.
          */
-        public PageRequestBuilder nbComputers(Long nbComputers) {
+        public PageRequestBuilder nbComputers(int nbComputers) {
             pageRequest.setNbComputers(nbComputers);
             return this;
         }

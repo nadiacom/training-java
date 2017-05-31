@@ -3,8 +3,8 @@ package com.ebiz.cdb.binding.service.impl;
 import com.ebiz.cdb.binding.dto.ComputerDTO;
 import com.ebiz.cdb.binding.service.ComputerDTOService;
 import com.ebiz.cdb.binding.service.PageRequestService;
-import com.ebiz.cdb.core.models.PageRequest;
 import com.ebiz.cdb.binding.utils.PaginationUtils;
+import com.ebiz.cdb.core.models.PageRequest;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class PageRequestServiceImpl implements PageRequestService {
         this.computerDTOService = computerDTOService;
     }
 
-   @Override
+    @Override
     public PageRequest buildPage(HttpSession session, String currentPage, String search, String order, String limit, String click) {
 
         //NUMBER OF COMPUTERS BY PAGINATION
@@ -77,14 +77,14 @@ public class PageRequestServiceImpl implements PageRequestService {
         }
         //PAGINATION
         //Get total number of computers
-        Long nbComputer = 0L;
+        int nbComputer = 0;
         if (search != null && !search.isEmpty()) {
             nbComputer = computerDTOService.countByName(search);
         } else {
             nbComputer = computerDTOService.count();
         }
         //Call PaginationUtils method
-        long[] values = PaginationUtils.getPagination( (int) nbComputerByPage, theCurrentPage, nbComputer);
+        long[] values = PaginationUtils.getPagination((int) nbComputerByPage, theCurrentPage, nbComputer);
 
         pageRequest = new
                 PageRequest.PageRequestBuilder()

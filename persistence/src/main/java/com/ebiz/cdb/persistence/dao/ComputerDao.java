@@ -2,7 +2,8 @@ package com.ebiz.cdb.persistence.dao;
 
 
 
-import com.ebiz.cdb.persistence.Computer;
+
+import com.ebiz.cdb.core.models.Computer;
 
 import java.util.List;
 
@@ -12,9 +13,32 @@ public interface ComputerDao {
      * Create computer.
      *
      * @param computer (required) computer.
-     * @return computer ids.
+     * @return created computer.
      */
-    Long create(Computer computer);
+    Computer create(Computer computer);
+
+    /**
+     * Update computer.
+     *
+     * @param computer (required) computer.
+     * @return updated computer.
+     */
+    Computer update(Computer computer);
+
+    /**
+     * Delete computer.
+     *
+     * @param computer (required) computer.
+     * @return previous computer id.
+     */
+    Long remove(Computer computer);
+
+    /**
+     * Delete computer.
+     *
+     * @param ids (required) list of computer ids.
+     */
+    void remove(Long[] ids);
 
     /**
      * Find computer by id.
@@ -35,22 +59,6 @@ public interface ComputerDao {
     List<Computer> findByName(String name, int page, int nbComputerByPage);
 
     /**
-     * Update computer.
-     *
-     * @param computer (required) computer.
-     * @return computer id.
-     */
-    Long update(Computer computer);
-
-    /**
-     * Delete computer.
-     *
-     * @param computer (required) computer.
-     * @return previous computer id.
-     */
-    Long remove(Computer computer);
-
-    /**
      * Get all computers.
      *
      * @return list of all computers.
@@ -65,36 +73,6 @@ public interface ComputerDao {
      * @return list of computers by page.
      */
     List<Computer> getPageList(int page, int nbComputerByPage);
-
-    /**
-     * Count number of computers.
-     *
-     * @return number of computers.
-     */
-    Long count();
-
-    /**
-     * Count computer with given name.
-     *
-     * @param name computer name.
-     * @return list of computers.
-     */
-    Long countByName(String name);
-
-    /**
-     * Delete all computers that belong to one given company.
-     *
-     * @param companyId company id.
-     */
-    void deleteByCompanyId(Long companyId);
-
-    /**
-     * Retrieve all computers that belong to a given company.
-     *
-     * @param companyId company id.
-     * @return list of computers.
-     */
-    List<Computer> findByCompanyId(Long companyId);
 
     /**
      * Get all computers by page, order by column name.
@@ -118,4 +96,35 @@ public interface ComputerDao {
      * @return list of computers.
      */
     List<Computer> getPageListNameOrderBy(int page, int nbComputerByPage, String name, String columnName, String orderBy);
+
+    /**
+     * Count number of computers.
+     *
+     * @return number of computers.
+     */
+    int count();
+
+    /**
+     * Count computer with given name.
+     *
+     * @param name computer name.
+     * @return list of computers.
+     */
+    int countByName(String name);
+
+    /**
+     * Delete all computers that belong to one given company.
+     *
+     * @param companyId company id.
+     */
+    void deleteByCompanyId(Long companyId);
+
+    /**
+     * Retrieve all computers that belong to a given company.
+     *
+     * @param companyId company id.
+     * @return list of computers.
+     */
+    List<Computer> findByCompanyId(Long companyId);
+
 }

@@ -7,20 +7,12 @@ import java.util.List;
 public interface ComputerService {
 
     /**
-     * Get all computers.
+     * Create computer.
      *
-     * @return all computers.s
+     * @param computer (required) computer.
+     * @return computer id.
      */
-    List<Computer> getAll();
-
-    /**
-     * Get all computers by page.
-     *
-     * @param page             (required) page number.
-     * @param nbComputerByPage number of computers displayed by page.
-     * @return computer list by page.
-     */
-    List<Computer> getByPage(int page, int nbComputerByPage);
+    Computer create(Computer computer);
 
     /**
      * Update computer.
@@ -28,7 +20,7 @@ public interface ComputerService {
      * @param computer (required) computer.
      * @return computer id.
      */
-    Long update(Computer computer);
+    Computer update(Computer computer);
 
     /**
      * Delete computer.
@@ -37,13 +29,6 @@ public interface ComputerService {
      * @return computer id.
      */
     Long delete(int id);
-
-    /**
-     * Delete all computers that belong to one given company.
-     *
-     * @param id company id.
-     */
-    void deleteByCompanyId(int id);
 
     /**
      * Find computer by id.
@@ -64,16 +49,20 @@ public interface ComputerService {
     List<Computer> findByName(String name, int page, int nbComputerByPage);
 
     /**
-     * Find computers by name, page and order by column.
+     * Get all computers.
      *
-     * @param name             computer name.
-     * @param colmunName       column name.
-     * @param orderBy          order by : "ASC" or "DESC".
-     * @param page             page number.
-     * @param nbComputerByPage number of computers displayed by page.
-     * @return list of computers.
+     * @return all computers.s
      */
-    List<Computer> findByNameAndOrder(String name, String colmunName, String orderBy, int page, int nbComputerByPage);
+    List<Computer> getAll();
+
+    /**
+     * Get all computers by page.
+     *
+     * @param page             (required) page number.
+     * @param nbComputerByPage number of computers displayed by page.
+     * @return computer list by page.
+     */
+    List<Computer> getByPage(int page, int nbComputerByPage);
 
     /**
      * Find computers by page and order by column.
@@ -87,6 +76,26 @@ public interface ComputerService {
     List<Computer> findByOrder(String colmunName, String orderBy, int page, int nbComputerByPage);
 
     /**
+     * Find computers by name, page and order by column.
+     *
+     * @param name             computer name.
+     * @param colmunName       column name.
+     * @param orderBy          order by : "ASC" or "DESC".
+     * @param page             page number.
+     * @param nbComputerByPage number of computers displayed by page.
+     * @return list of computers.
+     */
+    List<Computer> findByNameAndOrder(String name, String colmunName, String orderBy, int page, int nbComputerByPage);
+
+
+    /**
+     * Delete all computers that belong to one given company.
+     *
+     * @param id company id.
+     */
+    void deleteByCompanyId(int id);
+
+    /**
      * Retrieve all computers that belong to a given company.
      *
      * @param id company id.
@@ -95,27 +104,11 @@ public interface ComputerService {
     List<Computer> findByCompanyId(int id);
 
     /**
-     * Create computer.
-     *
-     * @param computer (required) computer.
-     * @return computer id.
-     */
-    Long create(Computer computer);
-
-    /**
-     * Display computer details.
-     *
-     * @param id (required) computer id.
-     * @return computer.
-     */
-    Computer get(int id);
-
-    /**
      * Count all computers.
      *
      * @return nb of computers.
      */
-    Long count();
+    int count();
 
     /**
      * Count computers by name.
@@ -123,5 +116,5 @@ public interface ComputerService {
      * @param name computer name.
      * @return nb of computers.
      */
-    Long countByName(String name);
+    int countByName(String name);
 }

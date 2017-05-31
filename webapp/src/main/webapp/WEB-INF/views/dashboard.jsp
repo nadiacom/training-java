@@ -76,23 +76,23 @@
                             </span>
                 </th>
                 <th><my_tags:sort_link currentPage="${pageRequest.currentPage}" search="${pageRequest.search}" click="name" id="computerName"
-                                       order="c.name" url="${pageContext.request.contextPath}/dashboard"/>
+                                       order="name" url="${pageContext.request.contextPath}/dashboard"/>
                     Computer name
                 </th>
                 <th><my_tags:sort_link currentPage="${pageRequest.currentPage}" search="${pageRequest.search}" click="introduced"
-                                       id="computerIntroduced" order="c.introduced"
+                                       id="computerIntroduced" order="introduced"
                                        url="${pageContext.request.contextPath}/dashboard"/>
                     Introduced date
                 </th>
                 <!-- Table header for Discontinued Date -->
                 <th><my_tags:sort_link currentPage="${pageRequest.currentPage}" search="${pageRequest.search}" click="discontinued"
-                                       id="computerDiscontinued" order="c.discontinued"
+                                       id="computerDiscontinued" order="discontinued"
                                        url="${pageContext.request.contextPath}/dashboard"/>
                     Discontinued date
                 </th>
                 <!-- Table header for Company -->
                 <th><my_tags:sort_link currentPage="${pageRequest.currentPage}" search="${pageRequest.search}" click="company" id="companyName"
-                                       order="company.name" url="${pageContext.request.contextPath}/dashboard"/>
+                                       order="company" url="${pageContext.request.contextPath}/dashboard"/>
                     Company
                 </th>
 
