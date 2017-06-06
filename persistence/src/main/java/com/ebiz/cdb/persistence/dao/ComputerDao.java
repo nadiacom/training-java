@@ -4,6 +4,7 @@ package com.ebiz.cdb.persistence.dao;
 
 
 import com.ebiz.cdb.core.models.Computer;
+import com.ebiz.cdb.core.models.PageRequest;
 
 import java.util.List;
 
@@ -73,6 +74,15 @@ public interface ComputerDao {
      * @return list of computers by page.
      */
     List<Computer> getPageList(int page, int nbComputerByPage);
+
+    /**
+     * Get page request.
+     *
+     * @param page             (required) page number.
+     * @param nbComputerByPage number of computers displayed by page.
+     * @return page request.
+     */
+    PageRequest<Computer> getPage(int page, int nbComputerByPage);
 
     /**
      * Get all computers by page, order by column name.

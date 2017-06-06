@@ -1,6 +1,7 @@
 package com.ebiz.cdb.service;
 
 import com.ebiz.cdb.core.models.Computer;
+import com.ebiz.cdb.core.models.PageRequest;
 
 import java.util.List;
 
@@ -63,6 +64,15 @@ public interface ComputerService {
      * @return computer list by page.
      */
     List<Computer> getByPage(int page, int nbComputerByPage);
+
+    /**
+     * Get page request.
+     *
+     * @param page             (required) page number.
+     * @param nbComputerByPage number of computers displayed by page.
+     * @return page request.
+     */
+    PageRequest<Computer> getPage(int page, int nbComputerByPage);
 
     /**
      * Find computers by page and order by column.

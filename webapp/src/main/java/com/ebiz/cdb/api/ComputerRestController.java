@@ -4,6 +4,7 @@ import com.ebiz.cdb.binding.dto.ComputerDTO;
 import com.ebiz.cdb.binding.mapper.ComputerMapper;
 import com.ebiz.cdb.binding.validator.ComputerDTOValidator;
 import com.ebiz.cdb.core.models.Computer;
+import com.ebiz.cdb.core.models.PageRequest;
 import com.ebiz.cdb.service.CompanyService;
 import com.ebiz.cdb.service.ComputerService;
 import org.slf4j.LoggerFactory;
@@ -13,12 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -26,8 +22,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
+@CrossOrigin
 @RestController
-@RequestMapping("/api/computer")
+@RequestMapping("/api/computers")
 public class ComputerRestController {
 
     public final String BaseLocation = "/api/computer";
@@ -62,7 +59,7 @@ public class ComputerRestController {
      * @param id computer id
      * @return List of computer
      */
-    @GetMapping("/getById/{id}")
+    @GetMapping("/{id}")
     public Computer getById(@PathVariable("id") Long id) {
         LOGGER.info("[GET rest] get computer by id");
         return computerService.findById(id);
@@ -76,7 +73,7 @@ public class ComputerRestController {
      * @param nbComputerByPage number of computers displayed by page.
      * @return List of computer
      */
-    @GetMapping("/getByName/{name}")
+    @GetMapping("/name/{name}")
     public List<Computer> getByName(@PathVariable("name") String name, @PathVariable("page") int page, @PathVariable("nbComputerByPage") int nbComputerByPage) {
         LOGGER.info("[GET rest] get computer by name or company name");
         return computerService.findByName(name, page, nbComputerByPage);
@@ -89,8 +86,8 @@ public class ComputerRestController {
      * @param nbComputerByPage number of computers displayed by page.
      * @return computer list by page.
      */
-    @GetMapping("/getPage/{page}/{nbComputerByPage}")
-    public List<Computer> getByPage(@PathVariable("page") int page, @PathVariable("nbComputerByPage") int nbComputerByPage) {
+    @GetMapping
+    public List<Computer> getByPage(@RequestParam("page") int page, @RequestParam("size") int nbComputerByPage) {
         LOGGER.info("[GET rest] get computers by page");
         return computerService.getByPage(page, nbComputerByPage);
     }
@@ -119,17 +116,6 @@ public class ComputerRestController {
     }
 
     /**
-     * Get all computers.
-     *
-     * @return List of computer
-     */
-    @GetMapping("/all")
-    public List<Computer> getAll() {
-        LOGGER.info("[GET rest] get all computers");
-        return computerService.getAll();
-    }
-
-    /**
      * Create computer.
      *
      * @param computerDTO computerDTO.
@@ -138,7 +124,7 @@ public class ComputerRestController {
      * @throws MalformedURLException MalformedURLException
      * @throws URISyntaxException    URISyntaxException
      */
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<?> create(@RequestBody @Validated ComputerDTO computerDTO, BindingResult result) throws MalformedURLException, URISyntaxException {
         LOGGER.info("[GET rest] create computer");
         String location = BaseLocation + "/create";
@@ -162,7 +148,7 @@ public class ComputerRestController {
      * @throws MalformedURLException MalformedURLException
      * @throws URISyntaxException    URISyntaxException
      */
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<?> update(@RequestBody @Validated ComputerDTO computerDTO, BindingResult result) throws MalformedURLException, URISyntaxException {
         LOGGER.info("[GET rest] update computer");
         String location = BaseLocation + "/update";
@@ -183,7 +169,7 @@ public class ComputerRestController {
      * @param id computer id
      * @return computer id.
      */
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public Long delete(@PathVariable("id") int id) {
         LOGGER.info("[GET rest] delete computer");
         return computerService.delete(id);

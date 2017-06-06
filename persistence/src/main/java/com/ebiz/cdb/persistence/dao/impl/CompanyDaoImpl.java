@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -61,16 +62,8 @@ public class CompanyDaoImpl implements CompanyDao {
 
     @Override
     public List<Company> getAll() {
-        List<Company> companyList = new ArrayList<>();
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<Company> criteria = builder.createQuery(Company.class);
-        Root<Company> computerRoot = criteria.from(Company.class);
-        criteria.select(computerRoot);
-        List<Company> computers = em.createQuery(criteria).getResultList();
-        for (Company computer : computers) {
-            companyList.add(computer);
-        }
-        return companyList;
+        Query query = em.createQuery("FROM Company C");
+        return query.getResultList();
     }
 
     @Override

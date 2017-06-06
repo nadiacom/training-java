@@ -1,6 +1,7 @@
 package com.ebiz.cdb.persistence.dao.impl;
 
 import com.ebiz.cdb.core.models.Computer;
+import com.ebiz.cdb.core.models.PageRequest;
 import com.ebiz.cdb.persistence.dao.ComputerDao;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -32,24 +33,6 @@ public class ComputerDaoImpl implements ComputerDao {
         Query query = em.createQuery("FROM Computer C where C.id = :id");
         query.setParameter("id", id);
         return (Computer) query.getSingleResult();
-    }
-
-    @Override
-    public List<Computer> findByName(String name, int page, int nbComputerByPage) {
-        Query query = em.createQuery("FROM Computer C left join C.company as company "
-                + "WHERE C.name like :name "
-                + "OR  company.name like :name ");
-        query.setParameter("name", "%" + name + "%");
-        return (List<Computer>) query.getResultList();
-    }
-
-    @Override
-    public int countByName(String name) {
-        Query query = em.createQuery("FROM Computer C left join C.company as company "
-                + "WHERE C.name like :name "
-                + "OR  company.name like :name ");
-        query.setParameter("name", "%" + name + "%");
-        return query.getResultList().size();
     }
 
     @Override
@@ -90,8 +73,38 @@ public class ComputerDaoImpl implements ComputerDao {
     }
 
     @Override
+    public PageRequest<Computer> getPage(int page, int nbComputerByPage) {
+        List<Computer> computerList = getPageList(page, nbComputerByPage);
+        return new
+                PageRequest.PageRequestBuilder()
+                .nbComputerByPage(nbComputerByPage)
+                .nbComputers(computerList.size())
+                .currentPage(page)
+                .listComputers(computerList)
+                .build();
+    }
+
+    @Override
     public int count() {
         Query query = em.createQuery("FROM Computer C");
+        return query.getResultList().size();
+    }
+
+    @Override
+    public List<Computer> findByName(String name, int page, int nbComputerByPage) {
+        Query query = em.createQuery("FROM Computer C left join C.company as company "
+                + "WHERE C.name like :name "
+                + "OR  company.name like :name ");
+        query.setParameter("name", "%" + name + "%");
+        return query.getResultList();
+    }
+
+    @Override
+    public int countByName(String name) {
+        Query query = em.createQuery("FROM Computer C left join C.company as company "
+                + "WHERE C.name like :name "
+                + "OR  company.name like :name ");
+        query.setParameter("name", "%" + name + "%");
         return query.getResultList().size();
     }
 

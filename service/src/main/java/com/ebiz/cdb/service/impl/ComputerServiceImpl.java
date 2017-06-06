@@ -1,6 +1,7 @@
 package com.ebiz.cdb.service.impl;
 
 import com.ebiz.cdb.core.models.Computer;
+import com.ebiz.cdb.core.models.PageRequest;
 import com.ebiz.cdb.persistence.dao.CompanyDao;
 import com.ebiz.cdb.persistence.dao.ComputerDao;
 import com.ebiz.cdb.service.ComputerService;
@@ -73,6 +74,11 @@ public class ComputerServiceImpl implements ComputerService {
     public List<Computer> getByPage(int page, int nbComputerByPage) {
         List<Computer> computers = computerDao.getPageList(page, nbComputerByPage);
         return computers;
+    }
+
+    @Override
+    public PageRequest<Computer> getPage(int page, int nbComputerBypage) {
+        return computerDao.getPage(page, nbComputerBypage);
     }
 
     @Override

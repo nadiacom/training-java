@@ -54,7 +54,7 @@ public class PaginationUtils {
         //CALCULATE NUMBER OF PAGINATION
         long totalPages = 1L, reste = 0L, quotient = 0L;
         if (nbComputer > nbComputerByPage) {
-            //number of pagination to display employee list
+            //number of pagination to display computer list
             reste = nbComputer % nbComputerByPage;
             quotient = reste != 0L
                     ? nbComputer / nbComputerByPage + 1L
