@@ -4,22 +4,12 @@ import com.ebiz.cdb.binding.dto.ComputerDTO;
 import com.ebiz.cdb.binding.mapper.ComputerMapper;
 import com.ebiz.cdb.binding.validator.ComputerDTOValidator;
 import com.ebiz.cdb.core.models.Computer;
-import com.ebiz.cdb.core.models.PageRequest;
 import com.ebiz.cdb.service.CompanyService;
 import com.ebiz.cdb.service.ComputerService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.List;
 
 @CrossOrigin
@@ -118,49 +108,23 @@ public class ComputerRestController {
     /**
      * Create computer.
      *
-     * @param computerDTO computerDTO.
-     * @param result      result.
-     * @return computer id.
-     * @throws MalformedURLException MalformedURLException
-     * @throws URISyntaxException    URISyntaxException
+     * @param computer computerDTO.
+     * @return computer.
      */
-    @PostMapping("/")
-    public ResponseEntity<?> create(@RequestBody @Validated ComputerDTO computerDTO, BindingResult result) throws MalformedURLException, URISyntaxException {
-        LOGGER.info("[GET rest] create computer");
-        String location = BaseLocation + "/create";
-        URL url = new URL(location);
-        URI uri = url.toURI();
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.setLocation(uri);
-        if (!result.hasErrors()) {
-            return new ResponseEntity<Computer>(computerService.create(computerMapper.to(computerDTO)), responseHeaders, HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<Integer>(HttpStatus.BAD_REQUEST);
-        }
+    @PostMapping
+    public Computer create(@RequestBody ComputerDTO computer) {
+        return computerService.create(computerMapper.to(computer));
     }
 
     /**
      * Update computer.
      *
-     * @param computerDTO computerDTO.
-     * @param result      result.
-     * @return computer id.
-     * @throws MalformedURLException MalformedURLException
-     * @throws URISyntaxException    URISyntaxException
+     * @param computer computer.
+     * @return computer.
      */
-    @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestBody @Validated ComputerDTO computerDTO, BindingResult result) throws MalformedURLException, URISyntaxException {
-        LOGGER.info("[GET rest] update computer");
-        String location = BaseLocation + "/update";
-        URL url = new URL(location);
-        URI uri = url.toURI();
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.setLocation(uri);
-        if (!result.hasErrors()) {
-            return new ResponseEntity<Computer>(computerService.update(computerMapper.to(computerDTO)), responseHeaders, HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<Integer>(HttpStatus.BAD_REQUEST);
-        }
+    @PutMapping
+    public Computer update(@RequestBody ComputerDTO computer) {
+        return computerService.update(computerMapper.to(computer));
     }
 
     /**
@@ -169,8 +133,8 @@ public class ComputerRestController {
      * @param id computer id
      * @return computer id.
      */
-    @DeleteMapping("/{id}")
-    public Long delete(@PathVariable("id") int id) {
+    @DeleteMapping
+    public Long delete(@RequestParam("id") int id) {
         LOGGER.info("[GET rest] delete computer");
         return computerService.delete(id);
     }
